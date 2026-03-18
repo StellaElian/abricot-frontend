@@ -18,6 +18,7 @@ export default function RootLayout({
         <nav className="bg-slate-900 text-white p-4 flex gap-6 items-center">
           <div className="font-bold text-xl text-orange-500">🍑 Abricot</div>
           <Link href="/dashboard" className="hover:text-orange-400">Dashboard</Link>
+          <Link href="/projects" className="hover:text-orange-400">Projets</Link>
         </nav>
         
         {/* Le contenu de la page s'affichera ici */}
