@@ -19,6 +19,7 @@ export default function RootLayout({
           <div className="font-bold text-xl text-orange-500">🍑 Abricot</div>
           <Link href="/dashboard" className="hover:text-orange-400">Dashboard</Link>
           <Link href="/projects" className="hover:text-orange-400">Projets</Link>
+          <Link href="/tasks" className="hover:text-orange-400">Tâches</Link>
         </nav>
         
         {/* Le contenu de la page s'affichera ici */}
