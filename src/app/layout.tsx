@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        {/* On place notre composant AuthNavbar ici, c'est tout propre ! */}
+        {/* On place notre composant AuthNavbar ici */}
         <AuthNavbar />
         
         <main className="min-h-screen bg-slate-50">
