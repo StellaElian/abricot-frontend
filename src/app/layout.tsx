@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import './globals.css';
-import LogoutButton from '../components/LogoutButton';
+// On importe notre nouvelle barre magique
+import AuthNavbar from '../components/AuthNavbar'; 
 
 export const metadata: Metadata = {
   title: 'Abricot - Gestion de Projet',
@@ -16,18 +16,10 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        <nav className="bg-slate-900 text-white p-4 flex justify-between items-center">
-          <div className="flex gap-6 items-center">
-            <div className="font-bold text-xl text-orange-500">🍑 Abricot</div>
-            <Link href="/dashboard" className="hover:text-orange-400">Dashboard</Link>
-            <Link href="/projects" className="hover:text-orange-400">Projets</Link>
-            <Link href="/tasks" className="hover:text-orange-400">Tâches</Link>
-          </div>
-          <LogoutButton />
-        </nav>
-
-        {/* Le contenu de la page s'affichera ici */}
-        <main className="min-h-screen">
+        {/* On place notre composant AuthNavbar ici, c'est tout propre ! */}
+        <AuthNavbar />
+        
+        <main className="min-h-screen bg-slate-50">
           {children}
         </main>
       </body>
