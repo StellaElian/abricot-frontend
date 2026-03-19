@@ -1,0 +1,103 @@
+'use client'; //dit à Next.js que c'est une page interactive (où l'utilisateur va taper des choses)
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Le GPS de Next.js
+import Link from 'next/link';
+import Cookies from 'js-cookie'; // Notre portefeuille pour le Badge VIP
+
+export default function RegisterPage() {
+    // Ces "states" vont mémoriser ce que l'utilisateur tape dans les cases
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const router = useRouter(); // On initialise le GPS
+
+    // Cette fonction s'activera quand on cliquera sur "S'inscrire'"
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(''); // On efface les anciennes erreurs à chaque nouvel essai
+
+        try {
+            // On envoie la demande au Backend
+            const response = await fetch('http://localhost:8000/auth/register', {
+                method: 'POST', // On POSTE des informations
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // On transforme l'email et le mot de passe en texte brut 
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json(); // On lit la réponse de la cuisine
+
+            if (response.ok) {
+                // Si le backend nous donne un token direct, on connecte l'utilisateur
+                if (data.token) {
+                    Cookies.set('token', data.token, { expires: 1 });
+                    router.push('/dashboard');
+                } else {
+                    // Sinon on l'envoie se connecter
+                    router.push('/login');
+                }
+            } else {
+                setError(data.message || "Erreur lors de l'inscription");
+            }
+        } catch (err) {
+            setError('Impossible de joindre le serveur.');
+        }
+    };
+
+    return (
+        <div className="flex justify-center items-center min-h-[80vh]">
+            <div className="bg-white p-8 rounded-lg shadow-md w-96">
+                {/* Titre aligné avec la maquette */}
+                <h1 className="text-2xl font-bold text-center text-orange-500 mb-6">Inscription</h1>
+
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleRegister} className="flex flex-col gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                        <input
+                            type="email"
+                            className="w-full border border-slate-300 rounded p-2 focus:outline-none focus:border-orange-500"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Mot de passe</label>
+                        <input
+                            type="password"
+                            className="w-full border border-slate-300 rounded p-2 focus:outline-none focus:border-orange-500"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-orange-500 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 transition"
+                    >
+                        S'inscrire
+                    </button>
+                </form>
+
+                {/* Petit lien pour retourner à la connexion */}
+                <p className="mt-4 text-center text-sm text-slate-600">
+                    Déjà inscrit ?{' '}
+                    <Link href="/login" className="text-orange-500 hover:underline">
+                        Se connecter
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+}
