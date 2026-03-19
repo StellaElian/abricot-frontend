@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; // Le GPS de Next.js
+import Link from 'next/link';
 import Cookies from 'js-cookie'; // Notre portefeuille pour le Badge VIP
 
 export default function LoginPage() {
@@ -82,7 +83,14 @@ export default function LoginPage() {
                     >
                         Se connecter
                     </button>
+
                 </form>
+                <p className="mt-4 text-center text-sm text-slate-600">
+                    Pas encore de compte ?{' '}
+                    <Link href="/register" className="text-orange-500 hover:underline">
+                        Créer un compte
+                    </Link>
+                </p>
             </div>
         </div>
     );
