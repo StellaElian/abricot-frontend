@@ -29,9 +29,11 @@ export default function ProfilePage() {
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
-                    setName(data.name || '');
-                    setEmail(data.email || '');
+                    const responseData = await response.json(); //On récupère tout le colis
+                    if (responseData.data) {
+                        setName(responseData.data.name || '');
+                        setEmail(responseData.data.email || '');
+                    }
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération du profile", error);
