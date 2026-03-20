@@ -50,23 +50,19 @@ export default function ProfilePage() {
         const token = Cookies.get('token');
 
         try {
-            const response = await fetch('http://localhost:8000/auth/profil', {
+            // On utilise EXACTEMENT l'adresse indiquée par ton fichier Backend
+            const response = await fetch('http://localhost:8000/auth/profile', {
                 method: 'PUT', // PUT pour modifier des données
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                // On envoie les nouvelles données (on n'envoie le mot de passe que s'il a été rempli)
-                body: JSON.stringify({
-                    name,
-                    email,
-                    ...(password ? { password } : {})
-                }),
+                // Le Backend attend uniquement le nom et l'email sur cette route
+                body: JSON.stringify({ name, email }),
             });
 
             if (response.ok) {
                 setMessage({ text: 'Profil mis à jour avec succès ! 🍑', type: 'success' });
-                setPassword(''); // On vide le champ mot de passe après succès
             } else {
                 const data = await response.json();
                 setMessage({ text: data.message || 'Erreur lors de la mise à jour', type: 'error' });
@@ -75,6 +71,7 @@ export default function ProfilePage() {
             setMessage({ text: 'Impossible de joindre le serveur.', type: 'error' });
         }
     };
+
 
     return (
         <div className="flex justify-center items-center min-h-[80vh]">
