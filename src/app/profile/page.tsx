@@ -50,12 +50,12 @@ export default function ProfilePage() {
         const token = Cookies.get('token');
 
         try {
-            // On utilise EXACTEMENT l'adresse indiquée par ton fichier Backend
+            // On utilise EXACTEMENT l'adresse indiquée par le fichier Backend
             const response = await fetch('http://localhost:8000/auth/profile', {
                 method: 'PUT', // PUT pour modifier des données
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ` + token,
                 },
                 // Le Backend attend uniquement le nom et l'email sur cette route
                 body: JSON.stringify({ name, email }),
