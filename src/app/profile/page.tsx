@@ -1,6 +1,6 @@
 'use client';//dit à Next.js que c'est une page interactive (où l'utilisateur va taper des choses)
 
-import { useState, useEffect } from 'react'; // memoire usestate+action automatique useeffect
+import { useState, useEffect } from 'react';// memoire usestate+action automatique useeffect
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';// Le GPS de Next.js
 
@@ -8,7 +8,7 @@ export default function ProfilePage() {
     //On crée des cases mémoires pour stocker ce que l'utilisateur tape
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState(''); // Reste vide par sécurité
+    const [password, setPassword] = useState(''); // Reste vide par sécurité    
     const [message, setMessage] = useState({ text: '', type: '' }); // Pour afficher succès ou erreurs
     const router = useRouter();
 
@@ -16,27 +16,35 @@ export default function ProfilePage() {
     useEffect(() => {
         const fetchProfile = async () => {
             const token = Cookies.get('token');
-            if (!token) {
+
+            // Sécurité 1 : Si pas de token, ou si le navigateur a stocké "undefined" par erreur
+            if (!token || token === 'undefined') {
+                Cookies.remove('token');
                 router.push('/login');
                 return;
             }
 
             try {
                 const response = await fetch('http://localhost:8000/auth/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // On montre notre Badge VIP au videur du Backend !
-                    },
+                    headers: { 'Authorization': `Bearer ${token}` },
                 });
 
+                // Sécurité 2 : Le token est expiré (ton problème d'hier !)
+                if (response.status === 401) {
+                    Cookies.remove('token');
+                    router.push('/login');
+                    return;
+                }
+
                 if (response.ok) {
-                    const responseData = await response.json(); //On récupère tout le colis
+                    const responseData = await response.json();
                     if (responseData.data) {
                         setName(responseData.data.name || '');
                         setEmail(responseData.data.email || '');
                     }
                 }
             } catch (error) {
-                console.error("Erreur lors de la récupération du profile", error);
+                console.error("Erreur lors de la récupération du profil", error);
             }
         };
 
@@ -47,7 +55,14 @@ export default function ProfilePage() {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         setMessage({ text: '', type: '' });
+
         const token = Cookies.get('token');
+
+        // Sécurité 3 : On vérifie le token juste avant d'envoyer
+        if (!token || token === 'undefined') {
+            setMessage({ text: 'Session expirée. Veuillez vous reconnecter.', type: 'error' });
+            return;
+        }
 
         try {
             // On utilise EXACTEMENT l'adresse indiquée par le fichier Backend
@@ -55,9 +70,8 @@ export default function ProfilePage() {
                 method: 'PUT', // PUT pour modifier des données
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ` + token,
+                    'Authorization': `Bearer ${token}`,
                 },
-                // Le Backend attend uniquement le nom et l'email sur cette route
                 body: JSON.stringify({ name, email }),
             });
 
@@ -71,7 +85,6 @@ export default function ProfilePage() {
             setMessage({ text: 'Impossible de joindre le serveur.', type: 'error' });
         }
     };
-
 
     return (
         <div className="flex justify-center items-center min-h-[80vh]">

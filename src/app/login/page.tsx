@@ -31,7 +31,7 @@ export default function LoginPage() {
             const data = await response.json(); // On lit la réponse de la cuisine
 
             if (response.ok) {
-                Cookies.set('token', data.token, { expires: 1 });
+                Cookies.set('token', data.data.token, { expires: 1 });
                 router.push('/dashboard');
 
             } else {

@@ -32,8 +32,8 @@ export default function RegisterPage() {
 
             if (response.ok) {
                 // Si le backend nous donne un token direct, on connecte l'utilisateur
-                if (data.token) {
-                    Cookies.set('token', data.token, { expires: 1 });
+            if (data.data && data.data.token) {
+                    Cookies.set('token', data.data.token, { expires: 1 });
                     router.push('/dashboard');
                 } else {
                     // Sinon on l'envoie se connecter
