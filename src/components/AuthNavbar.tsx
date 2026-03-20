@@ -10,10 +10,10 @@ export default function AuthNavbar() {
     const pathname = usePathname(); // outil qui détecte quand on change de page
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // À chaque fois qu on changes de page, on refait une vérification de sécurité
+    // À chaque fois qu on change de page, on refait une vérification de sécurité
     useEffect(() => {
         const token = Cookies.get('token');
-        // On transforme le token en Vrai (True) ou Faux (False) pour la mémoire
+        // On transforme le token en Vrai ou Faux pour la mémoire
         setIsAuthenticated(!!token);
     }, [pathname]);
 
@@ -33,11 +33,14 @@ export default function AuthNavbar() {
             </div>
 
             <div>
-                {/* Le bouton à droite change selon si tu es connecté ou non */}
                 {isAuthenticated ? (
-                    <LogoutButton />
+                    <div className="flex items-center gap-4">
+                        <Link href="/profile" className="hover:text-orange-400 font-medium">
+                            Mon Profil
+                        </Link>
+                        <LogoutButton />
+                    </div>
                 ) : (
-                    // Déconnecté ? On met un bouton orange pour se connecter
                     <Link href="/login" className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded font-bold transition">
                         Se connecter
                     </Link>
