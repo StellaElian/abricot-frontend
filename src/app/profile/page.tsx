@@ -34,7 +34,7 @@ export default function ProfilePage() {
                     setEmail(data.email || '');
                 }
             } catch (error) {
-                console.error("Erreur lors de la récupération du profil", error);
+                console.error("Erreur lors de la récupération du profile", error);
             }
         };
 
@@ -48,7 +48,7 @@ export default function ProfilePage() {
         const token = Cookies.get('token');
 
         try {
-            const response = await fetch('http://localhost:8000/auth/profile', {
+            const response = await fetch('http://localhost:8000/auth/profil', {
                 method: 'PUT', // PUT pour modifier des données
                 headers: {
                     'Content-Type': 'application/json',
