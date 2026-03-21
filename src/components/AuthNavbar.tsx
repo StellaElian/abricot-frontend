@@ -17,6 +17,10 @@ export default function AuthNavbar() {
         setIsAuthenticated(!!token);
     }, [pathname]);
 
+    if (pathname === '/login' || pathname === '/register'){
+        return null;
+    }
+
     return (
         <nav className="bg-slate-900 text-white p-4 flex justify-between items-center">
             <div className="flex gap-6 items-center">
