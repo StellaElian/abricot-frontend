@@ -138,12 +138,12 @@ export default function LoginPage() {
             </div>
 
             {/* LA COLONNE DE DROITE (Image) */}
-            <div className="hidden lg:block relative w-[907px] h-[1024px]">
+            <div className="hidden lg:block relative h-[1024px] flex-1 ">
                 <Image
                     src="/hero-login.jpg"
                     alt="Bureau avec outils"
-                    fill
-                    style={{ objectFit: 'cover' }}
+                    fill  
+                    style={{ objectFit: 'cover', objectPosition: 'center', overflow: 'hidden'}}
                     priority
                 />
             </div>
