@@ -110,7 +110,7 @@ export default function LoginPage() {
                         {/* Bouton */}
                         <button
                             type="submit"
-                            className="w-[249px] h-[50px] mt-[28px] bg-[#1F1F1F] text-[#FFFFFF] text-[16px] font-normal rounded-[4px] flex justify-center items-center"
+                            className="w-[249px] h-[50px] mt-[28px] bg-[#1F1F1F] text-[#FFFFFF] text-[16px] font-normal rounded-[10px] flex justify-center items-center"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
                             Se connecter
