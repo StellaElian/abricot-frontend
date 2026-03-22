@@ -34,7 +34,7 @@ export default function DashboardPage() {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#1F1F1F] text-[#FFFFFF] w-[181px] h-[50px] rounded-[10px] font-medium text-[16px] transition hover:bg-black">
+          className="bg-[#1F1F1F] text-[#FFFFFF] w-[181px] h-[50px] rounded-[10px] font-medium text-[16px] transition hover:bg-black cursor-pointer">
           + Créer un projet
         </button>
       </div>
@@ -114,7 +114,7 @@ export default function DashboardPage() {
                   <div className="mx-[15px] flex items-center justify-center bg-[#E5E7EB]">
                     <Image src="/line.svg" alt="Séparateur" width={1} height={11} className="h-[11px] w-[1px]" />
                   </div>
-                  
+
                   {/* Date */}
                   <div className="flex items-center gap-[8px]">
                     <Image src="/date.svg" alt="Date" width={15} height={15} />
@@ -150,7 +150,7 @@ export default function DashboardPage() {
                 )}
 
                 {/* Bouton Voir */}
-                <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
                   Voir
                 </button>
               </div>
@@ -161,6 +161,11 @@ export default function DashboardPage() {
         </div>
 
       </div>
+      <CreateProjectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
     </div>
   );
 }
