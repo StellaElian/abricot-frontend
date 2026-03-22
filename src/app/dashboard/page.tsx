@@ -3,20 +3,47 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
 import CreateProjectModal from '@/src/components/CreateProjectModal';
 
 export default function DashboardPage() {
 
-  // 1. FAUSSES DONNÉES (Pour l'intégration visuelle)
-  const mockTasks = [
-    { id: 1, title: "Nom de la tâche", description: "Description de la tâche", project: "Nom du projet", date: "9 mars", messages: 2, status: "À faire" },
-    { id: 2, title: "Nom de la tâche", description: "Description de la tâche", project: "Nom du projet", date: "9 mars", messages: 2, status: "En cours" },
-    { id: 3, title: "Nom de la tâche", description: "Description de la tâche", project: "Nom du projet", date: "9 mars", messages: 2, status: "À faire" },
-    { id: 4, title: "Nom de la tâche", description: "Description de la tâche", project: "Nom du projet", date: "9 mars", messages: 2, status: "À faire" },
-  ];
-
-  //mémoire
+  // 1. VRAIES DONNÉES DU BACKEND
+  const [tasks, setTasks] = useState<any[]>([]); // Mémoire pour les tâches
   const [isModalOpen, setIsModalOpen] = useState(false); //mémoire pour savoir si la fenêtre est ouverte
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const token = Cookies.get('token');
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://localhost:8000/dashboard/assigned-tasks', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const json = await response.json();
+          // D'après Swagger, les tâches sont dans data.tasks
+          if (json.success && json.data && json.data.tasks) {
+            setTasks(json.data.tasks);
+          }
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des tâches :", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  // Fonction outil pour traduire les statuts du backend en français pour tes badges
+  const formatStatus = (status: string) => {
+    if (status === 'TODO') return 'À faire';
+    if (status === 'IN_PROGRESS') return 'En cours';
+    if (status === 'DONE') return 'Terminée';
+    return 'À faire'; // Par défaut
+  };
 
   return (
     // CONTENEUR GLOBAL
@@ -89,74 +116,84 @@ export default function DashboardPage() {
         {/* 4. LA LISTE DES TÂCHES */}
         <div className="flex flex-col gap-[17px] w-full max-w-[1097px] mx-auto">
 
-          {mockTasks.map((task, index) => (
-            <div key={index} className="w-full h-[162px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] p-[25px] flex justify-between hover:shadow-sm transition-shadow">
+          {tasks.map((task, index) => {
+            // On traduit le statut avant de dessiner la carte
+            const frenchStatus = formatStatus(task.status);
 
-              {/* Côté Gauche : Infos de la tâche */}
-              <div className="flex flex-col">
-                <h3 className="text-[16px] font-semibold text-[#1F1F1F] mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  {task.title}
-                </h3>
-                <p className="text-[14px] text-[#6B7280] mb-[32px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  {task.description}
-                </p>
+            return (
+              <div key={task.id || index} className="w-full h-[162px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] p-[25px] flex justify-between hover:shadow-sm transition-shadow">
 
-                {/* Métadonnées */}
-                <div className="flex items-center text-[12px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                {/* Côté Gauche : Infos de la tâche */}
+                <div className="flex flex-col">
+                  <h3 className="text-[16px] font-semibold text-[#1F1F1F] mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    {task.title}
+                  </h3>
+                  <p className="text-[14px] text-[#6B7280] mb-[32px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    {task.description}
+                  </p>
 
-                  {/* Projet */}
-                  <div className="flex items-center gap-[8px]">
-                    <Image src="/files2.svg" alt="Projet" width={18} height={14} />
-                    <span>{task.project}</span>
+                  {/* données */}
+                  <div className="flex items-center text-[12px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
+
+                    {/* Projet */}
+                    <div className="flex items-center gap-[8px]">
+                      <Image src="/files2.svg" alt="Projet" width={18} height={14} />
+                      <span>{task.project ? task.project.name : "Projet inconnu"}</span>
+                    </div>
+
+                    {/* Séparateur */}
+                    <div className="mx-[15px] flex items-center justify-center bg-[#E5E7EB]">
+                      <Image src="/line.svg" alt="Séparateur" width={1} height={11} className="h-[11px] w-[1px]" />
+                    </div>
+
+                    {/* Date */}
+                    <div className="flex items-center gap-[8px]">
+                      <Image src="/date.svg" alt="Date" width={15} height={15} />
+                      {/* Affichage simple de la date brute du backend */}
+                      <span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span>
+                    </div>
+
+                    {/* Séparateur */}
+                    <div className="mx-[15px] flex items-center justify-center bg-[#E5E7EB]">
+                      <Image src="/line.svg" alt="Séparateur" width={1} height={11} className="h-[11px] w-[1px]" />
+                    </div>
+
+                    {/* Messages */}
+                    <div className="flex items-center gap-[8px]">
+                      <Image src="/mess.svg" alt="Messages" width={15} height={15} />
+                      <span>{task.comments ? task.comments.length : 0}</span>
+                    </div>
+
                   </div>
-
-                  {/* Séparateur */}
-                  <div className="mx-[15px] flex items-center justify-center bg-[#E5E7EB]">
-                    <Image src="/line.svg" alt="Séparateur" width={1} height={11} className="h-[11px] w-[1px]" />
-                  </div>
-
-                  {/* Date */}
-                  <div className="flex items-center gap-[8px]">
-                    <Image src="/date.svg" alt="Date" width={15} height={15} />
-                    <span>{task.date}</span>
-                  </div>
-
-                  {/* Séparateur */}
-                  <div className="mx-[15px] flex items-center justify-center bg-[#E5E7EB]">
-                    <Image src="/line.svg" alt="Séparateur" width={1} height={11} className="h-[11px] w-[1px]" />
-                  </div>
-
-                  {/* Messages */}
-                  <div className="flex items-center gap-[8px]">
-                    <Image src="/mess.svg" alt="Messages" width={15} height={15} />
-                    <span>{task.messages}</span>
-                  </div>
-
                 </div>
+
+                {/* Côté Droit : Statut et Bouton */}
+                <div className="flex flex-col justify-between items-end">
+
+                  {/* Pastille de Statut Dynamique */}
+                  {frenchStatus === "À faire" ? (
+                    <div className="bg-[#FEF2F2] text-[#EF4444] px-[16px] py-[4px] rounded-[40px] text-[12px] font-normal border border-transparent">
+                      {frenchStatus}
+                    </div>
+                  ) : frenchStatus === "En cours" ? (
+                    <div className="bg-[#FFF7ED] text-[#F97316] px-[16px] py-[4px] rounded-[40px] text-[12px] font-normal border border-transparent">
+                      {frenchStatus}
+                    </div>
+                  ) : (
+                    <div className="bg-[#F0FDF4] text-[#22C55E] px-[16px] py-[4px] rounded-[40px] text-[12px] font-normal border border-transparent">
+                      {frenchStatus}
+                    </div>
+                  )}
+
+                  {/* Bouton Voir */}
+                  <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    Voir
+                  </button>
+                </div>
+
               </div>
-
-              {/* Côté Droit : Statut et Bouton */}
-              <div className="flex flex-col justify-between items-end">
-
-                {/* Pastille de Statut Dynamique */}
-                {task.status === "À faire" ? (
-                  <div className="bg-[#FEF2F2] text-[#EF4444] px-[16px] py-[4px] rounded-[40px] text-[12px] font-normal border border-transparent">
-                    {task.status}
-                  </div>
-                ) : (
-                  <div className="bg-[#FFF7ED] text-[#F97316] px-[16px] py-[4px] rounded-[40px] text-[12px] font-normal border border-transparent">
-                    {task.status}
-                  </div>
-                )}
-
-                {/* Bouton Voir */}
-                <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  Voir
-                </button>
-              </div>
-
-            </div>
-          ))}
+            );
+          })} 
 
         </div>
 
