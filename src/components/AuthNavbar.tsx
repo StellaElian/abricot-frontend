@@ -19,15 +19,16 @@ const getInitials = (name: string | null) => {
 export default function AuthNavbar() {
     const pathname = usePathname(); // On allume le GPS
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // 1. On part sur un nom vide (ou générique)
+    const [userName, setUserName] = useState('Alice Martin');
 
-    const [userName, setUserName] = useState('Alice Dupont');
-
-    // À chaque fois qu'on change de page (pathname change), on refait une vérification de sécurité
+    // À chaque fois qu'on change de page, on vérifie qui est connecté
     useEffect(() => {
         const token = Cookies.get('token');
-        // On transforme le token (le badge VIP) en Vrai ou Faux pour la mémoire de l'app
         setIsAuthenticated(!!token);
+
     }, [pathname]);
+
 
     if (pathname === '/login' || pathname === '/register') return null;
 
@@ -54,8 +55,8 @@ export default function AuthNavbar() {
                 <Link
                     href="/dashboard"
                     className={`flex items-center justify-center gap-[10px] w-[248px] h-[78px] rounded-[10px] transition-colors ${isActive('/dashboard')
-                            ? 'bg-[#0F0F0F] text-[#FFFFFF]'
-                            : 'bg-[#FFFFFF] text-[#D3590B] hover:bg-orange-50'
+                        ? 'bg-[#0F0F0F] text-[#FFFFFF]'
+                        : 'bg-[#FFFFFF] text-[#D3590B] hover:bg-orange-50'
                         }`}
                 >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="fill-current">
@@ -73,8 +74,8 @@ export default function AuthNavbar() {
                 <Link
                     href="/projects"
                     className={`flex items-center justify-center gap-[10px] w-[248px] h-[78px] rounded-[10px] transition-colors ${isActive('/projects')
-                            ? 'bg-[#0F0F0F] text-[#FFFFFF]'
-                            : 'bg-[#FFFFFF] text-[#D3590B] hover:bg-orange-50'
+                        ? 'bg-[#0F0F0F] text-[#FFFFFF]'
+                        : 'bg-[#FFFFFF] text-[#D3590B] hover:bg-orange-50'
                         }`}
                 >
                     <svg width="24" height="19" viewBox="0 0 29 23" fill="none" xmlns="http://www.w3.org/2000/svg" className="fill-current">
