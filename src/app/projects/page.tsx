@@ -102,7 +102,7 @@ export default function ProjectsPage() {
         {/* Partie droite : Le bouton */}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#1F1F1F] text-[#FFFFFF] w-[181px] h-[50px] rounded-[10px] font-medium text-[16px] transition hover:bg-black">
+          className="bg-[#1F1F1F] text-[#FFFFFF] w-[181px] h-[50px] rounded-[10px] font-medium text-[16px] transition hover:bg-black cursor-pointer">
           + Créer un projet
         </button>
 
