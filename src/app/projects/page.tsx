@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import Image from 'next/image';
+import CreateProjectModal from '@/src/components/CreateProjectModal';
 
 
 // On explique à TypeScript à quoi ressemble un Projet qui vient du Backend
@@ -30,6 +31,7 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]); // Mémoire pour stocker les projets
   const [loading, setLoading] = useState(true); // pour savoir si on est en train de charger
   const [error, setError] = useState(''); // Mémoire pour stocker les erreurs éventuelles
+  const [isModalOpen, setIsModalOpen] = useState(false); //mémoire pour savoir si la fenêtre est ouverte
 
   // 3. LOGIQUE MÉTIER (Récupération des données au démarrage)
 
@@ -98,7 +100,9 @@ export default function ProjectsPage() {
         </div>
 
         {/* Partie droite : Le bouton */}
-        <button className="bg-[#1F1F1F] text-[#FFFFFF] w-[181px] h-[50px] rounded-[10px] font-medium text-[16px] transition hover:bg-black">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-[#1F1F1F] text-[#FFFFFF] w-[181px] h-[50px] rounded-[10px] font-medium text-[16px] transition hover:bg-black">
           + Créer un projet
         </button>
 
@@ -247,6 +251,10 @@ export default function ProjectsPage() {
           );
         })}
       </div>
+      <CreateProjectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
