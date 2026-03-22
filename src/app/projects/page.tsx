@@ -36,6 +36,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        setError('');  // on éfface le méssage rouge à chaque nouveau chargement
         const token = Cookies.get('token'); // On récupère le badge VIP
 
         // Appel au Backend pour avoir les projets
@@ -46,23 +47,23 @@ export default function ProjectsPage() {
         if (response.ok) {
           const data = await response.json();
 
-          //🚨 fausses données pour tester l'affichage Pixel-Perfect. Tu pourras retirer ça plus tard.
-          const realOrFakeProjects = data.data?.length > 0 ? data.data : [
-            {
-              id: '1',
-              name: "Nom du projet",
-              description: "Développement de la nouvelle version de l'API REST avec authentification JWT",
-              completedTasks: 0,
-              totalTasks: 2,
-              team: [
-                { id: 'u1', initials: 'AD', isOwner: true },
-                { id: 'u2', initials: 'BD', isOwner: false },
-                { id: 'u3', initials: 'CV', isOwner: false },
-              ]
-            }
-          ];
-          setProjects(realOrFakeProjects); // On sauvegarde les projets dans la mémoire
+          // 🕵️ On affiche dans la console ce que le backend t'envoie
+          console.log("Données reçues du backend :", data);
+
+          // 🛡️ SÉCURITÉ ABSOLUE : On vérifie la forme des données
+          if (Array.isArray(data)) {
+            // Cas 1 : Le backend envoie directement le tableau [...]
+            setProjects(data);
+          } else if (data && Array.isArray(data.data)) {
+            // Cas 2 : Le backend envoie un objet contenant le tableau { data: [...] }
+            setProjects(data.data);
+          } else {
+            // Cas 3 : Format inconnu ou vide, on force un tableau vide pour ne pas crasher !
+            // sinon On récupère la vraie raison du refus du backend
+            setProjects([]);
+          }
         } else {
+
           setError('Erreur lors du chargement des projets');
         }
       } catch (err) {
@@ -75,7 +76,7 @@ export default function ProjectsPage() {
     fetchProjects(); // On lance la fonction
   }, []);
 
-  // 4. L'INTERFACE VISUELLE (Le HTML / Tailwind)
+  // 4. L'INTERFACE VISUELLE 
 
   // Écran d'attente
   if (loading) return <div className="p-10 text-center font-sans">Chargement de vos projets...</div>;
@@ -113,7 +114,14 @@ export default function ProjectsPage() {
       <div className="w-full max-w-[1166px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
 
         {/* BOUCLE : Pour chaque projet dans la mémoire, on dessine ça : */}
-        {projects.map((project) => {
+        {projects.map((rawProject) => {
+          //sécurisation données
+          const project = {
+            ...rawProject,
+            team: rawProject.team || [],
+            completedTasks: rawProject.completedTasks || 0,
+            totalTasks: rawProject.totalTasks || 0,
+          }
 
           // --- CALCULS DYNAMIQUES POUR CETTE CARTE ---
           // 1. Calcul du pourcentage pour la barre noire
