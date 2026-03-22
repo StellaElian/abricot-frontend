@@ -50,18 +50,16 @@ export default function ProjectsPage() {
           // 🕵️ On affiche dans la console ce que le backend t'envoie
           console.log("Données reçues du backend :", data);
 
-          // 🛡️ SÉCURITÉ ABSOLUE : On vérifie la forme des données
-          if (Array.isArray(data)) {
-            // Cas 1 : Le backend envoie directement le tableau [...]
-            setProjects(data);
-          } else if (data && Array.isArray(data.data)) {
-            // Cas 2 : Le backend envoie un objet contenant le tableau { data: [...] }
-            setProjects(data.data);
-          } else {
-            // Cas 3 : Format inconnu ou vide, on force un tableau vide pour ne pas crasher !
-            // sinon On récupère la vraie raison du refus du backend
-            setProjects([]);
-          }
+          // 🛡️ RECHERCHE AUTOMATIQUE DU TABLEAU
+          let listeProjets = [];
+          if (Array.isArray(data)) listeProjets = data;
+          else if (data.data && Array.isArray(data.data)) listeProjets = data.data;
+          else if (data.data && Array.isArray(data.data.projects)) listeProjets = data.data.projects;
+          else if (data.projects && Array.isArray(data.projects)) listeProjets = data.projects;
+
+          console.log("Les projets extraits :", listeProjets);
+          setProjects(listeProjets);
+
         } else {
 
           setError('Erreur lors du chargement des projets');
