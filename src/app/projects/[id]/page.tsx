@@ -62,38 +62,35 @@ export default function ProjectDetailsPage() {
                         </div>
 
                         {/* Description */}
-                        <p className="text-[16px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <p className="text-[18px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                             Développement de la nouvelle version de l'API REST avec authentification JWT
                         </p>
 
                     </div>
                 </div>
-
-                {/* BARRE DES CONTRIBUTEURS (Le fameux fond F3F4F6) */}
-                <div className="w-full h-[67px] bg-[#F3F4F6] rounded-[8px] flex items-center pl-[64px]">
-                    <span className="text-[14px] text-[#1F1F1F] font-medium mr-[8px]" style={{ fontFamily: "'Inter', sans-serif" }}>Contributeurs</span>
-                    <span className="text-[14px] text-[#6B7280] mr-[24px]" style={{ fontFamily: "'Inter', sans-serif" }}>3 personnes</span>
+                {/* BARRE DES CONTRIBUTEURS */}
+                <div className="w-[1255px] h-[67px] bg-[#F3F4F6] rounded-[10px] flex items-center pl-[50px] ml-[60px]">
+                    <span className="text-[18px] text-[#1F1F1F] font-[600] mr-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>Contributeurs</span>
+                    <span className="text-[16px] text-[#6B7280] mr-[410px]" style={{ fontFamily: "'Inter', sans-serif" }}>3 personnes</span>
 
                     <div className="flex items-center gap-[8px]">
                         {/* 1. Propriétaire (AD) */}
-                        <div className="flex items-center gap-[4px]">
-                            <div className="w-[27px] h-[27px] rounded-full bg-[#FFE8D9] border border-[#FFFFFF] flex items-center justify-center text-[#D3590B] text-[10px] font-semibold font-sans z-10">AD</div>
-                            <div className="h-[25px] bg-[#FFE8D9] rounded-[50px] px-[16px] flex items-center justify-center text-[#D3590B] text-[14px]" style={{ fontFamily: "'Inter', sans-serif" }}>Propriétaire</div>
+                        <div className="flex items-center gap-[5px]">
+                            <div className="w-[27px] h-[27px] rounded-full bg-[#FFE8D9] flex items-center justify-center text-[#D3590B] text-[10px] font-semibold font-sans z-10">AD</div>
+                            <div className="h-[25px] w-[109px] bg-[#FFE8D9] rounded-[50px] px-[16px] flex items-center justify-center text-[#D3590B] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Propriétaire</div>
                         </div>
                         {/* 2. Contributeur (BD) */}
-                        <div className="flex items-center gap-[4px]">
-                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#6B7280] text-[10px] font-semibold font-sans z-10">BD</div>
-                            <div className="h-[25px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px]" style={{ fontFamily: "'Inter', sans-serif" }}>Bertrand Dupont</div>
+                        <div className="flex items-center gap-[5px]">
+                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">BD</div>
+                            <div className="h-[25px] w-[143px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Bertrand Dupont</div>
                         </div>
                         {/* 3. Contributeur (AD) */}
-                        <div className="flex items-center gap-[4px]">
-                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#6B7280] text-[10px] font-semibold font-sans z-10">AD</div>
-                            <div className="h-[25px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px]" style={{ fontFamily: "'Inter', sans-serif" }}>Anne Dupont</div>
+                        <div className="flex items-center gap-[5px]">
+                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">AD</div>
+                            <div className="h-[25px] w-[119px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Anne Dupont</div>
                         </div>
                     </div>
                 </div>
-
-
 
             </div >
 
