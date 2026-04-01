@@ -243,20 +243,22 @@ export default function ProjectDetailsPage() {
                                             {/* Ligne 4 : Assigné à */}
                                             <div className="flex items-center gap-[8px] text-[12px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span>Assigné à :</span>
-                                                
+
                                                 {/* On boucle sur les vrais assignés renvoyés par le backend */}
                                                 {task.assignees && task.assignees.length > 0 ? (
                                                     task.assignees.map((assignee: any, index: number) => {
-                                                        // Petite astuce pour générer les initiales (ex: "Alice Martin" -> "AM")
-                                                        const initials = assignee.name ? assignee.name.split(' ').map((n: string) => n[0]).join('').toUpperCase() : 'U';
-                                                        
+                                                        // On récupère le nom complet, que le backend utilise "firstName" + "lastName"
+                                                        const fullName = `${assignee.firstName || ''} ${assignee.lastName || ''}`.trim() || 'Inconnu';
+                                                        // On génère les initiales
+                                                        const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+
                                                         return (
                                                             <div key={index} className="flex items-center gap-[5px]">
                                                                 <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
                                                                     {initials}
                                                                 </div>
                                                                 <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                                    {assignee.name}
+                                                                    {fullName}
                                                                 </div>
                                                             </div>
                                                         );
@@ -266,9 +268,10 @@ export default function ProjectDetailsPage() {
                                                 )}
                                             </div>
 
+
                                         </div>
 
-                                        {/* Bouton "..." (Options point.svg) à droite */}
+                                        {/* Bouton "..." */}
                                         <button className="w-[57px] h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition mt-[8px] mr-[11px]">
                                             <Image src="/plus.svg" alt="Options" width={15} height={4} />
                                         </button>
