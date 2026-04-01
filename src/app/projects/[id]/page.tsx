@@ -1,23 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Ajout de useEffect
 import Link from 'next/link';
 import Image from 'next/image';
+import { useParams } from 'next/navigation'; // Ajout pour récupérer l'ID
+import Cookies from 'js-cookie'; // Ajout pour le token
 
 export default function ProjectDetailsPage() {
 
-    // FAUSSES DONNÉES TEMPORAIRES POUR L'INTÉGRATION
-    const mockProjectTasks = [
-        { id: 1, title: "Authentification JWT", description: "Implémenter le système d'authentification avec tokens JWT", dueDate: "9 mars", status: "TODO", comments: 1, assignees: [{ init: "BD", name: "Bertrand Dupont" }, { init: "AD", name: "Anne Dupont" }] },
-        { id: 2, title: "Authentification JWT", description: "Implémenter le système d'authentification avec tokens JWT", dueDate: "9 mars", status: "IN_PROGRESS", comments: 1, assignees: [{ init: "BD", name: "Bertrand Dupont" }, { init: "AD", name: "Anne Dupont" }] },
-        { id: 3, title: "Authentification JWT", description: "Implémenter le système d'authentification avec tokens JWT", dueDate: "9 mars", status: "DONE", comments: 1, assignees: [{ init: "BD", name: "Bertrand Dupont" }, { init: "AD", name: "Anne Dupont" }] },
-    ];
+    // 1. RÉCUPÉRATION DE L'ID DU PROJET DEPUIS L'URL
+    const params = useParams();
+    const projectId = params.id;
 
+    // 2. STATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
+    const [projectTasks, setProjectTasks] = useState<any[]>([]);
+
+    // 3. APPEL À L'API
+    useEffect(() => {
+        const fetchProjectTasks = async () => {
+            const token = Cookies.get('token');
+            if (!token || !projectId) return;
+
+            try {
+                // Attention : Assure-toi que cette route correspond EXACTEMENT à ton Swagger
+                // L'image de ton Swagger montre `/dashboard/assigned-tasks`, mais cette page
+                // est censée afficher les tâches d'UN SEUL projet. 
+                // Si tu as une route comme `/projects/{projectId}/tasks`, utilise-la ici.
+                // Sinon, on filtre les tâches assignées par projet.
+
+                const response = await fetch(`http://localhost:8000/dashboard/assigned-tasks`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+
+                    if (json.success && json.data && json.data.tasks) {
+                        // Si le endpoint ramène toutes les tâches, on filtre par l'ID du projet actuel
+                        // Si le endpoint ramène DÉJÀ les tâches du bon projet, enlève le .filter()
+                        const filteredTasks = json.data.tasks.filter((task: any) => task.projectId === projectId);
+                        setProjectTasks(filteredTasks);
+                    }
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des tâches du projet :", error);
+            }
+        };
+
+        fetchProjectTasks();
+    }, [projectId]); // Le useEffect se relance si l'ID du projet change
+
+    // Fonction outil pour traduire les statuts (Inchangée)
     const formatStatus = (status: string) => {
         if (status === 'TODO') return 'À faire';
         if (status === 'IN_PROGRESS') return 'En cours';
         if (status === 'DONE') return 'Terminée';
-        return 'À faire'; // Par défaut
+        return 'À faire';
     };
 
     return (
@@ -165,7 +203,7 @@ export default function ProjectDetailsPage() {
                     {/* 2. LA LISTE DES TÂCHES (Le gros bloc principal) */}
                     <div className="w-full h-auto bg-white flex flex-col gap-[17px] pl-[59px]">
 
-                        {mockProjectTasks.map((task) => {
+                        {projectTasks.map((task) => {
                             const frenchStatus = formatStatus(task.status);
 
                             return (
@@ -235,7 +273,8 @@ export default function ProjectDetailsPage() {
                                     {/* BAS DE LA CARTE (Commentaires) */}
                                     <div className="pl-[30px] mt-[10px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
                                         <span className="text-[14px] text-[#1F1F1F] font-regular">
-                                            Commentaires ({task.comments})
+                                            {/* On affiche la longueur du tableau, ou 0 s'il n'y a pas de commentaires */}
+                                            Commentaires ({task.comments ? task.comments.length : 0})
                                         </span>
                                         <button className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition">
                                             <Image src="/more.svg" alt="Voir plus" width={16} height={8} />
