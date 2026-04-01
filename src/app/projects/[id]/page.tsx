@@ -106,7 +106,8 @@ export default function ProjectDetailsPage() {
                             {/* Titre et Modifier */}
                             <div className="flex items-center gap-[14px] mb-[14px]">
                                 <h1 className="text-[24px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>
-                                    Nom du projet
+                                    {/* Dynamisation du Titre */}
+                                    {project ? project.title || project.name : "Chargement..."}
                                 </h1>
                                 <button className="text-[#D3590B] text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition" style={{ fontFamily: "'Inter', sans-serif" }}>
                                     Modifier
@@ -125,9 +126,9 @@ export default function ProjectDetailsPage() {
                             </div>
                         </div>
 
-                        {/* Description */}
+                         {/* Dynamisation de la Description */}
                         <p className="text-[18px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
-                            Développement de la nouvelle version de l'API REST avec authentification JWT
+                            {project ? project.description : "Aucune description pour ce projet."}
                         </p>
 
                     </div>
