@@ -30,15 +30,25 @@ export default function ProjectDetailsPage() {
             if (!token || !projectId) return;
 
             try {
-                const tasksResponse = await fetch(`http://localhost:8000/dashboard/assigned-tasks`, {
+                // --- A. RÉCUPÉRATION DE TOUTES LES TÂCHES DU PROJET ---
+                // On pointe les tâches du projet
+                const tasksResponse = await fetch(`http://localhost:8000/projects/${projectId}/tasks`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                const tasksJson = await tasksResponse.json();
-
-                if (tasksJson.success && tasksJson.data && tasksJson.data.tasks) {
-                    const filteredTasks = tasksJson.data.tasks.filter((task: any) => task.projectId === projectId);
-                    setProjectTasks(filteredTasks);
+                
+                if (tasksResponse.ok) {
+                    const tasksJson = await tasksResponse.json();
+                    
+                    // le tableau est dans data.tasks 
+                    if (tasksJson.data && Array.isArray(tasksJson.data.tasks)) {
+                        setProjectTasks(tasksJson.data.tasks);
+                    } else if (Array.isArray(tasksJson.data)) {
+                        setProjectTasks(tasksJson.data); 
+                    } else {
+                        setProjectTasks([]); // Sécurité anti-crash
+                    }
                 }
+
 
                 /// --- B. RÉCUPÉRATION DU PROJET (Même logique que les tâches !) ---
                 const projectResponse = await fetch(`http://localhost:8000/projects`, {
@@ -293,19 +303,21 @@ export default function ProjectDetailsPage() {
                                                 <span className="font-regular text-[#1F1F1F] text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
-                                            {/* Ligne 4 : Assigné à */}
+                                           {/* Ligne 4 : Assigné à */}
                                             <div className="flex items-center gap-[8px] text-[12px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span>Assigné à :</span>
                                                 
                                                 {/* On boucle sur les assignés de la tâche */}
                                                 {task.assignees && task.assignees.map((assigneeObj: any, index: number) => {
                                                     
-                                                    // On cherche par "id" (pour Alice, proprio) OU par "userId" (pour autres membres)
-                                                    const userProfile = contributors.find((c: any) => c.id === assigneeObj.userId || c.userId === assigneeObj.userId) || assigneeObj.user || assigneeObj;
+                                                    // CORRECTION : On utilise directement l'utilisateur fourni par le backend 
+                                                    // Sinon, on cherche par l'ID sans créer autreacgose
+                                                    const targetId = assigneeObj.userId || assigneeObj.id;
+                                                    const userProfile = assigneeObj.user || contributors.find((c: any) => c.id === targetId) || assigneeObj;
                                                     
-                                                    //extraction le nom 
-                                                    const fullName = userProfile.name || `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
-                                                    const initials = fullName ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : '';
+                                                    // On extrait le nom
+                                                    const fullName = userProfile.name || `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim() || 'Inconnu';
+                                                    const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
                                                     
                                                     return (
                                                         <div key={index} className="flex items-center gap-[5px]">
@@ -319,6 +331,7 @@ export default function ProjectDetailsPage() {
                                                     );
                                                 })}
                                             </div>
+
 
                                         </div>
 
