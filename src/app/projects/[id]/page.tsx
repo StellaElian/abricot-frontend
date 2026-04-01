@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'; // Ajout de useEffect
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'; // Ajout pour récupérer l'ID
-import Cookies from 'js-cookie'; // Ajout pour le token
+import Cookies from 'js-cookie'; 
 
 export default function ProjectDetailsPage() {
 
@@ -14,43 +14,69 @@ export default function ProjectDetailsPage() {
 
     // 2. STATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
     const [projectTasks, setProjectTasks] = useState<any[]>([]);
+    const [project, setProject] = useState<any>(null); //pour le projet
 
     // 3. APPEL À L'API
+    const contributors = project ? [
+        project.owner,
+        ...(project.members?.map((m: any) => m.user || m) || [])
+    ].filter(Boolean) : []; // filter(Boolean) empêche les crashs si une donnée est vide
+
+    // 4. APPEL AUX APIS
     useEffect(() => {
-        const fetchProjectTasks = async () => {
+        const fetchAllData = async () => {
             const token = Cookies.get('token');
             if (!token || !projectId) return;
 
             try {
-                // Attention : Assure-toi que cette route correspond EXACTEMENT à ton Swagger
-                // L'image de ton Swagger montre `/dashboard/assigned-tasks`, mais cette page
-                // est censée afficher les tâches d'UN SEUL projet. 
-                // Si tu as une route comme `/projects/{projectId}/tasks`, utilise-la ici.
-                // Sinon, on filtre les tâches assignées par projet.
+                const tasksResponse = await fetch(`http://localhost:8000/dashboard/assigned-tasks`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const tasksJson = await tasksResponse.json();
 
-                const response = await fetch(`http://localhost:8000/dashboard/assigned-tasks`, {
+                if (tasksJson.success && tasksJson.data && tasksJson.data.tasks) {
+                    const filteredTasks = tasksJson.data.tasks.filter((task: any) => task.projectId === projectId);
+                    setProjectTasks(filteredTasks);
+                }
+
+                /// --- B. RÉCUPÉRATION DU PROJET (Même logique que les tâches !) ---
+                const projectResponse = await fetch(`http://localhost:8000/projects`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (response.ok) {
-                    const json = await response.json();
+                if (projectResponse.ok) {
+                    const projectJson = await projectResponse.json();
 
-                    if (json.success && json.data && json.data.tasks) {
-                        // Si le endpoint ramène toutes les tâches, on filtre par l'ID du projet actuel
-                        // Si le endpoint ramène DÉJÀ les tâches du bon projet, enlève le .filter()
-                        const filteredTasks = json.data.tasks.filter((task: any) => task.projectId === projectId);
-                        setProjectTasks(filteredTasks);
+                    // 1. On cherche où est le vrai tableau (Array) des projets pour éviter le crash
+                    let allProjects = [];
+                    if (Array.isArray(projectJson.data)) {
+                        allProjects = projectJson.data; // Le tableau est directement dans data
+                    } else if (projectJson.data && Array.isArray(projectJson.data.projects)) {
+                        allProjects = projectJson.data.projects; // Le tableau est caché dans data.projects
+                    } else if (Array.isArray(projectJson)) {
+                        allProjects = projectJson; // Le tableau est à la racine
+                    }
+
+                    // 2. On cherche le projet qui correspond à l'ID de la page
+                    const currentProject = allProjects.find((p: any) => p.id === projectId);
+
+                    // 3. On le sauvegarde
+                    if (currentProject) {
+                        setProject(currentProject);
+                    } else {
+                        console.error("⚠️ Projet introuvable parmi la liste ! ID cherché :", projectId);
                     }
                 }
+            
             } catch (error) {
-                console.error("Erreur lors de la récupération des tâches du projet :", error);
+                console.error("ERREUR FATALE LORS DE LA REQUÊTE :", error);
             }
-        };
+        }; 
 
-        fetchProjectTasks();
-    }, [projectId]); // Le useEffect se relance si l'ID du projet change
+        fetchAllData(); // On lance la fonction
+    }, [projectId]); 
 
-    // Fonction outil pour traduire les statuts (Inchangée)
+    // Fonction pour traduire les statuts (Inchangée)
     const formatStatus = (status: string) => {
         if (status === 'TODO') return 'À faire';
         if (status === 'IN_PROGRESS') return 'En cours';
@@ -59,8 +85,7 @@ export default function ProjectDetailsPage() {
     };
 
     return (
-        // CONTENEUR GLOBAL AVEC LES DEUX COULEURS DE FOND
-        // Le min-h-screen permet à la page de prendre toute la hauteur de l'écran
+        // CONTENEUR GLOBAL 
         <div className="min-h-screen bg-[#F9FAFB] font-sans">
             {/* ================= EN-TÊTE DU PROJET ================= */}
             <div className="w-[1320px] mx-auto pt-[78px] flex flex-col mb-[14px] ml-[44px]">
@@ -109,27 +134,53 @@ export default function ProjectDetailsPage() {
                 {/* BARRE DES CONTRIBUTEURS */}
                 <div className="w-[1255px] h-[67px] bg-[#F3F4F6] rounded-[10px] flex items-center ml-[60px] pl-[50px]">
                     <span className="text-[18px] text-[#1F1F1F] font-[600] mr-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>Contributeurs</span>
-                    <span className="text-[16px] text-[#6B7280] pr-[450px]" style={{ fontFamily: "'Inter', sans-serif" }}>3 personnes</span>
+                    {/* Le nombre de personnes se met à jour dynamiquement */}
+                    <span className="text-[16px] text-[#6B7280] pr-[450px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        {contributors ? contributors.length : 0} personnes
+                    </span>
 
                     <div className="flex items-center gap-[8px]">
-                        {/* 1. Propriétaire (AD) */}
-                        <div className="flex items-center gap-[5px]">
-                            <div className="w-[27px] h-[27px] rounded-full bg-[#FFE8D9] flex items-center justify-center text-[#D3590B] text-[10px] font-semibold font-sans z-10">AD</div>
-                            <div className="h-[25px] w-[109px] bg-[#FFE8D9] rounded-[50px] px-[16px] flex items-center justify-center text-[#D3590B] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Propriétaire</div>
-                        </div>
-                        {/* 2. Contributeur (BD) */}
-                        <div className="flex items-center gap-[5px]">
-                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">BD</div>
-                            <div className="h-[25px] w-[143px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Bertrand Dupont</div>
-                        </div>
-                        {/* 3. Contributeur (AD) */}
-                        <div className="flex items-center gap-[5px]">
-                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">AD</div>
-                            <div className="h-[25px] w-[119px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Anne Dupont</div>
-                        </div>
+                        {/* On boucle sur le tableau des contributeurs */}
+                        {contributors && contributors.length > 0 ? (
+                            contributors.map((contributor: any, index: number) => {
+                                // Récupération du nom complet
+                                const fullName = contributor.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || 'Inconnu';
+                                // Récupération du prénom seul (pour le propriétaire)
+                                const firstName = contributor.firstName || fullName.split(' ')[0] || 'Inconnu';
+                                // Génération des initiales 
+                                const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+
+                                // SI C'EST LE PREMIER (index === 0) -> C'est le propriétaire
+                                if (index === 0) {
+                                    return (
+                                        <div key={index} className="flex items-center gap-[5px]">
+                                            <div className="w-[27px] h-[27px] rounded-full bg-[#FFE8D9] flex items-center justify-center text-[#D3590B] text-[10px] font-semibold font-sans z-10">
+                                                {initials}
+                                            </div>
+                                            <div className="h-[25px] px-[16px] bg-[#FFE8D9] rounded-[50px] flex items-center justify-center text-[#D3590B] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                {firstName}
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
+                                // SINON (index > 0) -> Ce sont les autres contributeurs
+                                return (
+                                    <div key={index} className="flex items-center gap-[5px]">
+                                        <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
+                                            {initials}
+                                        </div>
+                                        <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                            {fullName}
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <span className="text-[14px] text-[#6B7280] font-regular">Aucun contributeur</span>
+                        )}
                     </div>
                 </div>
-
             </div >
 
 
@@ -200,7 +251,7 @@ export default function ProjectDetailsPage() {
 
                     </div>
 
-                    {/* 2. LA LISTE DES TÂCHES (Le gros bloc principal) */}
+                    {/* 2. LA LISTE DES TÂCHES (gros bloc principal) */}
                     <div className="w-full h-auto bg-white flex flex-col gap-[17px] pl-[59px]">
 
                         {projectTasks.map((task) => {
@@ -243,31 +294,29 @@ export default function ProjectDetailsPage() {
                                             {/* Ligne 4 : Assigné à */}
                                             <div className="flex items-center gap-[8px] text-[12px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span>Assigné à :</span>
-
-                                                {/* On boucle sur les vrais assignés renvoyés par le backend */}
-                                                {task.assignees && task.assignees.length > 0 ? (
-                                                    task.assignees.map((assignee: any, index: number) => {
-                                                        // On récupère le nom complet, que le backend utilise "firstName" + "lastName"
-                                                        const fullName = `${assignee.firstName || ''} ${assignee.lastName || ''}`.trim() || 'Inconnu';
-                                                        // On génère les initiales
-                                                        const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
-
-                                                        return (
-                                                            <div key={index} className="flex items-center gap-[5px]">
-                                                                <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
-                                                                    {initials}
-                                                                </div>
-                                                                <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                                    {fullName}
-                                                                </div>
+                                                
+                                                {/* On boucle sur les assignés de la tâche */}
+                                                {task.assignees && task.assignees.map((assigneeObj: any, index: number) => {
+                                                    
+                                                    // On cherche par "id" (pour Alice, proprio) OU par "userId" (pour autres membres)
+                                                    const userProfile = contributors.find((c: any) => c.id === assigneeObj.userId || c.userId === assigneeObj.userId) || assigneeObj.user || assigneeObj;
+                                                    
+                                                    //extraction le nom 
+                                                    const fullName = userProfile.name || `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim();
+                                                    const initials = fullName ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : '';
+                                                    
+                                                    return (
+                                                        <div key={index} className="flex items-center gap-[5px]">
+                                                            <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
+                                                                {initials}
                                                             </div>
-                                                        );
-                                                    })
-                                                ) : (
-                                                    <span>Aucun assigné</span>
-                                                )}
+                                                            <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                                {fullName}
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
-
 
                                         </div>
 
@@ -278,7 +327,7 @@ export default function ProjectDetailsPage() {
 
                                     </div>
 
-                                    {/* SÉPARATEUR DE CARTE (line2.svg) */}
+                                    {/* SÉPARATEUR (ligne)  */}
                                     <div className="pl-[18px] mt-[5px]">
                                         <Image src="/line2.svg" alt="Séparateur" width={1000} height={2} />
                                     </div>
@@ -286,7 +335,7 @@ export default function ProjectDetailsPage() {
                                     {/* BAS DE LA CARTE (Commentaires) */}
                                     <div className="pl-[30px] mt-[10px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
                                         <span className="text-[14px] text-[#1F1F1F] font-regular">
-                                            {/* On affiche la longueur du tableau, ou 0 s'il n'y a pas de commentaires */}
+                                            {/* On affiche la nbr commentaires, ou 0 s'il n'y a pas de commentaires */}
                                             Commentaires ({task.comments ? task.comments.length : 0})
                                         </span>
                                         <button className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition">
