@@ -237,23 +237,33 @@ export default function ProjectDetailsPage() {
                                             <div className="flex items-center gap-[8px] mb-[24px] text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span className="font-regular text-[#6B7280] gap-[4px]">Échéance :</span>
                                                 <Image src="/union.svg" alt="Agenda" width={15} height={16.54} />
-                                                <span className="font-regular text-[#1F1F1F] text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate}</span>
+                                                <span className="font-regular text-[#1F1F1F] text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
                                             {/* Ligne 4 : Assigné à */}
                                             <div className="flex items-center gap-[8px] text-[12px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span>Assigné à :</span>
-                                                {/* 2. Contributeur (BD) */}
-                                                <div className="flex items-center gap-[5px]">
-                                                    <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">BD</div>
-                                                    <div className="h-[25px] w-[143px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Bertrand Dupont</div>
-                                                </div>
-                                                {/* 3. Contributeur (AD) */}
-                                                <div className="flex items-center gap-[5px]">
-                                                    <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">AD</div>
-                                                    <div className="h-[25px] w-[119px] bg-[#E5E7EB] rounded-[50px] px-[16px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>Anne Dupont</div>
-                                                </div>
-
+                                                
+                                                {/* On boucle sur les vrais assignés renvoyés par le backend */}
+                                                {task.assignees && task.assignees.length > 0 ? (
+                                                    task.assignees.map((assignee: any, index: number) => {
+                                                        // Petite astuce pour générer les initiales (ex: "Alice Martin" -> "AM")
+                                                        const initials = assignee.name ? assignee.name.split(' ').map((n: string) => n[0]).join('').toUpperCase() : 'U';
+                                                        
+                                                        return (
+                                                            <div key={index} className="flex items-center gap-[5px]">
+                                                                <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
+                                                                    {initials}
+                                                                </div>
+                                                                <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                                    {assignee.name}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })
+                                                ) : (
+                                                    <span>Aucun assigné</span>
+                                                )}
                                             </div>
 
                                         </div>
