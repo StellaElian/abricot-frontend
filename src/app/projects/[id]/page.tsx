@@ -16,11 +16,12 @@ export default function ProjectDetailsPage() {
     const [projectTasks, setProjectTasks] = useState<any[]>([]);
     const [project, setProject] = useState<any>(null); //pour le projet
 
-    // 3. APPEL À L'API
+    // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
     const contributors = project ? [
-        project.owner,
-        ...(project.members?.map((m: any) => m.user || m) || [])
-    ].filter(Boolean) : []; // filter(Boolean) empêche les crashs si une donnée est vide
+        project.owner, 
+        // On mappe les membres, MAIS on filtre pour exclure celui qui a le même ID que le propriétaire
+        ...(project.members?.map((m: any) => m.user || m).filter((u: any) => u.id !== project.owner.id) || []) 
+    ].filter(Boolean) : [];
 
     // 4. APPEL AUX APIS
     useEffect(() => {
@@ -158,7 +159,7 @@ export default function ProjectDetailsPage() {
                                                 {initials}
                                             </div>
                                             <div className="h-[25px] px-[16px] bg-[#FFE8D9] rounded-[50px] flex items-center justify-center text-[#D3590B] text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                {firstName}
+                                                {fullName}
                                             </div>
                                         </div>
                                     );
