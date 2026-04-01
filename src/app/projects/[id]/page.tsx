@@ -137,7 +137,7 @@ export default function ProjectDetailsPage() {
                 <div className="w-[1255px] h-[67px] bg-[#F3F4F6] rounded-[10px] flex items-center ml-[60px] pl-[50px]">
                     <span className="text-[18px] text-[#1F1F1F] font-[600] mr-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>Contributeurs</span>
                     {/* Le nombre de personnes se met à jour dynamiquement */}
-                    <span className="text-[16px] text-[#6B7280] pr-[410px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <span className="text-[16px] text-[#6B7280] pr-[300px]" style={{ fontFamily: "'Inter', sans-serif" }}>
                         {contributors ? contributors.length : 0} personnes
                     </span>
 
