@@ -116,24 +116,54 @@ export default function ProjectsPage() {
       <div className="w-full max-w-[1166px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
 
         {/* BOUCLE : Pour chaque projet dans la mémoire, on dessine ça : */}
-        {projects.map((rawProject) => {
-          //sécurisation données
+        {projects.map((rawProject: any) => {
+
+          // --- 1. TRADUCTION DE L'ÉQUIPE (Backend -> Frontend) ---
+          // Le backend envoie "owner" et "members", on les transforme en tableau "team"
+          const ownerData = rawProject.owner;
+          let ownerInitials = 'U';
+          if (ownerData) {
+            const fullName = ownerData.name || `${ownerData.firstName || ''} ${ownerData.lastName || ''}`.trim() || 'Inconnu';
+            ownerInitials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+          }
+          const teamOwner = ownerData ? { id: ownerData.id, initials: ownerInitials, isOwner: true } : null;
+
+          const membersData = rawProject.members || [];
+          const teamMembers = membersData.map((m: any) => {
+            const user = m.user || m;
+            const fullName = user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Inconnu';
+            const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+            return { id: user.id || m.id, initials: initials, isOwner: false };
+          });
+
+          // On assemble le tout, en filtrant les potentiels doublons (comme pour l'Alice de tout à l'heure !)
+          const fullTeam = teamOwner ? [
+            teamOwner,
+            ...teamMembers.filter((m: any) => m.id !== teamOwner.id)
+          ] : teamMembers;
+
+          // --- 2. CALCUL DES TÂCHES (Si le backend envoie un tableau de tâches) ---
+          const projectTasks = rawProject.tasks || [];
+          const completedCount = projectTasks.filter((t: any) => t.status === 'DONE' || t.status === 'Terminée').length;
+
+          // --- 3. SÉCURISATION DES DONNÉES ---
           const project = {
             ...rawProject,
-            team: rawProject.team || [],
-            completedTasks: rawProject.completedTasks || 0,
-            totalTasks: rawProject.totalTasks || 0,
+            team: fullTeam,
+            completedTasks: completedCount || rawProject.completedTasks || 0,
+            totalTasks: projectTasks.length || rawProject.totalTasks || 0,
           }
 
           // --- CALCULS DYNAMIQUES POUR CETTE CARTE ---
+
           // 1. Calcul du pourcentage pour la barre noire
           const progressPercent = project.totalTasks > 0
             ? Math.round((project.completedTasks / project.totalTasks) * 100)
             : 0;
 
           // 2. Séparation de l'équipe (Propriétaire d'un côté, les autres de l'autre)
-          const owner = project.team.find(member => member.isOwner);
-          const others = project.team.filter(member => !member.isOwner);
+          const owner = project.team.find((member: TeamMember) => member.isOwner);
+          const others = project.team.filter((member: TeamMember) => !member.isOwner);
 
           return (
             <Link href={`/projects/${project.id}`} key={project.id} className="block group">
@@ -228,9 +258,10 @@ export default function ProjectsPage() {
                     {/* LES PASTILLES DES AUTRES MEMBRES (Grises) */}
                     {/* La classe '-space-x-1' fait que les cercles se chevauchent vers la gauche */}
                     <div className="flex items-center -space-x-1 ml-[4px]">
-                      {others.map((member) => (
+                      {others.map((member: TeamMember) => (
                         <div
                           key={member.id}
+
                           className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-white flex items-center justify-center"
                         >
                           <span
