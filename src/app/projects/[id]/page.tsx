@@ -135,11 +135,11 @@ export default function ProjectDetailsPage() {
 
             {/* ================= CORPS DU PROJET (Fond gris clair F9FAFB) ================= */}
             < div className="w-[1255px] pt-[34px] pt-[41px] ml-[112px] " >
-                <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB]">
+                <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB] pb-[40px]">
 
 
                     {/* 1. EN-TÊTE DES TÂCHES ET FILTRES */}
-                    <div className="flex justify-between items-center w-full mb-[41px] pl-[59px] pt-[40px] ">
+                    <div className="flex justify-between items-center w-full mb-[41px] pl-[59px] pt-[40px]">
 
                         {/* Côté Gauche : Titre et Sous-titre */}
                         <div className="flex flex-col">
