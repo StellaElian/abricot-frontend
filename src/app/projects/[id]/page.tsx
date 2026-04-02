@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'; // Ajout de useEffect
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'; // Ajout pour récupérer l'ID
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
+import EditProjectModal from '@/src/components/EditProjectModal';
 
 export default function ProjectDetailsPage() {
 
@@ -15,12 +16,14 @@ export default function ProjectDetailsPage() {
     // 2. STATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
     const [projectTasks, setProjectTasks] = useState<any[]>([]);
     const [project, setProject] = useState<any>(null); //pour le projet
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
     const contributors = project ? [
-        project.owner, 
+        project.owner,
         // On mappe les membres, MAIS on filtre pour exclure celui qui a le même ID que le propriétaire
-        ...(project.members?.map((m: any) => m.user || m).filter((u: any) => u.id !== project.owner.id) || []) 
+        ...(project.members?.map((m: any) => m.user || m).filter((u: any) => u.id !== project.owner.id) || [])
     ].filter(Boolean) : [];
 
     // 4. APPEL AUX APIS
@@ -35,15 +38,15 @@ export default function ProjectDetailsPage() {
                 const tasksResponse = await fetch(`http://localhost:8000/projects/${projectId}/tasks`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 if (tasksResponse.ok) {
                     const tasksJson = await tasksResponse.json();
-                    
+
                     // le tableau est dans data.tasks 
                     if (tasksJson.data && Array.isArray(tasksJson.data.tasks)) {
                         setProjectTasks(tasksJson.data.tasks);
                     } else if (Array.isArray(tasksJson.data)) {
-                        setProjectTasks(tasksJson.data); 
+                        setProjectTasks(tasksJson.data);
                     } else {
                         setProjectTasks([]); // Sécurité anti-crash
                     }
@@ -78,14 +81,14 @@ export default function ProjectDetailsPage() {
                         console.error("⚠️ Projet introuvable parmi la liste ! ID cherché :", projectId);
                     }
                 }
-            
+
             } catch (error) {
                 console.error("ERREUR FATALE LORS DE LA REQUÊTE :", error);
             }
-        }; 
+        };
 
         fetchAllData(); // On lance la fonction
-    }, [projectId]); 
+    }, [projectId]);
 
     // Fonction pour traduire les statuts (Inchangée)
     const formatStatus = (status: string) => {
@@ -119,7 +122,11 @@ export default function ProjectDetailsPage() {
                                     {/* Dynamisation du Titre */}
                                     {project ? project.title || project.name : "Chargement..."}
                                 </h1>
-                                <button className="text-[#D3590B] text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                <button
+                                    onClick={() => setIsEditModalOpen(true)}
+                                    className="text-[#D3590B] text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition"
+                                    style={{ fontFamily: "'Inter', sans-serif" }}
+                                >
                                     Modifier
                                 </button>
                             </div>
@@ -136,7 +143,7 @@ export default function ProjectDetailsPage() {
                             </div>
                         </div>
 
-                         {/* Dynamisation de la Description */}
+                        {/* Dynamisation de la Description */}
                         <p className="text-[18px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                             {project ? project.description : "Aucune description pour ce projet."}
                         </p>
@@ -303,22 +310,22 @@ export default function ProjectDetailsPage() {
                                                 <span className="font-regular text-[#1F1F1F] text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
-                                           {/* Ligne 4 : Assigné à */}
+                                            {/* Ligne 4 : Assigné à */}
                                             <div className="flex items-center gap-[8px] text-[12px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span>Assigné à :</span>
-                                                
+
                                                 {/* On boucle sur les assignés de la tâche */}
                                                 {task.assignees && task.assignees.map((assigneeObj: any, index: number) => {
-                                                    
+
                                                     // CORRECTION : On utilise directement l'utilisateur fourni par le backend 
                                                     // Sinon, on cherche par l'ID sans créer autreacgose
                                                     const targetId = assigneeObj.userId || assigneeObj.id;
                                                     const userProfile = assigneeObj.user || contributors.find((c: any) => c.id === targetId) || assigneeObj;
-                                                    
+
                                                     // On extrait le nom
                                                     const fullName = userProfile.name || `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim() || 'Inconnu';
                                                     const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
-                                                    
+
                                                     return (
                                                         <div key={index} className="flex items-center gap-[5px]">
                                                             <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
@@ -367,7 +374,10 @@ export default function ProjectDetailsPage() {
 
                 </div>
             </div >
-
-        </div >
+            <EditProjectModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+            />
+        </div>
     );
 }
