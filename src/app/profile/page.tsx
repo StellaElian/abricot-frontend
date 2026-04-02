@@ -1,155 +1,131 @@
-'use client'; //dit à Next.js que c'est une page interactive
+'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Le GPS de Next.js
-import Link from 'next/link';
-import Cookies from 'js-cookie'; // Notre portefeuille pour le Badge VIP
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
-export default function LoginPage() {
-    // Ces "states" vont mémoriser ce que l'utilisateur tape dans les cases
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const router = useRouter(); // On initialise le GPS
+export default function ProfilePage() {
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-    // Cette fonction s'activera quand on cliquera sur "Se connecter"
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(''); // On efface les anciennes erreurs à chaque nouvel essai
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const token = Cookies.get('token');
+                if (!token) return;
 
-        try {
-            // On envoie la demande au Backend
-            const response = await fetch('http://localhost:8000/auth/login', {
-                method: 'POST', // On POSTE des informations
-                headers: {
-                    'Content-Type': 'application/json', // on parle en format JSON
-                },
-                // On transforme l'email et le mot de passe en texte brut 
-                body: JSON.stringify({ email, password }),
-            });
+                // SOLUTION : La même route qui marche !
+                const res = await fetch('http://localhost:8000/projects', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
 
-            const data = await response.json(); // On lit la réponse de la cuisine
+                if (res.ok) {
+                    const jsonResponse = await res.json();
+                    let allProjects = [];
+                    if (Array.isArray(jsonResponse.data)) allProjects = jsonResponse.data;
+                    else if (jsonResponse.data && Array.isArray(jsonResponse.data.projects)) allProjects = jsonResponse.data.projects;
+                    else if (Array.isArray(jsonResponse)) allProjects = jsonResponse;
 
-            if (response.ok) {
-                // Si la connexion réussit, on range le Badge VIP (token) dans les cookies
-                // ATTENTION : on utilise data.data.token car le backend range les infos dans une boîte "data"
-                Cookies.set('token', data.data.token, { expires: 1 }); // expire dans 1 jour
-
-                // Le GPS nous emmène vers le Dashboard
-                router.push('/dashboard');
-
-            } else {
-                // Si le backend dit non, on affiche son message d'erreur
-                setError(data.message || 'Email ou mot de passe incorrect');
+                    // On récupère le propriétaire (toi)
+                    if (allProjects.length > 0 && allProjects[0].owner) {
+                        setUser(allProjects[0].owner);
+                    }
+                }
+            } catch (err) {
+                console.error("Erreur API", err);
+            } finally {
+                setLoading(false);
             }
-        } catch (err) {
-            setError('Impossible de joindre le serveur. Le backend est allumé ?');
-        }
-    };
+        };
+
+        fetchUserProfile();
+    }, []);
+
+    // ==========================================
+    // TA LOGIQUE EXACTE :
+    // ==========================================
+    const fullName = user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'Amélie Dupont';
+    const firstName = user?.firstName || fullName.split(' ')[0] || 'Amélie';
+    const lastName = user?.lastName || fullName.split(' ').slice(1).join(' ') || 'Dupont';
+    const email = user?.email || 'a.dupont@mail.com';
+    const fakePassword = '●●●●●●●●●●●●';
+
+    if (loading) return <div className="p-10 text-center font-sans">Chargement de votre profil...</div>;
 
     return (
-        // 👇 LA GRANDE STRUCTURE EN DEUX COLONNES (Flex)
-        <div className="flex min-h-screen bg-white">
-
-            {/* 🖥️ COLONNE DE GAUCHE (Illustration) - Cachée sur mobile, visible sur PC (md:) */}
-            <div className="hidden md:flex md:w-1/2 bg-orange-500 p-12 flex-col justify-center items-center text-white">
-                {/* Le grand texte de la maquette */}
-                <h2 className="text-5xl font-extrabold mb-12 leading-tight max-w-lg text-center">
-                    Collaborez simplement sur vos projets.
-                </h2>
-                {/* 🎨 Placeholder pour l'illustration de la maquette. 
-                    Dans un vrai projet, on mettrait une balise <Image /> ici. */}
-                <div className="w-full max-w-lg h-96 bg-orange-600 rounded-2xl flex items-center justify-center border-4 border-orange-400 border-dashed">
-                    <span className="text-orange-200 text-sm">[ Illustration Maquette ]</span>
-                </div>
+        <div className="bg-[#E5E7EB] min-h-screen pt-[57px] pb-[181px] pl-[100px] pr-[125px] font-sans">
+            
+            {/* TITRES AU DESSUS DU BLOC */}
+            <div className="mb-[40px]">
+                <h1 className="text-[24px] font-semibold text-[#1F1F1F] leading-none mb-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    Mon compte
+                </h1>
+                <p className="text-[16px] text-[#6B7280] leading-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    {fullName}
+                </p>
             </div>
 
-            {/* 📝 COLONNE DE DROITE (Le Formulaire) */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 lg:p-16">
+            {/* LE GROS BLOC BLANC */}
+            <div className="w-[1215px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] px-[59px] pt-[41px] pb-[40px] flex flex-col">
 
-                {/* Le Logo en haut à droite */}
-                <div className="absolute top-8 right-8 font-bold text-2xl text-orange-500">
-                    🍑 Abricot
+                {/* FORMULAIRE (Inputs empilés) */}
+                <div className="flex flex-col">
+                    
+                    {/* BLOC NOM */}
+                    <div className="mb-[24px]">
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                            Nom
+                        </label>
+                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] py-[19px] flex items-center bg-[#FFFFFF]">
+                            <span className="text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                                {lastName}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* BLOC PRÉNOM */}
+                    <div className="mb-[24px]">
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                            Prénom
+                        </label>
+                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] py-[19px] flex items-center bg-[#FFFFFF]">
+                            <span className="text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                                {firstName}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* BLOC EMAIL */}
+                    <div className="mb-[24px]">
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                            Email
+                        </label>
+                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] py-[19px] flex items-center bg-[#FFFFFF]">
+                            <span className="text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                                {email}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* BLOC MOT DE PASSE */}
+                    <div className="mb-[41px]">
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                            Mot de passe
+                        </label>
+                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] py-[19px] flex items-center bg-[#FFFFFF]">
+                            <span className="text-[14px] text-[#1F1F1F] font-regular tracking-[4px]">
+                                {fakePassword}
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
 
-                {/* La boîte qui contient le formulaire, alignée à gauche */}
-                <div className="w-full max-w-md">
-
-                    {/* Le Titre exact de la maquette */}
-                    <h1 className="text-4xl font-bold text-slate-900 mb-8">Connexion Abricot</h1>
-
-                    {/* Si on a une erreur, on l'affiche dans une boîte rouge */}
-                    {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 text-sm">
-                            {error}
-                        </div>
-                    )}
-
-                    <form onSubmit={handleLogin} className="flex flex-col gap-5">
-                        {/* CASE EMAIL */}
-                        <div>
-                            <label className="block text-sm font-medium text-slate-600 mb-1.5">E-mail</label>
-                            <input
-                                type="email"
-                                // Placeholder exact de la maquette
-                                placeholder="name@company.com"
-                                className="w-full border border-slate-300 rounded-lg p-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        {/* CASE MOT DE PASSE */}
-                        <div>
-                            <label className="block text-sm font-medium text-slate-600 mb-1.5">Mot de passe</label>
-                            <input
-                                type="password"
-                                // Placeholder exact de la maquette
-                                placeholder="••••••••••••"
-                                className="w-full border border-slate-300 rounded-lg p-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        {/* 🔗 Ligne intermédiaire (Se souvenir de moi + Mot de passe oublié) */}
-                        <div className="flex items-center justify-between text-sm">
-                            <label className="flex items-center gap-2 text-slate-700 cursor-pointer">
-                                <input type="checkbox" className="accent-orange-500 h-4 w-4 rounded border-slate-300" />
-                                Se souvenir de moi
-                            </label>
-                            {/* Le lien vers "Mot de passe oublié" n'est pas géré par le backend, 
-                                donc il est juste visuel pour le moment. */}
-                            <a href="#" className="text-orange-500 hover:text-orange-600 font-medium">
-                                Mot de passe oublié ?
-                            </a>
-                        </div>
-
-                        {/* LE BOUTON ORANGE */}
-                        <button
-                            type="submit"
-                            className="w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition shadow-sm mt-3"
-                        >
-                            Se connecter
-                        </button>
-
-                    </form>
-                    {/* Fin de ton formulaire de connexion */}
-
-                </div> {/* Fin de la div w-full max-w-md */}
-
-                {/* 👇 LE FAMEUX BLOC AU PIXEL PRÈS */}
-                {/* mt-[202px] = 202 pixels d'écart avec le formulaire au-dessus */}
-                {/* mb-[92px]  = 92 pixels d'écart avec le bas de la page */}
-                {/* gap-[10px] = 10 pixels exactement entre les deux phrases */}
-                <div className="mt-[202px] mb-[92px] flex items-center justify-center gap-[10px] text-sm text-slate-600">
-                    <span>Pas encore de compte ?</span>
-                    <Link href="/register" className="text-orange-500 hover:text-orange-600 font-bold underline">
-                        Créer un compte
-                    </Link>
-                </div>
+                {/* LE BOUTON */}
+                <button className="w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition">
+                    <span className="text-[16px] text-[#FFFFFF] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                        Modifier les informations
+                    </span>
+                </button>
 
             </div>
         </div>
