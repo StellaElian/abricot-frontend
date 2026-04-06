@@ -377,6 +377,7 @@ export default function ProjectDetailsPage() {
             <EditProjectModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
+                project={project} // vraies données à la modale
             />
         </div>
     );

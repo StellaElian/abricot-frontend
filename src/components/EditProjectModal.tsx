@@ -1,24 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface EditProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
+    project: any; // modale reçoit les données des projets
 }
 
-export default function EditProjectModal({ isOpen, onClose }: EditProjectModalProps) {
-    // Les états 
-    const [title, setTitle] = useState('Input');
-    const [description, setDescription] = useState('Input');
-    const [contributors, setContributors] = useState('2 collaborateurs');
+export default function EditProjectModal({ isOpen, onClose, project }: EditProjectModalProps) {
+    // Les états commencent vide
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [contributorsText, setContributorsText] = useState('');
+
+    //dynamisation :
+    useEffect(() => {
+        if (project) {
+            setTitle(project.title || project.name || ''); //--------------------------------- 
+            setDescription(project.description || '');
+            //calcul nbr contributeurs 
+            const contributorsList = [
+                project.owner,
+                ...(project.members?.map((m: any) => m.user || m).filter((u: any) => u?.id !== project.owner?.id) || [])
+            ].filter(Boolean);
+
+            const count = contributorsList.length;
+            setContributorsText(`${count} collaborateur${count > 1 ? 's' : ''}`);
+        }
+    }, [project]);
 
     if (!isOpen) return null;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Projet modifié :", { title, description, contributors });
+        console.log("Projet modifié :", { title, description });
         onClose();
     };
 
@@ -90,8 +107,8 @@ export default function EditProjectModal({ isOpen, onClose }: EditProjectModalPr
                         <div className="relative w-[452px]">
                             <input
                                 type="text"
-                                value={contributors}
-                                onChange={(e) => setContributors(e.target.value)}
+                                value={contributorsText}
+                                onChange={(e) => setContributorsText(e.target.value)}
                                 className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
                             />
                             {/* LA FLÈCHE (vers le bas)) */}
