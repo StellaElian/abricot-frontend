@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation'; // Ajout pour récupérer l'ID
 import Cookies from 'js-cookie';
 import EditProjectModal from '@/src/components/EditProjectModal';
+import EditTaskModal from '@/src/components/EditTaskModal';
 
 export default function ProjectDetailsPage() {
 
@@ -17,6 +18,7 @@ export default function ProjectDetailsPage() {
     const [projectTasks, setProjectTasks] = useState<any[]>([]);
     const [project, setProject] = useState<any>(null); //pour le projet
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingTask, setEditingTask] = useState<any>(null); // pour retenir la tâche qu'on souhaite modifier
 
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
@@ -317,7 +319,7 @@ export default function ProjectDetailsPage() {
                                                 {/* On boucle sur les assignés de la tâche */}
                                                 {task.assignees && task.assignees.map((assigneeObj: any, index: number) => {
 
-                                                    // CORRECTION : On utilise directement l'utilisateur fourni par le backend 
+                                                    // On utilise directement l'utilisateur fourni par le backend 
                                                     // Sinon, on cherche par l'ID sans créer autreacgose
                                                     const targetId = assigneeObj.userId || assigneeObj.id;
                                                     const userProfile = assigneeObj.user || contributors.find((c: any) => c.id === targetId) || assigneeObj;
@@ -343,7 +345,10 @@ export default function ProjectDetailsPage() {
                                         </div>
 
                                         {/* Bouton "..." */}
-                                        <button className="w-[57px] h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition mt-[8px] mr-[11px]">
+                                        <button
+                                            onClick={() => setEditingTask(task)} // "On ouvre la modale avec CETTE tâche"
+                                            className="w-[57px] h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition mt-[8px] mr-[11px]"
+                                        >
                                             <Image src="/plus.svg" alt="Options" width={15} height={4} />
                                         </button>
 
@@ -378,6 +383,12 @@ export default function ProjectDetailsPage() {
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
                 project={project} // vraies données à la modale
+            />
+            {/* MODALE POUR MODIFIER UNE TÂCHE */}
+            <EditTaskModal
+                isOpen={!!editingTask} // S'ouvre seulement si une tâche a été sélectionnée (si editingTask n'est pas null)
+                onClose={() => setEditingTask(null)} // Quand on ferme, on vide la mémoire
+                task={editingTask} // On envoie toutes les infos de la tâche à la modale 
             />
         </div>
     );
