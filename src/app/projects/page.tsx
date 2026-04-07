@@ -32,49 +32,78 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true); // pour savoir si on est en train de charger
   const [error, setError] = useState(''); // Mémoire pour stocker les erreurs éventuelles
   const [isModalOpen, setIsModalOpen] = useState(false); //mémoire pour savoir si la fenêtre est ouverte
+  const [currentUser, setCurrentUser] = useState<any>(null); //Stocker personne connectée
 
   // 3. LOGIQUE MÉTIER (Récupération des données au démarrage)
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setError('');  // on éfface le méssage rouge à chaque nouveau chargement
-        const token = Cookies.get('token'); // On récupère le badge VIP
+    const fetchAllData = async () => {
+      // 1. On récupère le token une seule fois
+      const token = Cookies.get('token'); 
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
-        // Appel au Backend pour avoir les projets
+      // 2. RÉCUPÉRATION DU PROFIL UTILISATEUR
+      try {
+        const userRes = await fetch('http://localhost:8000/auth/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (userRes.ok) {
+          const userJson = await userRes.json();
+          const userData = userJson.data?.user || userJson.data || userJson.user || userJson;
+          setCurrentUser(userData);
+        }
+      } catch (err) {
+        console.error("Erreur récupération utilisateur", err);
+      }
+
+      // 3. RÉCUPÉRATION DES PROJETS
+      try {
+        setError(''); 
         const response = await fetch('http://localhost:8000/projects', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.ok) {
           const data = await response.json();
-
-          // 🕵️ On affiche dans la console ce que le backend t'envoie
-          console.log("Données reçues du backend :", data);
-
-          // 🛡️ RECHERCHE AUTOMATIQUE DU TABLEAU
           let listeProjets = [];
           if (Array.isArray(data)) listeProjets = data;
           else if (data.data && Array.isArray(data.data)) listeProjets = data.data;
           else if (data.data && Array.isArray(data.data.projects)) listeProjets = data.data.projects;
           else if (data.projects && Array.isArray(data.projects)) listeProjets = data.projects;
 
-          console.log("Les projets extraits :", listeProjets);
           setProjects(listeProjets);
-
         } else {
-
           setError('Erreur lors du chargement des projets');
         }
       } catch (err) {
         setError('Impossible de joindre le serveur.');
       } finally {
-        setLoading(false); // Le chargement est fini, qu'il y ait une erreur ou non
+        setLoading(false); 
       }
     };
 
-    fetchProjects(); // On lance la fonction
-  }, []);
+    fetchAllData(); // On lance la grande fonction
+  }, []); // Le tableau vide 
+
+
+  // ---GRAND FILTRE DES PROJETS ---
+  const visibleProjects = projects.filter((project: any) => {
+    if (!currentUser) return false; 
+
+    // 1. Est-il le propriétaire ?
+    const isOwner = project.owner?.id === currentUser.id;
+    
+    // 2. Est-il dans les membres ?
+    const isMember = project.members?.some((m: any) => {
+        const memberId = m.user?.id || m.id;
+        return memberId === currentUser.id;
+    });
+
+    return isOwner || isMember;
+  });
 
   // 4. L'INTERFACE VISUELLE 
 
@@ -116,7 +145,7 @@ export default function ProjectsPage() {
       <div className="w-full max-w-[1166px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
 
         {/* BOUCLE : Pour chaque projet dans la mémoire, on dessine ça : */}
-        {projects.map((rawProject: any) => {
+        {visibleProjects.map((rawProject: any) => {
 
           // --- 1. TRADUCTION DE L'ÉQUIPE (Backend -> Frontend) ---
           // Le backend envoie "owner" et "members", on les transforme en tableau "team"
