@@ -21,6 +21,7 @@ export default function ProjectDetailsPage() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingTask, setEditingTask] = useState<any>(null); // pour retenir la tâche qu'on souhaite modifier
     const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+    const [currentUser, setCurrentUser] = useState<any>(null); //Stocker la personne connectée
 
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
@@ -34,8 +35,22 @@ export default function ProjectDetailsPage() {
     useEffect(() => {
         const fetchAllData = async () => {
             const token = Cookies.get('token');
+            //Récupération profil user
+            try {
+                const userRes = await fetch('http://localhost:8000/auth/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (userRes.ok) {
+                    const userJson = await userRes.json();
+                    const userData = userJson.data?.user || userJson.data || userJson.user || userJson;
+                    setCurrentUser(userData);
+                }
+            }catch(error) {
+                console.error("Erreur de récupération statut utilisateur",error);
+            }
             if (!token || !projectId) return;
-
             try {
                 // --- A. RÉCUPÉRATION DE TOUTES LES TÂCHES DU PROJET ---
                 // On pointe les tâches du projet
@@ -57,7 +72,7 @@ export default function ProjectDetailsPage() {
                 }
 
 
-                /// --- B. RÉCUPÉRATION DU PROJET (Même logique que les tâches !) ---
+                /// --- B. RÉCUPÉRATION DU PROJET ---
                 const projectResponse = await fetch(`http://localhost:8000/projects`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -90,7 +105,6 @@ export default function ProjectDetailsPage() {
                 console.error("ERREUR FATALE LORS DE LA REQUÊTE :", error);
             }
         };
-
         fetchAllData(); // On lance la fonction
     }, [projectId]);
 
@@ -101,6 +115,37 @@ export default function ProjectDetailsPage() {
         if (status === 'DONE') return 'Terminée';
         return 'À faire';
     };
+
+    // --- VÉRIFICATIONS DES RÔLES (statut user) ---
+    // 1- propriétaire ?
+    const isOwner = currentUser && project && currentUser.id === project.owner?.id;
+    
+    // 2- un membre de l'équipe ?
+    const isMember = currentUser && project && project.members?.some((m: any) => {
+        const memberId = m.user?.id || m.id;
+        return memberId === currentUser.id;
+    });
+
+    // 3- A-t-il le droit d'être ici ?
+    const hasAccess = isOwner || isMember;
+
+    // Si le projet et l'utilisateur sont chargés, mais qu'il n'a pas accès -> ON LE BLOQUE !
+    if (project && currentUser && !hasAccess) {
+        return (
+            <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center font-sans">
+                <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[10px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    Accès refusé
+                </h1>
+                <p className="text-[16px] text-[#6B7280] mb-[20px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    Vous n'êtes ni administrateur ni contributeur de ce projet.
+                </p>
+                <Link href="/dashboard" className="w-[200px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] flex items-center justify-center hover:opacity-90 transition">
+                    Retour au tableau de bord
+                </Link>
+            </div>
+        );
+    }
+
 
     return (
         // CONTENEUR GLOBAL 
@@ -126,6 +171,9 @@ export default function ProjectDetailsPage() {
                                     {/* Dynamisation du Titre */}
                                     {project ? project.title || project.name : "Chargement..."}
                                 </h1>
+
+                                {/* On affiche le bouton Modifier UNIQUEMENT si c'est le propriétaire (Admin) */}
+                                {isOwner && (
                                 <button
                                     onClick={() => setIsEditModalOpen(true)}
                                     className="text-[#D3590B] text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition"
@@ -133,13 +181,15 @@ export default function ProjectDetailsPage() {
                                 >
                                     Modifier
                                 </button>
+                                )}
+
                             </div>
 
                             {/* Boutons (Créer une tâche + IA) */}
                             <div className="flex gap-[12px] h-[50px] shrink-0">
                                 <button
-                                onClick={() => setIsCreateTaskModalOpen(true)} 
-                                className="w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-regular flex items-center justify-center cursor-pointer hover:bg-black transition">
+                                    onClick={() => setIsCreateTaskModalOpen(true)}
+                                    className="w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-regular flex items-center justify-center cursor-pointer hover:bg-black transition">
                                     Créer une tâche
                                 </button>
                                 <button className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -395,8 +445,8 @@ export default function ProjectDetailsPage() {
                 task={editingTask} // On envoie toutes les infos de la tâche à la modale 
             />
             <CreateTaskModal
-            isOpen={isCreateTaskModalOpen}
-            onClose={() => setIsCreateTaskModalOpen(false)}
+                isOpen={isCreateTaskModalOpen}
+                onClose={() => setIsCreateTaskModalOpen(false)}
 
             />
         </div>
