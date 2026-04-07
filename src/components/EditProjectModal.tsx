@@ -124,14 +124,29 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                         </div>
                     </div>
 
-                    {/* BOUTON : Enregistrer */}
-                    <button
-                        type="submit"
-                        className="mt-auto w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
-                        style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                        Enregistrer
-                    </button>
+                    {/* BOUTONS : Enregistrer et Supprimer */}
+                    <div className="mt-auto flex items-center justify-between w-full">
+                        <button
+                            type="submit"
+                            className="mt-auto w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
+                            style={{ fontFamily: "'Inter', sans-serif" }}
+                        >
+                            Enregistrer
+                        </button>
+
+                        {/* BOUTON SUPPRIMER */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                console.log("Demande de suppression du projet :", project?.id);
+                                onClose();
+                            }}
+                            className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition"
+                            style={{ fontFamily: "'Inter', sans-serif" }}
+                        >
+                            Supprimer le projet
+                        </button>
+                    </div>
 
                 </form>
             </div>
