@@ -1,0 +1,149 @@
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+
+interface CreateTaskModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [assigneesText, setAssigneesText] = useState('');
+  const [status, setStatus] = useState('À faire');
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Nouvelle tâche créée :", { title, description, dueDate, assigneesText, status });
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50">
+      
+      <div className="bg-[#FFFFFF] rounded-[10px] w-[598px] h-[799px] relative pt-[79px] px-[73px] pb-[79px] shadow-xl font-sans flex flex-col">
+        
+        <button 
+          onClick={onClose}
+          className="absolute top-[37px] right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
+        >
+          <Image src="/cross.svg" alt="Fermer" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
+        </button>
+
+        <h2 
+          className="text-[#1F1F1F] text-[24px] font-semibold mb-[40px] self-start"
+          style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
+        >
+          Créer une tâche
+        </h2>
+
+        <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
+          
+          <div className="flex flex-col gap-[7px] mb-[24px]">
+            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Titre*</label>
+            <input 
+              type="text"
+              placeholder="Ex: Authentification JWT"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-[7px] mb-[24px]">
+            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Description*</label>
+            <input 
+              type="text"
+              placeholder="Description de la tâche..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-[7px] mb-[24px]">
+            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance*</label>
+            <div className="relative w-[452px]">
+              <input 
+                type="text"
+                placeholder="Sélectionner une date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[45px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
+              />
+              <div className="absolute top-[18.23px] right-[17px] pointer-events-none flex items-center justify-center">
+                 <Image src="/date.svg" alt="Calendrier" width={15} height={16.54} />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-[7px] mb-[24px]">
+            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
+            <div className="relative w-[452px]">
+              <input 
+                type="text"
+                placeholder="Choisir un ou plusieurs collaborateurs"
+                value={assigneesText}
+                onChange={(e) => setAssigneesText(e.target.value)}
+                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
+              />
+              <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
+                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className="w-[16px] h-[8px]" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-[14px] font-normal text-[#000000] mb-[16px]" style={{ fontFamily: "'Inter', sans-serif" }}>Statut :</label>
+            <div className="flex items-center gap-[8px]">
+              <button 
+                type="button"
+                onClick={() => setStatus('À faire')}
+                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                À faire
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => setStatus('En cours')}
+                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                En cours
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => setStatus('Terminée')}
+                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Terminée
+              </button>
+            </div>
+          </div>
+
+          {/* Bouton "Ajouter une tâche" */}
+          <button 
+            type="submit"
+            disabled={!title.trim() || !description.trim()}
+            className="mt-[56px] w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#D1D5DB] self-start"
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            + Ajouter une tâche
+          </button>
+
+        </form>
+      </div>
+    </div>
+  );
+}

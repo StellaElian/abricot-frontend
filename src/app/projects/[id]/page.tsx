@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation'; // Ajout pour récupérer l'ID
 import Cookies from 'js-cookie';
 import EditProjectModal from '@/src/components/EditProjectModal';
 import EditTaskModal from '@/src/components/EditTaskModal';
+import CreateTaskModal from '@/src/components/CreateTaskModal';
 
 export default function ProjectDetailsPage() {
 
@@ -19,6 +20,7 @@ export default function ProjectDetailsPage() {
     const [project, setProject] = useState<any>(null); //pour le projet
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingTask, setEditingTask] = useState<any>(null); // pour retenir la tâche qu'on souhaite modifier
+    const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
 
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
@@ -135,7 +137,9 @@ export default function ProjectDetailsPage() {
 
                             {/* Boutons (Créer une tâche + IA) */}
                             <div className="flex gap-[12px] h-[50px] shrink-0">
-                                <button className="w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-regular flex items-center justify-center cursor-pointer hover:bg-black transition">
+                                <button
+                                onClick={() => setIsCreateTaskModalOpen(true)} 
+                                className="w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-regular flex items-center justify-center cursor-pointer hover:bg-black transition">
                                     Créer une tâche
                                 </button>
                                 <button className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -389,6 +393,11 @@ export default function ProjectDetailsPage() {
                 isOpen={!!editingTask} // S'ouvre seulement si une tâche a été sélectionnée (si editingTask n'est pas null)
                 onClose={() => setEditingTask(null)} // Quand on ferme, on vide la mémoire
                 task={editingTask} // On envoie toutes les infos de la tâche à la modale 
+            />
+            <CreateTaskModal
+            isOpen={isCreateTaskModalOpen}
+            onClose={() => setIsCreateTaskModalOpen(false)}
+
             />
         </div>
     );
