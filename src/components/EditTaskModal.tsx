@@ -10,7 +10,7 @@ interface EditTaskModalProps {
 }
 
 export default function EditTaskModal({ isOpen, onClose, task }: EditTaskModalProps) {
-  // États avec tes valeurs Figma par défaut pour tester le design
+  // États avec les valeurs Figma 
   const [title, setTitle] = useState('authentification JWT');
   const [description, setDescription] = useState('complémenter le système d\'authentification avec tokens JWT');
   const [dueDate, setDueDate] = useState('9 mars');
@@ -63,7 +63,7 @@ export default function EditTaskModal({ isOpen, onClose, task }: EditTaskModalPr
           <Image src="/cross.svg" alt="Fermer" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
         </button>
 
-        {/* TITRE PRINCIPAL (Avec le texte tout à gauche et 40px d'espace en bas) */}
+        {/* TITRE PRINCIPAL */}
         <h2 
           className="text-[#1F1F1F] text-[24px] font-semibold mb-[40px] self-start"
           style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
