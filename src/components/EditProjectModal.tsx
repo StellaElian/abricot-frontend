@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 
 interface EditProjectModalProps {
@@ -33,10 +34,35 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Projet modifié :", { title, description });
-        onClose();
+
+        try {
+            const token = Cookies.get('token');
+            const response = await fetch(`http://localhost:8000/projects/${project.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name: title, 
+                    description: description
+                })
+            });
+
+            if(response.ok) {
+                console.log("Projet modifié avec succès ");
+                onClose();
+                window.location.reload(); 
+            }else {
+                alert("Erreur lors de la modification du projet");
+            }
+        } catch(error) {
+            console.error("Erreur réseau:", error);
+            alert("Impossible de joindre le serveur. ");
+        }
+        
     };
 
     return (
