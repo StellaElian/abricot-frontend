@@ -15,13 +15,14 @@ export default function ProjectDetailsPage() {
     const params = useParams();
     const projectId = params.id;
 
-    // 2. STATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
+    // 2. Sçà)TATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
     const [projectTasks, setProjectTasks] = useState<any[]>([]);
     const [project, setProject] = useState<any>(null); //pour le projet
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingTask, setEditingTask] = useState<any>(null); // pour retenir la tâche qu'on souhaite modifier
     const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState<any>(null); //Stocker la personne connectée
+    const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null); // Pour savoir quelle tâche a ses commentaires dépliés
 
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
@@ -333,7 +334,7 @@ export default function ProjectDetailsPage() {
                             const frenchStatus = formatStatus(task.status);
 
                             return (
-                                <div key={task.id} className="w-[1090px] h-[263.54px] pl-[40px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex flex-col hover:shadow-sm transition-shadow">
+                                <div key={task.id} className="w-[1090px] min-h-[263.54px] h-auto pl-[40px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex flex-col hover:shadow-sm transition-shadow">
 
                                     {/* HAUT DE LA CARTE (Titre, Description, Échéance, Assignés + Bouton ...) */}
                                     <div className="p-[25px] flex justify-between items-start">
@@ -414,15 +415,60 @@ export default function ProjectDetailsPage() {
                                     </div>
 
                                     {/* BAS DE LA CARTE (Commentaires) */}
-                                    <div className="pl-[30px] mt-[10px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                <div className="flex flex-col w-full mt-[10px]">
+                                    
+                                    {/* La ligne visible */}
+                                    <div className="pl-[30px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
                                         <span className="text-[14px] text-[#1F1F1F] font-regular">
-                                            {/* On affiche la nbr commentaires, ou 0 s'il n'y a pas de commentaires */}
                                             Commentaires ({task.comments ? task.comments.length : 0})
                                         </span>
-                                        <button className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition">
-                                            <Image src="/more.svg" alt="Voir plus" width={16} height={8} />
+                                        <button 
+                                            // ⚡ Le clic qui ouvre ou ferme l' accordéon 
+                                            onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
+                                            className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition"
+                                        >
+                                            {/* clic qui fait tourner l'icône quand c'est ouvert */}
+                                            <div className={`transition-transform duration-200 ${expandedTaskId === task.id ? 'rotate-180' : ''}`}>
+                                                <Image src="/more.svg" alt="Voir plus" width={16} height={8} />
+                                            </div>
                                         </button>
                                     </div>
+
+                                    {/* LA ZONE CACHÉE : Elle s'affiche UNIQUEMENT si on a cliqué sur la flèche */}
+                                    {expandedTaskId === task.id && (
+                                        
+                                        <div className="ml-[30px] mr-[40px] mt-[15px] mb-[10px] bg-[#F9FAFB] rounded-[8px] p-[12px] border border-[#E5E7EB]">
+                                            
+                                            {/* Affichage des anciens commentaires */}
+                                            <div className="mb-[12px] max-h-[100px] overflow-y-auto space-y-[8px]">
+                                                {task.comments && task.comments.length > 0 ? (
+                                                    task.comments.map((comment: any, index: number) => (
+                                                        <div key={index} className="text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                            <span className="font-semibold text-[#1F1F1F]">{comment.author?.name || 'Inconnu'} : </span>
+                                                            <span className="text-[#6B7280]">{comment.content}</span>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p className="text-[12px] text-[#9CA3AF] italic" style={{ fontFamily: "'Inter', sans-serif" }}>Aucun commentaire pour le moment.</p>
+                                                )}
+                                            </div>
+
+                                            {/* Le petit champ pour écrire */}
+                                            <div className="flex gap-[8px]">
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Ajouter un commentaire..." 
+                                                    className="flex-1 h-[36px] border border-[#E5E7EB] rounded-[4px] px-[12px] text-[12px] outline-none focus:border-[#D3590B] transition"
+                                                    style={{ fontFamily: "'Inter', sans-serif" }}
+                                                />
+                                                <button className="h-[36px] px-[16px] bg-[#1F1F1F] text-white text-[12px] font-medium rounded-[4px] hover:bg-black transition" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                    Envoyer
+                                                </button>
+                                            </div>
+                                            
+                                        </div>
+                                    )}
+                                </div>
 
 
                                 </div>
