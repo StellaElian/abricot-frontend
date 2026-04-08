@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 
 interface CreateProjectModalProps {
@@ -15,10 +16,37 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Nouveau projet :", { title, description, contributors });
-    onClose();
+    try {
+      const token = Cookies.get('token'); 
+      const response = await fetch('http://localhost:8000/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: title,
+          description: description, 
+
+        })
+      });
+
+      if (response.ok) {
+      console.log("Projet crée avec succès ");
+      onClose();
+      window.location.reload();
+      }else {
+        const errorData = await response.json();
+        console.error("Erreur du backend :", errorData);
+        alert("Erreur lors de la création du projet . ");
+      }
+    } catch (error) {
+      console.error("Erreur réseau:", error);
+      alert("Impossible de joindre le serveur.");
+    }
+    
   };
 
   return (
