@@ -2,20 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Cookies from 'js-cookie'; 
 
 interface EditTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
+  projectId: string; //On rcupère l'ID du projet
+  contributors?: any[]; //On récupère la liste des contributeurs
   task?: any; // Pour dynamiser avec la vraie tâche cliquée
 }
 
-export default function EditTaskModal({ isOpen, onClose, task }: EditTaskModalProps) {
+export default function EditTaskModal({ isOpen, onClose, task, projectId, contributors = [] }: EditTaskModalProps) {
   // États avec les valeurs Figma 
-  const [title, setTitle] = useState('authentification JWT');
-  const [description, setDescription] = useState('complémenter le système d\'authentification avec tokens JWT');
-  const [dueDate, setDueDate] = useState('9 mars');
-  const [assigneesText, setAssigneesText] = useState('2 collaborateurs');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [selectedAssignees, setSelectedAssignees] = useState<string[]>([]);
   const [status, setStatus] = useState('À faire'); // Pour gérer la sélection du badge
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // ⚡ DYNAMISATION 
   useEffect(() => {
@@ -25,12 +29,17 @@ export default function EditTaskModal({ isOpen, onClose, task }: EditTaskModalPr
       
       if (task.dueDate) {
         const dateObj = new Date(task.dueDate);
-        setDueDate(dateObj.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }));
+        setDueDate(dateObj.toISOString().split('T')[0]);
+      }else {
+        setDueDate('');
       }
       
       if (task.assignees) {
-        const count = task.assignees.length;
-        setAssigneesText(`${count} collaborateur${count > 1 ? 's' : ''}`);
+        //On récupère l'ID des personnes déja assignées
+        const assigneeIds = task.assignees.map((a: any) => a.userId || a.id);
+        setSelectedAssignees(assigneeIds);
+      }else {
+        setSelectedAssignees([]);
       }
 
       // Traduction du statut API vers le français pour sélectionner le bon badge
@@ -42,11 +51,46 @@ export default function EditTaskModal({ isOpen, onClose, task }: EditTaskModalPr
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Tâche modifiée :", { title, description, dueDate, assigneesText, status });
-    onClose();
+    if (!projectId || !task?.id) return; 
+    try {
+      const token = Cookies.get('token');
+      let backendStatus = "TODO";
+      if (status === "En cours") backendStatus = "IN_PROGRESS";
+      if (status === "Terminée") backendStatus = "DONE";
+
+      // On cible l'URL exacte de LA tâche à modifier avec /tasks/${task.id}
+      const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${task.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          status: backendStatus,
+          dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+          assignees: selectedAssignees
+        })
+      });
+
+      if (response.ok) {
+        console.log("Tâche modifiée !");
+        onClose();
+        window.location.reload(); 
+      } else {
+        const errorData = await response.json();
+        console.error("Erreur backend:", errorData);
+        alert("Erreur lors de la modification de la tâche.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau:", error);
+      alert("Impossible de joindre le serveur.");
+    }
   };
+
 
   return (
     // 1. LE FOND : Flouté
@@ -103,33 +147,74 @@ export default function EditTaskModal({ isOpen, onClose, task }: EditTaskModalPr
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance</label>
             <div className="relative w-[452px]">
               <input 
-                type="text"
+                type="date"
                 value={dueDate}
-                readOnly
-                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[45px] text-[12px] text-[#6B7280] outline-none transition bg-[#FFFFFF] cursor-pointer"
+                onChange={(e) => setDueDate(e.target.value)}
+                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
               />
-              {/* L'icône calendrier (date.svg) */}
-              <div className="absolute top-[18.23px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/date.svg" alt="Calendrier" width={15} height={16.54} />
-              </div>
             </div>
           </div>
 
-          {/* CHAMP : Assigné à */}
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+         {/* CHAMP : Assigné à */}
+         <div className="flex flex-col gap-[7px] mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
             <div className="relative w-[452px]">
-              <input 
-                type="text"
-                value={assigneesText}
-                readOnly
-                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] text-[12px] text-[#6B7280] outline-none transition cursor-pointer bg-[#FFFFFF]"
-              />
-              <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className="w-[16px] h-[8px]" />
+              
+              <div 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px] bg-white"
+              >
+                {selectedAssignees.length === 0 ? (
+                  "Choisir un ou plusieurs collaborateurs"
+                ) : (
+                  selectedAssignees.map(id => {
+                    const person = contributors.find((c: any) => c.id === id || c.userId === id);
+                    const name = person?.name || person?.user?.name || "Inconnu";
+                    return (
+                      <span key={id} className="bg-[#E5E7EB] text-[#1F1F1F] px-[8px] py-[2px] rounded-[4px]">
+                        {name}
+                      </span>
+                    );
+                  })
+                )}
               </div>
+              <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
+                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </div>
+
+              {isDropdownOpen && (
+                <div className="absolute top-[58px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
+                  {contributors && contributors.length > 0 ? (
+                    contributors.map((contributor: any, index: number) => {
+                      const targetId = contributor.userId || contributor.id;
+                      const fullName = contributor.name || contributor.user?.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || 'Inconnu';
+                      const isSelected = selectedAssignees.includes(targetId);
+
+                      return (
+                        <div 
+                          key={index}
+                          onClick={() => {
+                            if (isSelected) {
+                              setSelectedAssignees(selectedAssignees.filter(id => id !== targetId));
+                            } else {
+                              setSelectedAssignees([...selectedAssignees, targetId]);
+                            }
+                          }}
+                          className="px-[17px] py-[10px] text-[12px] text-[#1F1F1F] hover:bg-[#F3F4F6] cursor-pointer flex items-center gap-[10px]"
+                        >
+                          <input type="checkbox" checked={isSelected} readOnly className="cursor-pointer" />
+                          {fullName}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="px-[17px] py-[10px] text-[12px] text-[#6B7280]">Aucun collaborateur dans ce projet</div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
+
 
           {/* CHAMP : Statut (Les Badges) */}
           <div className="flex flex-col">

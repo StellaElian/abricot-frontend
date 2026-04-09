@@ -15,14 +15,18 @@ export default function ProjectDetailsPage() {
     const params = useParams();
     const projectId = params.id;
 
-    // 2. Sçà)TATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
-    const [projectTasks, setProjectTasks] = useState<any[]>([]);
-    const [project, setProject] = useState<any>(null); //pour le projet
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editingTask, setEditingTask] = useState<any>(null); // pour retenir la tâche qu'on souhaite modifier
-    const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-    const [currentUser, setCurrentUser] = useState<any>(null); //Stocker la personne connectée
-    const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null); // Pour savoir quelle tâche a ses commentaires dépliés
+    // 2. STATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
+  const [projectTasks, setProjectTasks] = useState<any[]>([]);
+  const [project, setProject] = useState<any>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); 
+  const [editingTask, setEditingTask] = useState<any>(null); 
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+
+  // Nouvelles mémoires pour la modale de modification de tâche :
+  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>(null);
 
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
@@ -48,8 +52,8 @@ export default function ProjectDetailsPage() {
                     const userData = userJson.data?.user || userJson.data || userJson.user || userJson;
                     setCurrentUser(userData);
                 }
-            }catch(error) {
-                console.error("Erreur de récupération statut utilisateur",error);
+            } catch (error) {
+                console.error("Erreur de récupération statut utilisateur", error);
             }
             if (!token || !projectId) return;
             try {
@@ -120,7 +124,7 @@ export default function ProjectDetailsPage() {
     // --- VÉRIFICATIONS DES RÔLES (statut user) ---
     // 1- propriétaire ?
     const isOwner = currentUser && project && currentUser.id === project.owner?.id;
-    
+
     // 2- un membre de l'équipe ?
     const isMember = currentUser && project && project.members?.some((m: any) => {
         const memberId = m.user?.id || m.id;
@@ -175,13 +179,13 @@ export default function ProjectDetailsPage() {
 
                                 {/* On affiche le bouton Modifier UNIQUEMENT si c'est le propriétaire (Admin) */}
                                 {isOwner && (
-                                <button
-                                    onClick={() => setIsEditModalOpen(true)}
-                                    className="text-[#D3590B] text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition"
-                                    style={{ fontFamily: "'Inter', sans-serif" }}
-                                >
-                                    Modifier
-                                </button>
+                                    <button
+                                        onClick={() => setIsEditModalOpen(true)}
+                                        className="text-[#D3590B] text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition"
+                                        style={{ fontFamily: "'Inter', sans-serif" }}
+                                    >
+                                        Modifier
+                                    </button>
                                 )}
 
                             </div>
@@ -401,7 +405,7 @@ export default function ProjectDetailsPage() {
 
                                         {/* Bouton "..." */}
                                         <button
-                                            onClick={() => setEditingTask(task)} // "On ouvre la modale avec CETTE tâche"
+                                            onClick={() => {setSelectedTask(task); setIsEditTaskModalOpen(true) } }// "On ouvre la modale avec CETTE tâche"
                                             className="w-[57px] h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition mt-[8px] mr-[11px]"
                                         >
                                             <Image src="/plus.svg" alt="Options" width={15} height={4} />
@@ -415,60 +419,60 @@ export default function ProjectDetailsPage() {
                                     </div>
 
                                     {/* BAS DE LA CARTE (Commentaires) */}
-                                <div className="flex flex-col w-full mt-[10px]">
-                                    
-                                    {/* La ligne visible */}
-                                    <div className="pl-[30px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                        <span className="text-[14px] text-[#1F1F1F] font-regular">
-                                            Commentaires ({task.comments ? task.comments.length : 0})
-                                        </span>
-                                        <button 
-                                            // ⚡ Le clic qui ouvre ou ferme l' accordéon 
-                                            onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
-                                            className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition"
-                                        >
-                                            {/* clic qui fait tourner l'icône quand c'est ouvert */}
-                                            <div className={`transition-transform duration-200 ${expandedTaskId === task.id ? 'rotate-180' : ''}`}>
-                                                <Image src="/more.svg" alt="Voir plus" width={16} height={8} />
-                                            </div>
-                                        </button>
-                                    </div>
+                                    <div className="flex flex-col w-full mt-[10px]">
 
-                                    {/* LA ZONE CACHÉE : Elle s'affiche UNIQUEMENT si on a cliqué sur la flèche */}
-                                    {expandedTaskId === task.id && (
-                                        
-                                        <div className="ml-[30px] mr-[40px] mt-[15px] mb-[10px] bg-[#F9FAFB] rounded-[8px] p-[12px] border border-[#E5E7EB]">
-                                            
-                                            {/* Affichage des anciens commentaires */}
-                                            <div className="mb-[12px] max-h-[100px] overflow-y-auto space-y-[8px]">
-                                                {task.comments && task.comments.length > 0 ? (
-                                                    task.comments.map((comment: any, index: number) => (
-                                                        <div key={index} className="text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                            <span className="font-semibold text-[#1F1F1F]">{comment.author?.name || 'Inconnu'} : </span>
-                                                            <span className="text-[#6B7280]">{comment.content}</span>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-[12px] text-[#9CA3AF] italic" style={{ fontFamily: "'Inter', sans-serif" }}>Aucun commentaire pour le moment.</p>
-                                                )}
-                                            </div>
-
-                                            {/* Le petit champ pour écrire */}
-                                            <div className="flex gap-[8px]">
-                                                <input 
-                                                    type="text" 
-                                                    placeholder="Ajouter un commentaire..." 
-                                                    className="flex-1 h-[36px] border border-[#E5E7EB] rounded-[4px] px-[12px] text-[12px] outline-none focus:border-[#D3590B] transition"
-                                                    style={{ fontFamily: "'Inter', sans-serif" }}
-                                                />
-                                                <button className="h-[36px] px-[16px] bg-[#1F1F1F] text-white text-[12px] font-medium rounded-[4px] hover:bg-black transition" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                    Envoyer
-                                                </button>
-                                            </div>
-                                            
+                                        {/* La ligne visible */}
+                                        <div className="pl-[30px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                            <span className="text-[14px] text-[#1F1F1F] font-regular">
+                                                Commentaires ({task.comments ? task.comments.length : 0})
+                                            </span>
+                                            <button
+                                                // ⚡ Le clic qui ouvre ou ferme l' accordéon 
+                                                onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
+                                                className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition"
+                                            >
+                                                {/* clic qui fait tourner l'icône quand c'est ouvert */}
+                                                <div className={`transition-transform duration-200 ${expandedTaskId === task.id ? 'rotate-180' : ''}`}>
+                                                    <Image src="/more.svg" alt="Voir plus" width={16} height={8} />
+                                                </div>
+                                            </button>
                                         </div>
-                                    )}
-                                </div>
+
+                                        {/* LA ZONE CACHÉE : Elle s'affiche UNIQUEMENT si on a cliqué sur la flèche */}
+                                        {expandedTaskId === task.id && (
+
+                                            <div className="ml-[30px] mr-[40px] mt-[15px] mb-[10px] bg-[#F9FAFB] rounded-[8px] p-[12px] border border-[#E5E7EB]">
+
+                                                {/* Affichage des anciens commentaires */}
+                                                <div className="mb-[12px] max-h-[100px] overflow-y-auto space-y-[8px]">
+                                                    {task.comments && task.comments.length > 0 ? (
+                                                        task.comments.map((comment: any, index: number) => (
+                                                            <div key={index} className="text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                                <span className="font-semibold text-[#1F1F1F]">{comment.author?.name || 'Inconnu'} : </span>
+                                                                <span className="text-[#6B7280]">{comment.content}</span>
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <p className="text-[12px] text-[#9CA3AF] italic" style={{ fontFamily: "'Inter', sans-serif" }}>Aucun commentaire pour le moment.</p>
+                                                    )}
+                                                </div>
+
+                                                {/* Le petit champ pour écrire */}
+                                                <div className="flex gap-[8px]">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Ajouter un commentaire..."
+                                                        className="flex-1 h-[36px] border border-[#E5E7EB] rounded-[4px] px-[12px] text-[12px] outline-none focus:border-[#D3590B] transition"
+                                                        style={{ fontFamily: "'Inter', sans-serif" }}
+                                                    />
+                                                    <button className="h-[36px] px-[16px] bg-[#1F1F1F] text-white text-[12px] font-medium rounded-[4px] hover:bg-black transition" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                        Envoyer
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        )}
+                                    </div>
 
 
                                 </div>
@@ -486,9 +490,11 @@ export default function ProjectDetailsPage() {
             />
             {/* MODALE POUR MODIFIER UNE TÂCHE */}
             <EditTaskModal
-                isOpen={!!editingTask} // S'ouvre seulement si une tâche a été sélectionnée (si editingTask n'est pas null)
-                onClose={() => setEditingTask(null)} // Quand on ferme, on vide la mémoire
-                task={editingTask} // On envoie toutes les infos de la tâche à la modale 
+                isOpen={isEditTaskModalOpen} // S'ouvre seulement si une tâche a été sélectionnée (si editingTask n'est pas null)
+                onClose={() => setIsEditTaskModalOpen(false)} // Quand on ferme, on vide la mémoire
+                task={selectedTask} // On envoie toutes les infos de la tâche à la modale 
+                projectId={project?.id}
+                contributors={contributors}
             />
             <CreateTaskModal
                 isOpen={isCreateTaskModalOpen}
