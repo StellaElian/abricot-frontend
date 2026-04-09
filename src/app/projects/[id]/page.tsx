@@ -494,6 +494,7 @@ export default function ProjectDetailsPage() {
                 isOpen={isCreateTaskModalOpen}
                 onClose={() => setIsCreateTaskModalOpen(false)}
                 projectId={project?.id}
+                contributors={contributors}
             />
         </div>
     );

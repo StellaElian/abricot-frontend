@@ -8,13 +8,15 @@ interface CreateTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   projectId: string; //on accepte l'id en paramètre
+  contributors: any[]; //On accepte la liste des membres du projet
 }
 
-export default function CreateTaskModal({ isOpen, onClose, projectId }: CreateTaskModalProps) {
+export default function CreateTaskModal({ isOpen, onClose, projectId, contributors = [] }: CreateTaskModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [assigneesText, setAssigneesText] = useState('');
+  const [selectedAssignees, setSelectedAssignees] = useState<string[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [status, setStatus] = useState('À faire');
   
 
@@ -43,7 +45,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId }: CreateTa
           description: description,
           status: backendStatus,
           // Conversion date 
-          dueDate: dueDate ? new Date(dueDate).toISOString() : null
+          dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+          //tableau de vrais ID
+          assignees: selectedAssignees 
         })
       });
 
@@ -120,19 +124,66 @@ export default function CreateTaskModal({ isOpen, onClose, projectId }: CreateTa
             </div>
           </div>
 
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+         <div className="flex flex-col gap-[7px] mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
             <div className="relative w-[452px]">
-              <input 
-                type="text"
-                placeholder="Choisir un ou plusieurs collaborateurs"
-                value={assigneesText}
-                onChange={(e) => setAssigneesText(e.target.value)}
-                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
-              />
-              <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className="w-[16px] h-[8px]" />
+              
+              {/* Le bouton pour ouvrir le menu déroulant */}
+              <div 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px]"
+              >
+                {selectedAssignees.length === 0 ? (
+                  "Choisir un ou plusieurs collaborateurs"
+                ) : (
+                  // On affiche les personnes sélectionnées
+                  selectedAssignees.map(id => {
+                    const person = contributors.find((c: any) => c.id === id || c.userId === id);
+                    const name = person?.name || person?.user?.name || "Inconnu";
+                    return (
+                      <span key={id} className="bg-[#E5E7EB] text-[#1F1F1F] px-[8px] py-[2px] rounded-[4px]">
+                        {name}
+                      </span>
+                    );
+                  })
+                )}
               </div>
+              <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
+                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </div>
+
+              {/* LE MENU DÉROULANT CACHÉ (S'affiche que si on a cliqué) */}
+              {isDropdownOpen && (
+                <div className="absolute top-[58px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
+                  {contributors && contributors.length > 0 ? (
+                    contributors.map((contributor: any, index: number) => {
+                      const targetId = contributor.userId || contributor.id;
+                      const fullName = contributor.name || contributor.user?.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || 'Inconnu';
+                      const isSelected = selectedAssignees.includes(targetId);
+
+                      return (
+                        <div 
+                          key={index}
+                          onClick={() => {
+                            // Clic : Si déjà coché, on l'enlève. Sinon, on l'ajoute.
+                            if (isSelected) {
+                              setSelectedAssignees(selectedAssignees.filter(id => id !== targetId));
+                            } else {
+                              setSelectedAssignees([...selectedAssignees, targetId]);
+                            }
+                          }}
+                          className="px-[17px] py-[10px] text-[12px] text-[#1F1F1F] hover:bg-[#F3F4F6] cursor-pointer flex items-center gap-[10px]"
+                        >
+                          <input type="checkbox" checked={isSelected} readOnly className="cursor-pointer" />
+                          {fullName}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="px-[17px] py-[10px] text-[12px] text-[#6B7280]">Aucun collaborateur dans ce projet</div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
