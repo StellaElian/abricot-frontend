@@ -116,7 +116,7 @@ export default function ProjectsPage() {
 
       {/* L'EN-TÊTE : Titre et Bouton */}
       {/* items-end force les enfants à s'aligner sur la ligne du bas */}
-      <div className="flex justify-between items-end w-full max-w-[1166px] h-[69px] mx-auto mb-[64px]">
+      <div className="flex justify-between items-end w-[1166px] h-[69px] mb-[64px]">
 
         {/* Partie gauche */}
         <div className="h-full flex flex-col justify-between">
@@ -142,7 +142,7 @@ export default function ProjectsPage() {
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
       {/* LA GRILLE DES PROJETS (1166px de large, 3 colonnes) */}
-      <div className="w-full max-w-[1166px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
+      <div className="w-full max-w-[1166px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[14px] mx-auto gap-y-[18px]">
 
         {/* BOUCLE : Pour chaque projet dans la mémoire, on dessine ça : */}
         {visibleProjects.map((rawProject: any) => {
@@ -197,8 +197,8 @@ export default function ProjectsPage() {
           return (
             <Link href={`/projects/${project.id}`} key={project.id} className="block group">
 
-              {/* LA CARTE BLANCHE (380x351px, bordure, padding 34px) */}
-              <div className="w-[380px] h-[351px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] p-[34px] flex flex-col justify-between hover:shadow-md transition-shadow">
+              {/* LA CARTE BLANCHE */}
+              <div className="w-full max-w-[380px] h-[351px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] p-[34px] flex flex-col justify-between hover:shadow-md transition-shadow">
 
                 {/* PARTIE 1 : Titre et Description */}
                 <div>
