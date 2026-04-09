@@ -42,7 +42,8 @@ export default function CreateTaskModal({ isOpen, onClose, projectId }: CreateTa
           title: title,
           description: description,
           status: backendStatus,
-          // La date ?
+          // Conversion date 
+          dueDate: dueDate ? new Date(dueDate).toISOString() : null
         })
       });
 
@@ -110,15 +111,12 @@ export default function CreateTaskModal({ isOpen, onClose, projectId }: CreateTa
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance*</label>
             <div className="relative w-[452px]">
               <input 
-                type="text"
+                type="date"
                 placeholder="Sélectionner une date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
                 className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[45px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
               />
-              <div className="absolute top-[18.23px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/date.svg" alt="Calendrier" width={15} height={16.54} />
-              </div>
             </div>
           </div>
 
