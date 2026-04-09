@@ -51,6 +51,37 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
   if (!isOpen) return null;
 
+    // LA REQUÊTE DELETE
+  const handleDelete = async () => {
+    // Petite sécurité pour éviter les suppressions accidentelles
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) return;
+    if (!projectId || !task?.id) return;
+
+    try {
+      const token = Cookies.get('token');
+      
+      const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${task.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        console.log("Tâche supprimée !");
+        onClose();
+        window.location.reload(); 
+      } else {
+        console.error("Erreur backend lors de la suppression");
+        alert("Erreur lors de la suppression de la tâche.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau:", error);
+      alert("Impossible de joindre le serveur.");
+    }
+  };
+
+  // LA REQUÊTE AJOUTER
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!projectId || !task?.id) return; 
@@ -252,15 +283,25 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
             </div>
           </div>
 
-          {/* BOUTON */}
-          <button 
-            type="submit"
-            className="mt-[56px] w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB] self-start"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Enregistrer
-          </button>
+                {/* LES 2 BOUTONS  */}
+          <div className="mt-[56px] flex items-center gap-[24px]">
+            <button 
+              type="submit"
+              className="w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Enregistrer
+            </button>
 
+            <button 
+              type="button"
+              onClick={handleDelete}
+              className="text-[#EF4444] text-[14px] font-medium hover:underline transition px-[10px]"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Supprimer la tâche
+            </button>
+          </div>
         </form>
       </div>
     </div>
