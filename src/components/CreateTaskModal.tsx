@@ -1,26 +1,64 @@
 'use client';
 
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 
 interface CreateTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
+  projectId: string; //on accepte l'id en paramètre
 }
 
-export default function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
+export default function CreateTaskModal({ isOpen, onClose, projectId }: CreateTaskModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [assigneesText, setAssigneesText] = useState('');
   const [status, setStatus] = useState('À faire');
+  
+
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Nouvelle tâche créée :", { title, description, dueDate, assigneesText, status });
-    onClose();
+    if (!projectId) return; 
+    try {
+      const token = Cookies.get('token'); 
+
+      // Traduction du statut en anglais pour le backend 
+      let backendStatus = "TODO";
+      if (status === "En cours") backendStatus = "IN_PROGRESS";
+      if (status === "Terminée") backendStatus = "DONE";
+
+      const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          status: backendStatus,
+          // La date ?
+        })
+      });
+
+      if (response.ok) {
+        console.log("Tâche créée !");
+        onClose();
+        window.location.reload(); // Rafraîchit la page pour voir la nouvelle tâche
+      } else {
+        const errorData = await response.json();
+        console.error("Erreur backend:", errorData);
+        alert("Erreur lors de la création de la tâche.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau:", error);
+      alert("Impossible de joindre le serveur.");
+    }
   };
 
   return (
