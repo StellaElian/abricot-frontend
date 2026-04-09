@@ -46,23 +46,23 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    name: title, 
+                    name: title,
                     description: description
                 })
             });
 
-            if(response.ok) {
+            if (response.ok) {
                 console.log("Projet modifié avec succès ");
                 onClose();
-                window.location.reload(); 
-            }else {
+                window.location.reload();
+            } else {
                 alert("Erreur lors de la modification du projet");
             }
-        } catch(error) {
+        } catch (error) {
             console.error("Erreur réseau:", error);
             alert("Impossible de joindre le serveur. ");
         }
-        
+
     };
 
     return (
@@ -163,10 +163,32 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                         {/* BOUTON SUPPRIMER */}
                         <button
                             type="button"
-                            onClick={() => {
-                                console.log("Demande de suppression du projet :", project?.id);
-                                onClose();
-                            }}
+                            onClick={async () => {
+                                {
+                                    if (window.confirm("Voulez-vous vraiment supprimer ce projet de manière définitive ?"))
+
+                                        try {
+                                            const token = Cookies.get('token');
+                                            const response = await fetch(`http://localhost:8000/projects/${project.id}`, {
+                                                method: 'DELETE',
+                                                headers: {
+                                                    'Authorization': `Bearer ${token}`
+                                                }
+                                            });
+
+                                            if (response.ok) {
+                                                onClose();
+                                                window.location.href = '/projects';
+                                            } else {
+                                                alert("Erreur lors de la suppression du projet");
+                                            }
+                                        } 
+                                        catch (error) {
+                                            alert("Impossible de joindre le serveur. ");
+                                        }
+                                    };
+                                }
+                            }
                             className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
