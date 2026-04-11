@@ -13,6 +13,16 @@ export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false); //mémoire pour savoir si la fenêtre est ouverte
   const [currentView, setCurrentView] = useState('liste'); // Par défaut, on est sur la liste
 
+  // Mémoire pour le texte tapé dans la barre de recherche
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // On crée une liste filtrée qui réagit au texte tapé
+  const filteredTasks = tasks.filter(task => 
+    task.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    task.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -48,9 +58,9 @@ export default function DashboardPage() {
   };
 
   // (POUR LA PARTIE KANBAN) On découpe les tâches pour les 3 colonnes du Kanban
-  const todoTasks = tasks.filter(task => task.status === 'TODO');
-  const inProgressTasks = tasks.filter(task => task.status === 'IN_PROGRESS');
-  const doneTasks = tasks.filter(task => task.status === 'DONE');
+  const todoTasks = filteredTasks.filter(task => task.status === 'TODO');
+  const inProgressTasks = filteredTasks.filter(task => task.status === 'IN_PROGRESS');
+  const doneTasks = filteredTasks.filter(task => task.status === 'DONE');
 
 
   return (
@@ -122,6 +132,8 @@ export default function DashboardPage() {
               <input
                 type="text"
                 placeholder="Rechercher une tâche"
+                value={searchQuery}                                      
+                onChange={(e) => setSearchQuery(e.target.value)}         
                 className="w-full h-full border border-[#E5E7EB] rounded-[8px] pl-[32px] pr-[56px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
               />
               <div className="absolute right-[32px] top-[24px] pointer-events-none flex items-center justify-center">
@@ -134,7 +146,7 @@ export default function DashboardPage() {
           {/* 4. LA LISTE DES TÂCHES */}
           <div className="flex flex-col gap-[17px] w-full max-w-[1097px] mx-auto">
 
-            {tasks.map((task, index) => {
+            {filteredTasks.map((task, index) => {
               // On traduit le statut avant de dessiner la carte
               const frenchStatus = formatStatus(task.status);
 
