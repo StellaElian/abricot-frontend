@@ -27,7 +27,9 @@ export default function ProjectDetailsPage() {
   // Nouvelles mémoires pour la modale de modification de tâche :
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null);
-
+  
+  // Mémoire texte de new comments
+  const [commentText, setCommentText] = useState('');
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
     const contributors = project ? [
@@ -150,6 +152,55 @@ export default function ProjectDetailsPage() {
             </div>
         );
     }
+
+    // FONCTION : AJOUTER UN COMMENTAIRE
+    const handleAddComment = async (taskId: string) => {
+        if (!commentText.trim()) return; // On n'envoie pas de commentaire vide
+        const token = Cookies.get('token');
+
+        try {
+            const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${taskId}/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ content: commentText }) // Le backend attend le "content"
+            });
+
+            if (response.ok) {
+                setCommentText(''); // On vide le champ après l'envoi
+                window.location.reload(); 
+            } else {
+                alert("Erreur lors de l'ajout du commentaire.");
+            }
+        } catch (error) {
+            console.error("Erreur réseau:", error);
+        }
+    };
+
+    // FONCTION : SUPPRIMER UN COMMENTAIRE
+    const handleDeleteComment = async (taskId: string, commentId: string) => {
+        if (!window.confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?")) return;
+        const token = Cookies.get('token');
+
+        try {
+            const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${taskId}/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                window.location.reload(); 
+            } else {
+                alert("Erreur lors de la suppression du commentaire.");
+            }
+        } catch (error) {
+            console.error("Erreur réseau:", error);
+        }
+    };
 
 
     return (
@@ -447,9 +498,18 @@ export default function ProjectDetailsPage() {
                                                 <div className="mb-[12px] max-h-[100px] overflow-y-auto space-y-[8px]">
                                                     {task.comments && task.comments.length > 0 ? (
                                                         task.comments.map((comment: any, index: number) => (
-                                                            <div key={index} className="text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                                <span className="font-semibold text-[#1F1F1F]">{comment.author?.name || 'Inconnu'} : </span>
-                                                                <span className="text-[#6B7280]">{comment.content}</span>
+                                                            <div key={index} className="text-[12px] flex justify-between items-start" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                                <div>
+                                                                    <span className="font-semibold text-[#1F1F1F]">{comment.author?.name || comment.user?.name || 'Inconnu'} : </span>
+                                                                    <span className="text-[#6B7280]">{comment.content}</span>
+                                                                </div>
+                                                                {/* Bouton pour supprimer le commentaire */}
+                                                                <button 
+                                                                    onClick={() => handleDeleteComment(task.id, comment.id)}
+                                                                    className="text-[#EF4444] hover:underline ml-[10px] text-[10px]"
+                                                                >
+                                                                    Supprimer
+                                                                </button>
                                                             </div>
                                                         ))
                                                     ) : (
@@ -457,21 +517,26 @@ export default function ProjectDetailsPage() {
                                                     )}
                                                 </div>
 
-                                                {/* Le petit champ pour écrire */}
+                                                {/* champ pour écrire */}
                                                 <div className="flex gap-[8px]">
                                                     <input
                                                         type="text"
+                                                        value={commentText} 
+                                                        onChange={(e) => setCommentText(e.target.value)} // Maj mémoire
                                                         placeholder="Ajouter un commentaire..."
                                                         className="flex-1 h-[36px] border border-[#E5E7EB] rounded-[4px] px-[12px] text-[12px] outline-none focus:border-[#D3590B] transition"
                                                         style={{ fontFamily: "'Inter', sans-serif" }}
                                                     />
-                                                    <button className="h-[36px] px-[16px] bg-[#1F1F1F] text-white text-[12px] font-medium rounded-[4px] hover:bg-black transition" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                    <button 
+                                                        onClick={() => handleAddComment(task.id)} //Déclenche l'envoi
+                                                        className="h-[36px] px-[16px] bg-[#1F1F1F] text-white text-[12px] font-medium rounded-[4px] hover:bg-black transition cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
                                                         Envoyer
                                                     </button>
                                                 </div>
 
                                             </div>
                                         )}
+
                                     </div>
 
 
