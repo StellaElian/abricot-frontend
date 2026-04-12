@@ -116,13 +116,13 @@ export default function LoginPage() {
                             Se connecter
                         </button>
 
-                        <a
-                            href="#"
+                        <Link
+                            href="/forgot-password"
                             className="mt-[21px] text-[#D3590B] text-[14px] font-normal underline"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
                             Mot de passe oublié?
-                        </a>
+                        </Link>
                     </form>
                 </div>
 
