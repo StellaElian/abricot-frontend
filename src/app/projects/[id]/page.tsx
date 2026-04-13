@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react'; // Ajout de useEffect
+import { useState, useEffect } from 'react'; 
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'; // Ajout pour récupérer l'ID
@@ -15,21 +15,21 @@ export default function ProjectDetailsPage() {
     const params = useParams();
     const projectId = params.id;
 
-    // 2. STATE POUR STOCKER LES VRAIES DONNÉES DU BACKEND
-  const [projectTasks, setProjectTasks] = useState<any[]>([]);
-  const [project, setProject] = useState<any>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); 
-  const [editingTask, setEditingTask] = useState<any>(null); 
-  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+    // STOCKER LES VRAIES DONNÉES DU BACKEND
+    const [projectTasks, setProjectTasks] = useState<any[]>([]);
+    const [project, setProject] = useState<any>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingTask, setEditingTask] = useState<any>(null);
+    const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
-  // Nouvelles mémoires pour la modale de modification de tâche :
-  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<any>(null);
-  
-  // Mémoire texte de new comments
-  const [commentText, setCommentText] = useState('');
+    //  mémoires pour la modale de modification de tâche :
+    const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
+    const [selectedTask, setSelectedTask] = useState<any>(null);
+
+    // Mémoire texte de new comments
+    const [commentText, setCommentText] = useState('');
 
     // 3. APPEL À L'API (CRÉATION DU TABLEAU DES CONTRIBUTEURS)
     const contributors = project ? [
@@ -60,7 +60,6 @@ export default function ProjectDetailsPage() {
             if (!token || !projectId) return;
             try {
                 // --- A. RÉCUPÉRATION DE TOUTES LES TÂCHES DU PROJET ---
-                // On pointe les tâches du projet
                 const tasksResponse = await fetch(`http://localhost:8000/projects/${projectId}/tasks`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -68,7 +67,6 @@ export default function ProjectDetailsPage() {
                 if (tasksResponse.ok) {
                     const tasksJson = await tasksResponse.json();
 
-                    // le tableau est dans data.tasks 
                     if (tasksJson.data && Array.isArray(tasksJson.data.tasks)) {
                         setProjectTasks(tasksJson.data.tasks);
                     } else if (Array.isArray(tasksJson.data)) {
@@ -79,28 +77,26 @@ export default function ProjectDetailsPage() {
                 }
 
 
-                /// --- B. RÉCUPÉRATION DU PROJET ---
+                /// --- RÉCUPÉRATION DU PROJET ---
                 const projectResponse = await fetch(`http://localhost:8000/projects`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (projectResponse.ok) {
                     const projectJson = await projectResponse.json();
-
-                    // 1. On cherche où est le vrai tableau (Array) des projets pour éviter le crash
                     let allProjects = [];
                     if (Array.isArray(projectJson.data)) {
-                        allProjects = projectJson.data; // Le tableau est directement dans data
+                        allProjects = projectJson.data; 
                     } else if (projectJson.data && Array.isArray(projectJson.data.projects)) {
-                        allProjects = projectJson.data.projects; // Le tableau est caché dans data.projects
+                        allProjects = projectJson.data.projects; 
                     } else if (Array.isArray(projectJson)) {
-                        allProjects = projectJson; // Le tableau est à la racine
+                        allProjects = projectJson;
                     }
 
                     // 2. On cherche le projet qui correspond à l'ID de la page
                     const currentProject = allProjects.find((p: any) => p.id === projectId);
 
-                    // 3. On le sauvegarde
+                    // sauvegarde
                     if (currentProject) {
                         setProject(currentProject);
                     } else {
@@ -115,7 +111,6 @@ export default function ProjectDetailsPage() {
         fetchAllData(); // On lance la fonction
     }, [projectId]);
 
-    // Fonction pour traduire les statuts (Inchangée)
     const formatStatus = (status: string) => {
         if (status === 'TODO') return 'À faire';
         if (status === 'IN_PROGRESS') return 'En cours';
@@ -123,7 +118,7 @@ export default function ProjectDetailsPage() {
         return 'À faire';
     };
 
-    // --- VÉRIFICATIONS DES RÔLES (statut user) ---
+    // --- VÉRIFICATIONS DES RÔLES ---
     // 1- propriétaire ?
     const isOwner = currentUser && project && currentUser.id === project.owner?.id;
 
@@ -170,7 +165,7 @@ export default function ProjectDetailsPage() {
 
             if (response.ok) {
                 setCommentText(''); // On vide le champ après l'envoi
-                window.location.reload(); 
+                window.location.reload();
             } else {
                 alert("Erreur lors de l'ajout du commentaire.");
             }
@@ -179,28 +174,6 @@ export default function ProjectDetailsPage() {
         }
     };
 
-    // FONCTION : SUPPRIMER UN COMMENTAIRE
-    const handleDeleteComment = async (taskId: string, commentId: string) => {
-        if (!window.confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?")) return;
-        const token = Cookies.get('token');
-
-        try {
-            const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${taskId}/comments/${commentId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.ok) {
-                window.location.reload(); 
-            } else {
-                alert("Erreur lors de la suppression du commentaire.");
-            }
-        } catch (error) {
-            console.error("Erreur réseau:", error);
-        }
-    };
 
 
     return (
@@ -209,10 +182,10 @@ export default function ProjectDetailsPage() {
             {/* ================= EN-TÊTE DU PROJET ================= */}
             <div className="w-[1320px] mx-auto pt-[78px] flex flex-col mb-[14px] ml-[44px]">
 
-                {/* LIGNE DU HAUT : Retour + Infos + Boutons */}
+                {/* LIGNE DU HAUT */}
                 <div className="flex items-start gap-[16px] mb-[49px]">
 
-                    {/* BOUTON RETOUR (Flèche) */}
+                    {/* BOUTON RETOUR */}
                     <Link href="/projects" className="w-[57px] h-[57px] bg-white border border-[#E5E7EB] rounded-[10px] flex items-center justify-center hover:bg-gray-50 transition shrink-0 cursor-pointer">
                         <Image src="/line3.svg" alt="Flèche retour" width={15} height={1} />
                     </Link>
@@ -271,7 +244,6 @@ export default function ProjectDetailsPage() {
                     </span>
 
                     <div className="flex items-center gap-[8px]">
-                        {/* On boucle sur le tableau des contributeurs */}
                         {contributors && contributors.length > 0 ? (
                             contributors.map((contributor: any, index: number) => {
                                 // Récupération du nom complet
@@ -346,7 +318,7 @@ export default function ProjectDetailsPage() {
                                 </span>
                             </button>
 
-                            {/* 2. Bouton "Calendrier" (130x45px) */}
+                            {/* 2. Bouton Calendrier */}
                             <button className="w-[130px] h-[45px] flex items-center bg-white rounded-[8px] cursor-pointer mr-[16px]">
                                 <div className="pl-[16px] pr-[14px] flex items-center justify-center">
                                     <Image src="/logokanban.svg" alt="Calendrier" width={15} height={15.38} />
@@ -395,12 +367,11 @@ export default function ProjectDetailsPage() {
                                     <div className="p-[25px] flex justify-between items-start">
 
                                         <div className="flex flex-col max-w-[942px]">
-                                            {/* Ligne 1 : Titre + Badge Statut */}
+                                            {/* Titre + Badge Statut */}
                                             <div className="flex items-center gap-[8px] mb-[7px]">
                                                 <h3 className="text-[18px] font-semibold text-[#000000]" style={{ fontFamily: "'Manrope', sans-serif" }}>
                                                     {task.title}
                                                 </h3>
-                                                {/* Badge de statut dynamisé avec les couleurs */}
                                                 {frenchStatus === "À faire" ? (
                                                     <div className="w-[75px] h-[25px] bg-[#FFE0E0] flex items-center justify-center text-[#EF4444] px-[16px] py-[4px] rounded-[50px] text-[14px] font-regular">{frenchStatus}</div>
                                                 ) : frenchStatus === "En cours" ? (
@@ -410,31 +381,24 @@ export default function ProjectDetailsPage() {
                                                 )}
                                             </div>
 
-                                            {/* Ligne 2 : Description */}
+                                            {/* Description */}
                                             <p className="text-[14px] text-[#6B7280] mb-[32px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 {task.description}
                                             </p>
 
-                                            {/* Ligne 3 : Échéance  */}
+                                            {/* Échéance  */}
                                             <div className="flex items-center gap-[8px] mb-[24px] text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span className="font-regular text-[#6B7280] gap-[4px]">Échéance :</span>
                                                 <Image src="/union.svg" alt="Agenda" width={15} height={16.54} />
                                                 <span className="font-regular text-[#1F1F1F] text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
-                                            {/* Ligne 4 : Assigné à */}
+                                            {/* Assigné à */}
                                             <div className="flex items-center gap-[8px] text-[12px] text-[#6B7280] font-regular " style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span>Assigné à :</span>
-
-                                                {/* On boucle sur les assignés de la tâche */}
                                                 {task.assignees && task.assignees.map((assigneeObj: any, index: number) => {
-
-                                                    // On utilise directement l'utilisateur fourni par le backend 
-                                                    // Sinon, on cherche par l'ID sans créer autreacgose
                                                     const targetId = assigneeObj.userId || assigneeObj.id;
                                                     const userProfile = assigneeObj.user || contributors.find((c: any) => c.id === targetId) || assigneeObj;
-
-                                                    // On extrait le nom
                                                     const fullName = userProfile.name || `${userProfile.firstName || ''} ${userProfile.lastName || ''}`.trim() || 'Inconnu';
                                                     const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
 
@@ -450,18 +414,15 @@ export default function ProjectDetailsPage() {
                                                     );
                                                 })}
                                             </div>
-
-
                                         </div>
 
                                         {/* Bouton "..." */}
                                         <button
-                                            onClick={() => {setSelectedTask(task); setIsEditTaskModalOpen(true) } }// "On ouvre la modale avec CETTE tâche"
+                                            onClick={() => { setSelectedTask(task); setIsEditTaskModalOpen(true) }}
                                             className="w-[57px] h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition mt-[8px] mr-[11px]"
                                         >
                                             <Image src="/plus.svg" alt="Options" width={15} height={4} />
                                         </button>
-
                                     </div>
 
                                     {/* SÉPARATEUR (ligne)  */}
@@ -469,69 +430,93 @@ export default function ProjectDetailsPage() {
                                         <Image src="/line2.svg" alt="Séparateur" width={1000} height={2} />
                                     </div>
 
-                                    {/* BAS DE LA CARTE (Commentaires) */}
-                                    <div className="flex flex-col w-full mt-[10px]">
+                                    {/* BAS DE LA CARTE */}
+                                    <div className="flex flex-col w-full mt-[10px] pl-[20px] pb-[20px]">
 
-                                        {/* La ligne visible */}
-                                        <div className="pl-[30px] flex items-center justify-between w-full" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                        <div className="flex items-center justify-between w-full pr-[40px] mb-[20px]" style={{ fontFamily: "'Inter', sans-serif" }}>
                                             <span className="text-[14px] text-[#1F1F1F] font-regular">
                                                 Commentaires ({task.comments ? task.comments.length : 0})
                                             </span>
                                             <button
-                                                // ⚡ Le clic qui ouvre ou ferme l' accordéon 
                                                 onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
-                                                className="pr-[40px] flex items-center justify-center cursor-pointer hover:opacity-70 transition"
+                                                className="flex items-center justify-center cursor-pointer hover:opacity-70 transition"
                                             >
-                                                {/* clic qui fait tourner l'icône quand c'est ouvert */}
                                                 <div className={`transition-transform duration-200 ${expandedTaskId === task.id ? 'rotate-180' : ''}`}>
                                                     <Image src="/more.svg" alt="Voir plus" width={16} height={8} />
                                                 </div>
                                             </button>
                                         </div>
 
-                                        {/* LA ZONE CACHÉE : Elle s'affiche UNIQUEMENT si on a cliqué sur la flèche */}
+                                        {/* LA ZONE CACHÉE (comments)) */}
                                         {expandedTaskId === task.id && (
+                                            <div className="flex flex-col gap-[20px] w-[980px]"> {/* ⚡ ICI LA VRAIE LARGEUR DE 942px */}
 
-                                            <div className="ml-[30px] mr-[40px] mt-[15px] mb-[10px] bg-[#F9FAFB] rounded-[8px] p-[12px] border border-[#E5E7EB]">
+                                                {/* 1. LISTE DES ANCIENS COMMENTAIRES */}
+                                                {task.comments && task.comments.map((comment: any, index: number) => {
+                                                    const authorName = comment.author?.name || comment.user?.name || 'Inconnu';
+                                                    const initials = authorName !== 'Inconnu' ? authorName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+                                                    const date = new Date(comment.createdAt || Date.now());
+                                                    const formattedDate = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) + ', ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-                                                {/* Affichage des anciens commentaires */}
-                                                <div className="mb-[12px] max-h-[100px] overflow-y-auto space-y-[8px]">
-                                                    {task.comments && task.comments.length > 0 ? (
-                                                        task.comments.map((comment: any, index: number) => (
-                                                            <div key={index} className="text-[12px] flex justify-between items-start" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                                                <div>
-                                                                    <span className="font-semibold text-[#1F1F1F]">{comment.author?.name || comment.user?.name || 'Inconnu'} : </span>
-                                                                    <span className="text-[#6B7280]">{comment.content}</span>
-                                                                </div>
-                                                                {/* Bouton pour supprimer le commentaire */}
-                                                                <button 
-                                                                    onClick={() => handleDeleteComment(task.id, comment.id)}
-                                                                    className="text-[#EF4444] hover:underline ml-[10px] text-[10px]"
-                                                                >
-                                                                    Supprimer
-                                                                </button>
+                                                    const isMe = currentUser && (comment.author?.id === currentUser.id || comment.user?.id === currentUser.id || authorName === currentUser.name);
+
+                                                    return (
+                                                        <div key={index} className="flex items-start w-full">
+
+                                                            {/* AVATAR (initiales) */}
+                                                            <div className={`w-[27px] h-[27px] shrink-0 rounded-full flex items-center justify-center mr-[14px] ${isMe ? 'bg-[#FFE8D9]' : 'bg-[#E5E7EB] border border-[#FFFFFF]'}`}>
+                                                                <span className="text-[#0F0F0F] text-[10px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>{initials}</span>
                                                             </div>
-                                                        ))
-                                                    ) : (
-                                                        <p className="text-[12px] text-[#9CA3AF] italic" style={{ fontFamily: "'Inter', sans-serif" }}>Aucun commentaire pour le moment.</p>
-                                                    )}
-                                                </div>
 
-                                                {/* champ pour écrire */}
-                                                <div className="flex gap-[8px]">
-                                                    <input
-                                                        type="text"
-                                                        value={commentText} 
-                                                        onChange={(e) => setCommentText(e.target.value)} // Maj mémoire
-                                                        placeholder="Ajouter un commentaire..."
-                                                        className="flex-1 h-[36px] border border-[#E5E7EB] rounded-[4px] px-[12px] text-[12px] outline-none focus:border-[#D3590B] transition"
+                                                            {/* BLOC TEXTE */}
+                                                            <div className="flex-1 bg-[#F3F4F6] min-h-[83px] rounded-[10px] pt-[18px] px-[14px] pb-[18px] flex flex-col justify-center">
+                                                                <div className="flex justify-between items-center w-full mb-[8px]">
+                                                                    <div className="flex items-center gap-[10px]">
+                                                                        <span className="text-[#000000] text-[14px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>{authorName}</span>
+                                                                    </div>
+                                                                    <span className="text-[#6B7280] text-[10px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>{formattedDate}</span>
+                                                                </div>
+                                                                <p className="text-[#000000] text-[12px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                                    {comment.content}
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+                                                    );
+                                                })}
+
+                                                {/* BLOC "AJOUTER UN COMMENTAIRE" */}
+                                                <div className="flex items-start w-full mt-[10px]">
+
+                                                    {/* AVATAR CONNECTÉ (avec initiales) */}
+                                                    <div className="w-[27px] h-[27px] shrink-0 rounded-full bg-[#FFE8D9] flex items-center justify-center mr-[14px] mt-[16px]">
+                                                        <span className="text-[#0F0F0F] text-[10px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                            {currentUser ? (currentUser.name ? currentUser.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() : 'U') : 'U'}
+                                                        </span>
+                                                    </div>
+
+                                                    {/* CHAMP DE SAISIE */}
+                                                    <div className="flex-1 h-[83px] bg-[#F9FAFB] border border-[#E5E7EB] rounded-[10px] px-[14px] flex items-center mr-[16px]">
+                                                        <input
+                                                            type="text"
+                                                            value={commentText}
+                                                            onChange={(e) => setCommentText(e.target.value)}
+                                                            onKeyDown={(e) => { if (e.key === 'Enter') handleAddComment(task.id); }}
+                                                            placeholder="Ajouter un commentaire..."
+                                                            className="w-full bg-transparent border-none outline-none text-[#000000] text-[12px] font-normal placeholder-[#6B7280]"
+                                                            style={{ fontFamily: "'Inter', sans-serif" }}
+                                                        />
+                                                    </div>
+
+                                                    {/* BOUTON ENVOYER */}
+                                                    <button
+                                                        onClick={() => handleAddComment(task.id)}
+                                                        className="w-[209px] h-[50px] shrink-0 bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[14px] font-medium flex items-center justify-center transition hover:bg-gray-300 mt-[16px]"
                                                         style={{ fontFamily: "'Inter', sans-serif" }}
-                                                    />
-                                                    <button 
-                                                        onClick={() => handleAddComment(task.id)} //Déclenche l'envoi
-                                                        className="h-[36px] px-[16px] bg-[#1F1F1F] text-white text-[12px] font-medium rounded-[4px] hover:bg-black transition cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                    >
                                                         Envoyer
                                                     </button>
+
                                                 </div>
 
                                             </div>
@@ -539,28 +524,28 @@ export default function ProjectDetailsPage() {
 
                                     </div>
 
-
                                 </div>
                             );
                         })}
-
                     </div>
 
                 </div>
-            </div >
+            </div>
+
             <EditProjectModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
-                project={project} // vraies données à la modale
+                project={project}
             />
-            {/* MODALE POUR MODIFIER UNE TÂCHE */}
+
             <EditTaskModal
-                isOpen={isEditTaskModalOpen} // S'ouvre seulement si une tâche a été sélectionnée (si editingTask n'est pas null)
-                onClose={() => setIsEditTaskModalOpen(false)} // Quand on ferme, on vide la mémoire
-                task={selectedTask} // On envoie toutes les infos de la tâche à la modale 
+                isOpen={isEditTaskModalOpen}
+                onClose={() => setIsEditTaskModalOpen(false)}
+                task={selectedTask}
                 projectId={project?.id}
                 contributors={contributors}
             />
+
             <CreateTaskModal
                 isOpen={isCreateTaskModalOpen}
                 onClose={() => setIsCreateTaskModalOpen(false)}
