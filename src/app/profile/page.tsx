@@ -7,6 +7,13 @@ export default function ProfilePage() {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
+    const [editLastName, setEditLastName] = useState('');
+    const [editFirstName, setEditFirstName] = useState('');
+    const [editEmail, setEditEmail] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
     useEffect(() => {
         const fetchUserProfile = async () => {
             const token = Cookies.get('token');
@@ -16,18 +23,25 @@ export default function ProfilePage() {
             }
 
             try {
-                // APPEL DELA BONNE ROUTE
                 const res = await fetch('http://localhost:8000/auth/profile', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (res.ok) {
                     const json = await res.json();
-                    // On récupère les données de la même manière que pour la Navbar
+                    // On récupère les données 
                     const userData = json.data?.user || json.data || json.user || json;
                     setUser(userData);
+
+                    const fullName = userData?.name || '';
+                    const nameParts = fullName.split(' ');
+                    const extractedFirstName = userData?.firstName || nameParts[0] || '';
+                    const extractedLastName = userData?.lastName || (nameParts.length > 1 ? nameParts.slice(1).join(' ') : '');
+                    setEditFirstName(extractedFirstName);
+                    setEditLastName(extractedLastName);
+                    setEditEmail(userData?.email || '');
                 }
-            } catch (err) {
+            }catch (err) {
                 console.error("Erreur de récupération du profil:", err);
             } finally {
                 setLoading(false);
@@ -37,95 +51,121 @@ export default function ProfilePage() {
         fetchUserProfile();
     }, []);
 
-    // LOGIQUE DE FORMATAGE DYNAMIQUE
-    
-    // 1 On récupère d'abord le nom complet
-    const fullName = user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || '';
-    
-    // 2 On coupe le nom complet en deux (initiales)
-    const firstName = user?.firstName || (fullName ? fullName.split(' ')[0] : '');
-    const lastName = user?.lastName || (fullName ? fullName.split(' ').slice(1).join(' ') : '');
-    
-    const email = user?.email || '';
-    const fakePassword = '●●●●●●●●●●●●';
+    // SAUVEGARDE DES MODIFS
+    const handleUpdateProfile = async () => {
+        setSuccessMessage('');
+        setErrorMessage('');
+        const token = Cookies.get('token');
 
+        const updateData: any = {
+            name: `${editFirstName} ${editLastName}`.trim(),
+            email: editEmail
+        };
+
+        // On n'ajoute le mot de passe dans la requête QUE si l'utilisateur a tapé quelque chose
+        if (newPassword.trim() !== '') {
+            updateData.password = newPassword;
+        }
+
+        try {
+            // Requête PUT pour modifier les données
+            const response = await fetch('http://localhost:8000/users/profile', { 
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(updateData)
+            });
+
+            if (response.ok) {
+                setSuccessMessage("Profil mis à jour avec succès !");
+                setNewPassword(''); // On vide le champ mot de passe par sécurité
+            } else {
+                setErrorMessage("Erreur lors de la mise à jour des informations.");
+            }
+        } catch (error) {
+            setErrorMessage("Impossible de joindre le serveur.");
+        }
+    };
 
     // Écran d'attente
     if (loading) return <div className="p-10 text-center font-sans">Chargement de votre profil...</div>;
 
-    return (
-        // CONTENEUR GLOBAL 
+        return (
         <div className="bg-[#F3F4F6] min-h-screen pt-[57px] pb-[181px] pl-[100px] pr-[125px] font-sans">
             
-            {/* LE GROS BLOC BLANC */}
             <div className="w-[1215px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] px-[59px] pt-[40px] pb-[59px] flex flex-col mx-auto">
 
-                {/* TITRES À L'INTÉRIEUR DU BLOC */}
                 <div className="mb-[41px]">
                     <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
                         Mon compte
                     </h1>
                     <p className="text-[16px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                        {fullName}
+                        {`${editFirstName} ${editLastName}`.trim() || 'Utilisateur'}
                     </p>
                 </div>
 
                 {/* FORMULAIRE */}
                 <div className="flex flex-col">
                     
+                    {/* Affichage messages réussite ou erreur */}
+                    {successMessage && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-[4px] text-[14px]">{successMessage}</div>}
+                    {errorMessage && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-[4px] text-[14px]">{errorMessage}</div>}
+
                     {/* BLOC NOM */}
                     <div className="mb-[24px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                            Nom
-                        </label>
-                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] flex items-center bg-[#FFFFFF]">
-                            <span className="text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                                {lastName}
-                            </span>
-                        </div>
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nom</label>
+                        <input 
+                            type="text" 
+                            value={editLastName} 
+                            onChange={(e) => setEditLastName(e.target.value)}
+                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                        />
                     </div>
 
                     {/* BLOC PRÉNOM */}
                     <div className="mb-[24px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                            Prénom
-                        </label>
-                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] flex items-center bg-[#FFFFFF]">
-                            <span className="text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                                {firstName}
-                            </span>
-                        </div>
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Prénom</label>
+                        <input 
+                            type="text" 
+                            value={editFirstName} 
+                            onChange={(e) => setEditFirstName(e.target.value)}
+                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                        />
                     </div>
 
                     {/* BLOC EMAIL */}
                     <div className="mb-[24px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                            Email
-                        </label>
-                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] flex items-center bg-[#FFFFFF]">
-                            <span className="text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                                {email}
-                            </span>
-                        </div>
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Email</label>
+                        <input 
+                            type="email" 
+                            value={editEmail} 
+                            onChange={(e) => setEditEmail(e.target.value)}
+                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                        />
                     </div>
 
                     {/* BLOC MOT DE PASSE */}
                     <div className="mb-[41px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
-                            Mot de passe
-                        </label>
-                        <div className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] flex items-center bg-[#FFFFFF]">
-                            <span className="text-[14px] text-[#1F1F1F] font-regular tracking-[4px]">
-                                {fakePassword}
-                            </span>
-                        </div>
+                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                        <input 
+                            type="password" 
+                            value={newPassword} 
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            placeholder="••••••••"
+                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                        />
                     </div>
 
                 </div>
 
                 {/* BOUTON */}
-                <button className="w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition self-start">
-                    <span className="text-[16px] text-[#FFFFFF] font-regular" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                <button 
+                    onClick={handleUpdateProfile}
+                    className="w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition self-start"
+                >
+                    <span className="text-[16px] text-[#FFFFFF] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
                         Modifier les informations
                     </span>
                 </button>
