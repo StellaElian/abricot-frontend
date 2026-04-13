@@ -8,13 +8,13 @@ import CreateProjectModal from '@/src/components/CreateProjectModal';
 
 export default function DashboardPage() {
 
-  const [tasks, setTasks] = useState<any[]>([]); 
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [currentView, setCurrentView] = useState('liste'); 
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentView, setCurrentView] = useState('liste');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredTasks = tasks.filter(task => 
-    task.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredTasks = tasks.filter(task =>
+    task.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     task.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -46,7 +46,7 @@ export default function DashboardPage() {
     if (status === 'TODO') return 'À faire';
     if (status === 'IN_PROGRESS') return 'En cours';
     if (status === 'DONE') return 'Terminée';
-    return 'À faire'; 
+    return 'À faire';
   };
 
   const todoTasks = filteredTasks.filter(task => task.status === 'TODO');
@@ -120,8 +120,8 @@ export default function DashboardPage() {
               <input
                 type="text"
                 placeholder="Rechercher une tâche"
-                value={searchQuery}                                      
-                onChange={(e) => setSearchQuery(e.target.value)}         
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full h-full border border-[#E5E7EB] rounded-[8px] pl-[32px] pr-[56px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
               />
               <div className="absolute right-[32px] top-[50%] translate-y-[-50%] pointer-events-none flex items-center justify-center">
@@ -203,8 +203,8 @@ export default function DashboardPage() {
 
                     {/* Bouton Voir */}
                     <Link
-                    href={`/projects/${task.projectId || task.project?.id}`}
-                    className="w-auto px-6 lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      href={`/projects/${task.projectId || task.project?.id}`}
+                      className="w-auto px-6 lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
                       Voir
                     </Link>
                   </div>
@@ -219,10 +219,11 @@ export default function DashboardPage() {
 
       {/* ======================= VUE KANBAN ======================= */}
       {currentView === 'kanban' && (
-        <div className="w-full max-w-[1301px] flex flex-row gap-[22px] mx-auto overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
+        // RESPONSIVE : flex-col sur mobile (empilé), lg:flex-row sur bureau (côte-à-côte)
+        <div className="w-full max-w-[1301px] flex flex-col lg:flex-row gap-6 lg:gap-[22px] mx-auto pb-4">
 
           {/* COLONNE 1 : À FAIRE */}
-          <div className="min-w-[320px] lg:min-w-[419px] w-[320px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF] snap-center">
+          <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
               <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>À faire</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]">{todoTasks.length}</div>
@@ -237,18 +238,17 @@ export default function DashboardPage() {
                     </div>
                     <div className="bg-[#FFE0E0] text-[#EF4444] px-2 lg:px-[16px] py-1 lg:py-[4px] rounded-[50px] text-[10px] lg:text-[14px] whitespace-nowrap shrink-0">À faire</div>
                   </div>
-                  {/* Bas de la carte */}
                   <div className="w-full">
-                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="flex items-center gap-[8px]"><Image src="/files2.svg" alt="Projet" width={18} height={14} /><span className="truncate max-w-[70px]">{task.project ? task.project.name : "Projet"}</span></div>
-                      <div className="mx-2 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
-                      <div className="flex items-center gap-[8px]"><Image src="/date.svg" alt="Date" width={15} height={15} /><span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span></div>
-                      <div className="mx-2 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
-                      <div className="flex items-center gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
+                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/files2.svg" alt="Projet" width={18} height={14} /><span className="truncate max-w-[70px]">{task.project ? task.project.name : "Projet"}</span></div>
+                      <div className="mx-1 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/date.svg" alt="Date" width={15} height={15} /><span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span></div>
+                      <div className="mx-1 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
                     </div>
-                    <Link 
-                    href={`/projects/${task.projectId || task.project?.id}`}
-                    className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <Link
+                      href={`/projects/${task.projectId || task.project?.id}`}
+                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
                       Voir
                     </Link>
                   </div>
@@ -258,7 +258,7 @@ export default function DashboardPage() {
           </div>
 
           {/* COLONNE 2 : EN COURS */}
-          <div className="min-w-[320px] lg:min-w-[419px] w-[320px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF] snap-center">
+          <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
               <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>En cours</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]">{inProgressTasks.length}</div>
@@ -273,18 +273,17 @@ export default function DashboardPage() {
                     </div>
                     <div className="bg-[#FFF0D7] text-[#E08D00] px-2 lg:px-[16px] py-1 lg:py-[4px] rounded-[50px] text-[10px] lg:text-[14px] whitespace-nowrap shrink-0">En cours</div>
                   </div>
-                  {/* Bas de la carte */}
                   <div className="w-full">
-                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="flex items-center gap-[8px]"><Image src="/files2.svg" alt="Projet" width={18} height={14} /><span className="truncate max-w-[70px]">{task.project ? task.project.name : "Projet"}</span></div>
-                      <div className="mx-2 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
-                      <div className="flex items-center gap-[8px]"><Image src="/date.svg" alt="Date" width={15} height={15} /><span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span></div>
-                      <div className="mx-2 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
-                      <div className="flex items-center gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
+                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/files2.svg" alt="Projet" width={18} height={14} /><span className="truncate max-w-[70px]">{task.project ? task.project.name : "Projet"}</span></div>
+                      <div className="mx-1 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/date.svg" alt="Date" width={15} height={15} /><span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span></div>
+                      <div className="mx-1 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
                     </div>
-                    <Link 
-                    href={`/projects/${task.projectId || task.project?.id}`}
-                    className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <Link
+                      href={`/projects/${task.projectId || task.project?.id}`}
+                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
                       Voir
                     </Link>
                   </div>
@@ -294,7 +293,7 @@ export default function DashboardPage() {
           </div>
 
           {/* COLONNE 3 : TERMINÉES */}
-          <div className="min-w-[320px] lg:min-w-[419px] w-[320px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF] snap-center">
+          <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
               <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>Terminées</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]">{doneTasks.length}</div>
@@ -309,18 +308,17 @@ export default function DashboardPage() {
                     </div>
                     <div className="bg-[#F1FFF7] text-[#27E600] px-2 lg:px-[16px] py-1 lg:py-[4px] rounded-[50px] text-[10px] lg:text-[14px] whitespace-nowrap shrink-0">Terminée</div>
                   </div>
-                  {/* Bas de la carte */}
                   <div className="w-full">
-                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      <div className="flex items-center gap-[8px]"><Image src="/files2.svg" alt="Projet" width={18} height={14} /><span className="truncate max-w-[70px]">{task.project ? task.project.name : "Projet"}</span></div>
-                      <div className="mx-2 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
-                      <div className="flex items-center gap-[8px]"><Image src="/date.svg" alt="Date" width={15} height={15} /><span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span></div>
-                      <div className="mx-2 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
-                      <div className="flex items-center gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
+                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/files2.svg" alt="Projet" width={18} height={14} /><span className="truncate max-w-[70px]">{task.project ? task.project.name : "Projet"}</span></div>
+                      <div className="mx-1 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/date.svg" alt="Date" width={15} height={15} /><span>{task.dueDate ? task.dueDate.substring(0, 10) : "Sans date"}</span></div>
+                      <div className="mx-1 lg:mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
+                      <div className="flex items-center gap-[4px] lg:gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
                     </div>
-                    <Link 
-                    href={`/projects/${task.projectId || task.project?.id}`}
-                    className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <Link
+                      href={`/projects/${task.projectId || task.project?.id}`}
+                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
                       Voir
                     </Link>
                   </div>
@@ -331,12 +329,6 @@ export default function DashboardPage() {
 
         </div>
       )}
-
-      <CreateProjectModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-
     </div>
-  );
+  )
 }
