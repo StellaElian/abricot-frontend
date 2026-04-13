@@ -69,7 +69,7 @@ export default function ProfilePage() {
 
         try {
             // Requête PUT pour modifier les données
-            const response = await fetch('http://localhost:8000/users/profile', { 
+            const response = await fetch('http://localhost:8000/auth/profile', { 
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export default function ProfilePage() {
                 setSuccessMessage("Profil mis à jour avec succès !");
                 setNewPassword(''); // On vide le champ mot de passe par sécurité
             } else {
-                setErrorMessage("Erreur lors de la mise à jour des informations.");
+                setErrorMessage("Erreur lors de la mise à jour des informations. Veuillez réessayer");
             }
         } catch (error) {
             setErrorMessage("Impossible de joindre le serveur.");
