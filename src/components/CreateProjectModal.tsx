@@ -50,16 +50,17 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
   };
 
   return (
-    // 1. LE FOND : Flouté (backdrop-blur-sm) et légèrement assombri, mais pas noir !
-    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50">
+    // LE FOND : Flouté (backdrop-blur-sm) légèrement assombri
+    // RESPONSIVE : Ajout de p-4 pour éviter que la modale touche les bords sur mobile
+    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       
-      {/* 2. LA FENÊTRE : Dimensions exactes (598x616) et centrée avec les marges Figma (73px sur les côtés) */}
-      <div className="bg-white rounded-[10px] w-[598px] h-[616px] relative pt-[79px] px-[73px] shadow-xl font-sans flex flex-col">
+      {/* LA FENÊTRE */}
+      <div className="bg-white rounded-[10px] w-full max-w-[598px] h-auto lg:h-[616px] relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] shadow-xl font-sans flex flex-col">
         
-        {/* 3. LA CROIX : Positionnée exactement à 37px du haut et 38.67px de la droite */}
+        {/* LA CROIX : ( Positionnée à 37px du haut et 38.67px de la droite) */}
         <button 
           onClick={onClose}
-          className="absolute top-[37px] right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
+          className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
         >
           <Image 
             src="/cross.svg" 
@@ -72,14 +73,14 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
         {/* TITRE PRINCIPAL */}
         <h2 
-          className="text-[#1F1F1F] text-[24px] font-semibold mb-[33px]"
+          className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[33px]"
           style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
         >
           Créer un projet
         </h2>
 
         {/* LE FORMULAIRE  */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-[24px] flex-grow">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] lg:gap-[24px] flex-grow">
           
           {/* CHAMP : Titre */}
           <div className="flex flex-col gap-[7px]">
@@ -90,7 +91,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] outline-none focus:border-[#D3590B] transition"
+              className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] outline-none focus:border-[#D3590B] transition"
               required
             />
           </div>
@@ -104,7 +105,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] outline-none focus:border-[#D3590B] transition"
+              className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] outline-none focus:border-[#D3590B] transition"
               required
             />
           </div>
@@ -114,7 +115,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
             <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
               Contributeurs
             </label>
-            <div className="relative w-[452px]">
+            <div className="relative w-full lg:w-[452px]">
               <input 
                 type="text"
                 placeholder="Choisir un ou plusieurs collaborateurs"
@@ -122,7 +123,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                 onChange={(e) => setContributors(e.target.value)}
                 className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
               />
-              {/* 4. LA FLÈCHE */}
+              {/* FLÈCHE */}
               <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
                  <Image 
                    src="/vector.svg" 
@@ -139,7 +140,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
           <button 
             type="submit"
             disabled={!title.trim() || !description.trim()}
-            className="mt-auto mb-[60px] w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#D1D5DB]"
+            className="mt-4 lg:mt-auto mb-6 lg:mb-[60px] w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#D1D5DB]"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Ajouter un projet
