@@ -329,6 +329,11 @@ export default function DashboardPage() {
 
         </div>
       )}
+      
+      <CreateProjectModal
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      />
     </div>
   )
 }
