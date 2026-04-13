@@ -115,7 +115,7 @@ export default function DashboardPage() {
       {currentView === 'liste' && (
         <div className="w-full px-[59px] pt-[40px] pb-[41px] border border-transparent bg-[#FFFFFF]">
 
-          {/* L'en-tête du bloc (mx-auto pour centrer le contenu INTÉRIEUR) */}
+          {/* L'en-tête du bloc  */}
           <div className="flex justify-between items-start w-full max-w-[1097px] mx-auto mb-[41px]">
 
             <div className="flex flex-col gap-[8px]">
@@ -147,7 +147,6 @@ export default function DashboardPage() {
           <div className="flex flex-col gap-[17px] w-full max-w-[1097px] mx-auto">
 
             {filteredTasks.map((task, index) => {
-              // On traduit le statut avant de dessiner la carte
               const frenchStatus = formatStatus(task.status);
 
               return (
@@ -215,10 +214,15 @@ export default function DashboardPage() {
                       </div>
                     )}
 
+
+   
+
                     {/* Bouton Voir */}
-                    <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <Link
+                    href={`/projects/${task.projectId || task.project?.id}`}
+                    className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer  flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
                       Voir
-                    </button>
+                    </Link>
                   </div>
 
                 </div>
@@ -259,7 +263,11 @@ export default function DashboardPage() {
                       <div className="mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
                       <div className="flex items-center gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
                     </div>
-                    <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer">Voir</button>
+                    <Link 
+                    href={`/projects/${task.projectId || task.project?.id}`}
+                    className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer  flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      Voir
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -291,7 +299,11 @@ export default function DashboardPage() {
                       <div className="mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
                       <div className="flex items-center gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
                     </div>
-                    <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer">Voir</button>
+                    <Link 
+                    href={`/projects/${task.projectId || task.project?.id}`}
+                    className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer  flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      Voir
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -323,7 +335,11 @@ export default function DashboardPage() {
                       <div className="mx-[15px]"><Image src="/line.svg" alt="Séparateur" width={1} height={11} className="w-[1px] h-[11px]" /></div>
                       <div className="flex items-center gap-[8px]"><Image src="/mess.svg" alt="Messages" width={15} height={15} /><span>{task.comments ? task.comments.length : 0}</span></div>
                     </div>
-                    <button className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer">Voir</button>
+                    <Link 
+                    href={`/projects/${task.projectId || task.project?.id}`}
+                    className="w-[121px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[16px] font-medium transition hover:bg-black cursor-pointer  flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      Voir
+                    </Link>
                   </div>
                 </div>
               ))}
