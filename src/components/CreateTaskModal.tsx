@@ -7,10 +7,11 @@ import Image from 'next/image';
 interface EditProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
-    project: any; //reçoit les données des projets
+    projectId: any; //reçoit les données des projets
+    contributors?: any[]; 
 }
 
-export default function EditProjectModal({ isOpen, onClose, project }: EditProjectModalProps) {
+export default function EditProjectModal({ isOpen, onClose, projectId }: EditProjectModalProps) {
     // Les états commencent vide
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -18,19 +19,19 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
     //dynamisation :
     useEffect(() => {
-        if (project) {
-            setTitle(project.title || project.name || ''); 
-            setDescription(project.description || '');
+        if (projectId) {
+            setTitle(projectId.title || projectId.name || ''); 
+            setDescription(projectId.description || '');
             //calcul nbr contributeurs 
             const contributorsList = [
-                project.owner,
-                ...(project.members?.map((m: any) => m.user || m).filter((u: any) => u?.id !== project.owner?.id) || [])
+                projectId.owner,
+                ...(projectId.members?.map((m: any) => m.user || m).filter((u: any) => u?.id !== projectId.owner?.id) || [])
             ].filter(Boolean);
 
             const count = contributorsList.length;
             setContributorsText(`${count} collaborateur${count > 1 ? 's' : ''}`);
         }
-    }, [project]);
+    }, [projectId]);
 
     if (!isOpen) return null;
 
@@ -39,7 +40,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
         try {
             const token = Cookies.get('token');
-            const response = await fetch(`http://localhost:8000/projects/${project.id}`, {
+            const response = await fetch(`http://localhost:8000/projects/${projectId.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -174,7 +175,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                                         try {
                                             const token = Cookies.get('token');
-                                            const response = await fetch(`http://localhost:8000/projects/${project.id}`, {
+                                            const response = await fetch(`http://localhost:8000/projects/${projectId.id}`, {
                                                 method: 'DELETE',
                                                 headers: {
                                                     'Authorization': `Bearer ${token}`
