@@ -14,8 +14,9 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center font-sans">
-            <div className="w-[400px] bg-white p-8 rounded-[10px] shadow-sm border border-[#E5E7EB] flex flex-col items-center">
+        <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center font-sans px-4">
+            
+            <div className="w-full max-w-[400px] bg-white p-6 md:p-8 rounded-[10px] shadow-sm border border-[#E5E7EB] flex flex-col items-center">
                 
                 <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[10px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     Mot de passe oublié
