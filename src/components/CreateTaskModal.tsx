@@ -90,8 +90,8 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                 {/* TITRE PRINCIPAL */}
                 <h2
-                    className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] mt-0 lg:mt-[28.17px]"
-                    style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
+                    className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] mt-0 lg:mt-[28.17px] font-manrope"
+                    style={{ lineHeight: "100%" }}
                 >
                     Modifier un projet
                 </h2>
@@ -101,7 +101,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                     {/* CHAMP : Titre */}
                     <div className="flex flex-col gap-[7px]">
-                        <label htmlFor="title" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <label htmlFor="title" className="text-[14px] font-normal text-[#1F1F1F] font-inter">
                             Titre*
                         </label>
                         <input
@@ -116,7 +116,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                     {/* CHAMP : Description */}
                     <div className="flex flex-col gap-[7px]">
-                        <label htmlFor="description" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <label htmlFor="description" className="text-[14px] font-normal text-[#1F1F1F] font-inter">
                             Description*
                         </label>
                         <input
@@ -131,7 +131,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                     {/* CHAMP : Contributeurs */}
                     <div className="flex flex-col gap-[7px]">
-                        <label htmlFor="contributors" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <label htmlFor="contributors" className="text-[14px] font-normal text-[#1F1F1F] font-inter">
                             Contributeurs
                         </label>
                         <div className="relative w-full lg:w-[452px]">
@@ -160,8 +160,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                     <div className="mt-auto flex flex-col-reverse lg:flex-row items-center justify-between w-full gap-4 lg:gap-0">
                         <button
                             type="submit"
-                            className="mt-auto w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="mt-auto w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB] font-inter"
                         >
                             Enregistrer
                         </button>
@@ -195,8 +194,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                                     };
                                 }
                             }
-                            className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition mt-2 lg:mt-0"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition mt-2 lg:mt-0 font-inter"
                         >
                             Supprimer le projet
                         </button>
