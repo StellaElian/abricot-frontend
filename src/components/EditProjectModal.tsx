@@ -66,13 +66,13 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
     };
 
     return (
-        // 1. LE FOND : Flouté (backdrop-blur-sm)
+        // LE FOND : Flouté (backdrop-blur-sm)
         <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
-            {/* 2. LA FENÊTRE */}
+            {/* LA FENÊTRE */}
             <div className="bg-[#FFFFFF] rounded-[10px] w-full max-w-[598px] min-h-[500px] lg:h-[616px] relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col">
 
-                {/* 3. LA CROIX */}
+                {/* LA CROIX */}
                 <button
                     onClick={onClose}
                     className="absolute top-[20px] lg:top-[37.5px] right-[20px] lg:right-[39.17px] hover:opacity-70 transition flex items-center justify-center"
