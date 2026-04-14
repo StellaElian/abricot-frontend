@@ -117,10 +117,10 @@ export default function ProjectDetailsPage() {
     if (project && currentUser && !hasAccess) {
         return (
             <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center font-sans p-4">
-                <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] mb-[10px] text-center" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] mb-[10px] text-center font-manrope">
                     Accès refusé
                 </h1>
-                <p className="text-[14px] lg:text-[16px] text-[#6B7280] mb-[20px] text-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <p className="text-[14px] lg:text-[16px] text-[#6B7280] mb-[20px] text-center font-inter">
                     Vous n'êtes ni administrateur ni contributeur de ce projet.
                 </p>
                 <Link href="/dashboard" className="w-[200px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] flex items-center justify-center hover:opacity-90 transition">
@@ -175,15 +175,14 @@ export default function ProjectDetailsPage() {
                         <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-4 lg:gap-0">
                             {/* Titre et Modifier */}
                             <div className="flex flex-wrap items-center gap-[14px] mb-[14px] lg:mb-0">
-                                <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                                <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] font-manrope">
                                     {project ? project.title || project.name : "Chargement..."}
                                 </h1>
 
                                 {isOwner && (
                                     <button
                                         onClick={() => setIsEditModalOpen(true)}
-                                        className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition"
-                                        style={{ fontFamily: "'Inter', sans-serif" }}
+                                        className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition font-inter"
                                     >
                                         Modifier
                                     </button>
@@ -199,7 +198,8 @@ export default function ProjectDetailsPage() {
                                     Créer une tâche
                                 </button>
                                 <button 
-                                    className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                    className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition font-inter"
+                                >
                                     <Image src="/star.svg" alt="" aria-hidden="true" width={16} height={16} className="w-[16px] lg:w-[21px]" />
                                     IA
                                 </button>
@@ -207,7 +207,7 @@ export default function ProjectDetailsPage() {
                         </div>
 
                         {/* Dynamisation Description */}
-                        <p className="text-[14px] lg:text-[18px] text-[#6B7280] font-regular mt-4 lg:mt-0" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <p className="text-[14px] lg:text-[18px] text-[#6B7280] font-regular mt-4 lg:mt-0 font-inter">
                             {project ? project.description : "Aucune description pour ce projet."}
                         </p>
 
@@ -217,8 +217,8 @@ export default function ProjectDetailsPage() {
                 <div className="w-full lg:w-[1255px] h-auto lg:h-[67px] py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center ml-0 lg:ml-[60px] pl-4 lg:pl-[50px] gap-2 lg:gap-0 overflow-x-auto hide-scrollbar">
                     
                     <div className="flex items-center lg:mb-0 shrink-0">
-                        <span className="text-[16px] lg:text-[18px] text-[#1F1F1F] font-[600] mr-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>Contributeurs</span>
-                        <span className="text-[14px] lg:text-[16px] text-[#6B7280] lg:pr-[300px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <span className="text-[16px] lg:text-[18px] text-[#1F1F1F] font-[600] mr-[8px] font-manrope">Contributeurs</span>
+                        <span className="text-[14px] lg:text-[16px] text-[#6B7280] lg:pr-[300px] font-inter">
                             {contributors ? contributors.length : 0} personnes
                         </span>
                     </div>
@@ -235,7 +235,7 @@ export default function ProjectDetailsPage() {
                                             <div className="w-[27px] h-[27px] rounded-full bg-[#FFE8D9] flex items-center justify-center text-[#D3590B] text-[10px] font-semibold font-sans z-10">
                                                 {initials}
                                             </div>
-                                            <div className="h-[25px] px-[16px] bg-[#FFE8D9] rounded-[50px] flex items-center justify-center text-[#D3590B] text-[12px] lg:text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                            <div className="h-[25px] px-[16px] bg-[#FFE8D9] rounded-[50px] flex items-center justify-center text-[#D3590B] text-[12px] lg:text-[14px] font-regular font-inter">
                                                 {fullName}
                                             </div>
                                         </div>
@@ -247,7 +247,7 @@ export default function ProjectDetailsPage() {
                                         <div className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[10px] font-regular font-sans z-10">
                                             {initials}
                                         </div>
-                                        <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[12px] lg:text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                        <div className="h-[25px] px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[12px] lg:text-[14px] font-regular font-inter">
                                             {fullName}
                                         </div>
                                     </div>
@@ -271,10 +271,10 @@ export default function ProjectDetailsPage() {
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center w-full mb-6 lg:mb-[41px] px-4 lg:pl-[59px] pt-6 lg:pt-[40px] gap-4 lg:gap-0">
 
                         <div className="flex flex-col">
-                            <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] mb-1 lg:mb-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                            <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] mb-1 lg:mb-[8px] font-manrope">
                                 Tâches
                             </h2>
-                            <p className="text-[12px] lg:text-[16px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                            <p className="text-[12px] lg:text-[16px] text-[#6B7280] font-regular font-inter">
                                 par ordre de priorité
                             </p>
                         </div>
@@ -286,7 +286,7 @@ export default function ProjectDetailsPage() {
                                 <div className="pl-2 lg:pl-[16px] pr-2 lg:pr-[14px] flex items-center justify-center">
                                     <Image src="/list.svg" alt="" aria-hidden="true" width={14} height={14} className="w-[12px] lg:w-[16px]" />
                                 </div>
-                                <span className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular pr-2 lg:pr-0" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                <span className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular pr-2 lg:pr-0 font-inter">
                                     Liste
                                 </span>
                             </button>
@@ -295,13 +295,13 @@ export default function ProjectDetailsPage() {
                                 <div className="pl-2 lg:pl-[16px] pr-2 lg:pr-[14px] flex items-center justify-center">
                                     <Image src="/logokanban.svg" alt="" aria-hidden="true" width={14} height={14} className="w-[12px] lg:w-[15px]" />
                                 </div>
-                                <span className="text-[#D3590B] text-[12px] lg:text-[14px] font-medium pr-2 lg:pr-0" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                <span className="text-[#D3590B] text-[12px] lg:text-[14px] font-medium pr-2 lg:pr-0 font-inter">
                                     Calendrier
                                 </span>
                             </button>
 
                             <button className="relative h-[40px] lg:h-[63px] w-[120px] lg:w-[152px] bg-white border border-[#E5E7EB] rounded-[8px] flex items-center cursor-pointer lg:mr-[16px] shrink-0 mt-2 lg:mt-0">
-                                <span className="absolute left-[16px] lg:left-[32px] text-[#6B7280] text-[12px] lg:text-[14px] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                <span className="absolute left-[16px] lg:left-[32px] text-[#6B7280] text-[12px] lg:text-[14px] font-regular font-inter">
                                     Statut
                                 </span>
                                 <div className="absolute right-[16px] lg:right-[31px]">
@@ -342,7 +342,7 @@ export default function ProjectDetailsPage() {
 
                                             {/* Titre + Badge Statut */}
                                             <div className="flex flex-wrap items-center gap-2 lg:gap-[8px] mb-2 lg:mb-[7px]">
-                                                <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                                                <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] font-manrope">
                                                     {task.title}
                                                 </h3>
                                                 {frenchStatus === "À faire" ? (
@@ -354,17 +354,17 @@ export default function ProjectDetailsPage() {
                                                 )}
                                             </div>
 
-                                            <p className="text-[12px] lg:text-[14px] text-[#6B7280] mb-4 lg:mb-[32px] font-regular line-clamp-2 lg:line-clamp-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                            <p className="text-[12px] lg:text-[14px] text-[#6B7280] mb-4 lg:mb-[32px] font-regular line-clamp-2 lg:line-clamp-none font-inter">
                                                 {task.description}
                                             </p>
 
-                                            <div className="flex items-center gap-2 lg:gap-[8px] mb-2 lg:mb-[24px] text-[10px] lg:text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                            <div className="flex items-center gap-2 lg:gap-[8px] mb-2 lg:mb-[24px] text-[10px] lg:text-[12px] text-[#6B7280] font-regular font-inter">
                                                 <span className="font-regular text-[#6B7280]">Échéance :</span>
                                                 <Image src="/union.svg" alt="" aria-hidden="true" width={12} height={13} className="w-[12px] lg:w-[15px]"/>
-                                                <span className="font-regular text-[#1F1F1F] text-[10px] lg:text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
+                                                <span className="font-regular text-[#1F1F1F] text-[10px] lg:text-[12px] font-inter">{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
-                                            <div className="flex flex-wrap items-center gap-2 lg:gap-[8px] text-[10px] lg:text-[12px] text-[#6B7280] font-regular mb-4 lg:mb-0" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                            <div className="flex flex-wrap items-center gap-2 lg:gap-[8px] text-[10px] lg:text-[12px] text-[#6B7280] font-regular mb-4 lg:mb-0 font-inter">
                                                 <span>Assigné à :</span>
                                                 {task.assignees && task.assignees.map((assigneeObj: any, index: number) => {
                                                     const targetId = assigneeObj.userId || assigneeObj.id;
@@ -377,7 +377,7 @@ export default function ProjectDetailsPage() {
                                                             <div className="w-[20px] h-[20px] lg:w-[27px] lg:h-[27px] rounded-full bg-[#E5E7EB] border border-[#FFFFFF] flex items-center justify-center text-[#0F0F0F] text-[8px] lg:text-[10px] font-regular font-sans z-10 shrink-0">
                                                                 {initials}
                                                             </div>
-                                                            <div className="h-[20px] lg:h-[25px] px-2 lg:px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[10px] lg:text-[14px] font-regular whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                            <div className="h-[20px] lg:h-[25px] px-2 lg:px-[16px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[#6B7280] text-[10px] lg:text-[14px] font-regular whitespace-nowrap font-inter">
                                                                 {fullName}
                                                             </div>
                                                         </div>
@@ -404,7 +404,7 @@ export default function ProjectDetailsPage() {
                                     {/* BAS DE LA CARTE (Commentaires) */}
                                     <div className="flex flex-col w-full mt-2 lg:mt-[10px] pl-0 lg:pl-[20px] pb-4 lg:pb-[20px]">
 
-                                        <div className="flex items-center justify-between w-full pr-0 lg:pr-[40px] mb-4 lg:mb-[20px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                        <div className="flex items-center justify-between w-full pr-0 lg:pr-[40px] mb-4 lg:mb-[20px] font-inter">
                                             <span className="text-[12px] lg:text-[14px] text-[#1F1F1F] font-regular">
                                                 Commentaires ({task.comments ? task.comments.length : 0})
                                             </span>
@@ -436,17 +436,17 @@ export default function ProjectDetailsPage() {
                                                         <div key={index} className="flex items-start w-full min-w-[300px]">
 
                                                             <div className={`w-[27px] h-[27px] shrink-0 rounded-full flex items-center justify-center mr-2 lg:mr-[14px] ${isMe ? 'bg-[#FFE8D9]' : 'bg-[#E5E7EB] border border-[#FFFFFF]'}`}>
-                                                                <span className="text-[#0F0F0F] text-[10px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>{initials}</span>
+                                                                <span className="text-[#0F0F0F] text-[10px] font-normal font-inter">{initials}</span>
                                                             </div>
 
                                                             <div className="flex-1 bg-[#F3F4F6] min-h-[60px] lg:min-h-[83px] rounded-[10px] pt-[12px] lg:pt-[18px] px-3 lg:px-[14px] pb-[12px] lg:pb-[18px] flex flex-col justify-center">
                                                                 <div className="flex justify-between items-center w-full mb-[8px]">
                                                                     <div className="flex items-center gap-[10px]">
-                                                                        <span className="text-[#000000] text-[12px] lg:text-[14px] font-normal truncate max-w-[120px] lg:max-w-none" style={{ fontFamily: "'Inter', sans-serif" }}>{authorName}</span>
+                                                                        <span className="text-[#000000] text-[12px] lg:text-[14px] font-normal truncate max-w-[120px] lg:max-w-none font-inter">{authorName}</span>
                                                                     </div>
-                                                                    <span className="text-[#6B7280] text-[8px] lg:text-[10px] font-normal shrink-0" style={{ fontFamily: "'Inter', sans-serif" }}>{formattedDate}</span>
+                                                                    <span className="text-[#6B7280] text-[8px] lg:text-[10px] font-normal shrink-0 font-inter">{formattedDate}</span>
                                                                 </div>
-                                                                <p className="text-[#000000] text-[10px] lg:text-[12px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                                <p className="text-[#000000] text-[10px] lg:text-[12px] font-normal font-inter">
                                                                     {comment.content}
                                                                 </p>
                                                             </div>
@@ -459,7 +459,7 @@ export default function ProjectDetailsPage() {
                                                 <div className="flex items-start w-full mt-2 lg:mt-[10px] min-w-[300px]">
 
                                                     <div className="w-[27px] h-[27px] shrink-0 rounded-full bg-[#FFE8D9] flex items-center justify-center mr-2 lg:mr-[14px] mt-2 lg:mt-[16px]">
-                                                        <span className="text-[#0F0F0F] text-[10px] font-normal" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                                        <span className="text-[#0F0F0F] text-[10px] font-normal font-inter">
                                                             {currentUser ? (currentUser.name ? currentUser.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() : 'U') : 'U'}
                                                         </span>
                                                     </div>
@@ -474,15 +474,13 @@ export default function ProjectDetailsPage() {
                                                                 onChange={(e) => setCommentText(e.target.value)}
                                                                 onKeyDown={(e) => { if (e.key === 'Enter') handleAddComment(task.id); }}
                                                                 placeholder="Ajouter un commentaire..."
-                                                                className="w-full bg-transparent border-none outline-none text-[#000000] text-[10px] lg:text-[12px] font-normal placeholder-[#6B7280]"
-                                                                style={{ fontFamily: "'Inter', sans-serif" }}
+                                                                className="w-full bg-transparent border-none outline-none text-[#000000] text-[10px] lg:text-[12px] font-normal placeholder-[#6B7280] font-inter"
                                                             />
                                                         </div>
                                                         {/* BOUTON ENVOYER */}
                                                         <button
                                                             onClick={() => handleAddComment(task.id)}
-                                                            className="w-full lg:w-[209px] h-[40px] lg:h-[50px] shrink-0 bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[12px] lg:text-[14px] font-medium flex items-center justify-center transition hover:bg-gray-300 mt-2 lg:mt-[16px] lg:ml-4"
-                                                            style={{ fontFamily: "'Inter', sans-serif" }}
+                                                            className="w-full lg:w-[209px] h-[40px] lg:h-[50px] shrink-0 bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[12px] lg:text-[14px] font-medium flex items-center justify-center transition hover:bg-gray-300 mt-2 lg:mt-[16px] lg:ml-4 font-inter"
                                                         >
                                                             Envoyer
                                                         </button>
