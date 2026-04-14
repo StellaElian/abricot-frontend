@@ -34,9 +34,12 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
       }
       
       if (task.assignees) {
-        //On récupère l'ID des personnes déja assignées
-        const assigneeIds = task.assignees.map((a: any) => a.userId || a.id);
-        setSelectedAssignees(assigneeIds);
+        // Extraction de l'ID 
+        const assigneeIds = task.assignees.map((a: any) => {
+            if (typeof a === 'string') return a;
+            return a.userId || a.user?.id || a.id;
+        });
+        setSelectedAssignees(assigneeIds.filter(Boolean));
       }else {
         setSelectedAssignees([]);
       }
@@ -214,11 +217,22 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                   "Choisir un ou plusieurs collaborateurs"
                 ) : (
                   selectedAssignees.map(id => {
-                    const person = contributors.find((c: any) => c.id === id || c.userId === id);
-                    const name = person?.name || person?.user?.name || "Inconnu";
+                    // 1.On cherche dans la liste de tous les contributeurs
+                    let person = contributors.find((c: any) => c.id === id || c.userId === id);
+                    
+                    // 2.on fouille dans les données de la tâche 
+                    if (!person && task?.assignees) {
+                        const originalAssignee = task.assignees.find((a: any) => a.userId === id || a.user?.id === id || a.id === id);
+                        person = originalAssignee?.user || originalAssignee;
+                    }
+
+                    // On extrait le nom
+                    const fullName = person?.name || `${person?.firstName || ''} ${person?.lastName || ''}`.trim();
+                    const nameToDisplay = fullName ? fullName : "Inconnu";
+
                     return (
                       <span key={id} className="bg-[#E5E7EB] text-[#1F1F1F] px-[8px] py-[2px] rounded-[4px]">
-                        {name}
+                        {nameToDisplay}
                       </span>
                     );
                   })
@@ -229,11 +243,14 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               </div>
 
               {isDropdownOpen && (
-                <div role="listbox" className="absolute top-[58px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
+                <div role="listbox" className="absolute top-[70px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
                   {contributors && contributors.length > 0 ? (
                     contributors.map((contributor: any, index: number) => {
                       const targetId = contributor.userId || contributor.id;
-                      const fullName = contributor.name || contributor.user?.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || 'Inconnu';
+                      
+                      const fullName = contributor.name || contributor.user?.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || `${contributor.user?.firstName || ''} ${contributor.user?.lastName || ''}`.trim();
+                      const nameToDisplay = fullName ? fullName : "Inconnu";
+                      
                       const isSelected = selectedAssignees.includes(targetId);
 
                       return (
@@ -261,8 +278,8 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                           }}
                           className="px-[17px] py-[10px] text-[12px] text-[#1F1F1F] hover:bg-[#F3F4F6] cursor-pointer flex items-center gap-[10px]"
                         >
-                          <input type="checkbox" checked={isSelected} readOnly tabIndex={-1} aria-label={`Assigner à ${fullName}`} className="cursor-pointer" />
-                          {fullName}
+                          <input type="checkbox" checked={isSelected} readOnly tabIndex={-1} aria-label={`Assigner à ${nameToDisplay}`} className="cursor-pointer" />
+                          {nameToDisplay}
                         </div>
                       );
                     })
@@ -311,7 +328,6 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
             </div>
           </div>
 
-                {/* LES 2 BOUTONS  */}
           <div className="mt-[32px] lg:mt-[56px] flex flex-col-reverse lg:flex-row items-center gap-[16px] lg:gap-[24px]">
             <button 
               type="submit"
