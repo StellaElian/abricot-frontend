@@ -59,10 +59,10 @@ export default function DashboardPage() {
       {/* 1. L'EN-TÊTE */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end w-full lg:h-[69px] mb-8 lg:mb-[60px] gap-4 lg:gap-0">
         <div className="h-full flex flex-col justify-between gap-2 lg:gap-0">
-          <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] leading-none" style={{ fontFamily: "'Manrope', sans-serif" }}>
+          <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] leading-none font-manrope">
             Tableau de bord
           </h1>
-          <p className="text-[14px] lg:text-[16px] text-[#6B7280] leading-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <p className="text-[14px] lg:text-[16px] text-[#6B7280] leading-none font-inter">
             Bonjour Alice Dupont, voici un aperçu de vos projets et tâches
           </p>
         </div>
@@ -84,7 +84,7 @@ export default function DashboardPage() {
           className={`w-[94px] h-[45px] rounded-[8px] flex items-center justify-center gap-[8px] cursor-pointer transition ${currentView === 'liste' ? 'bg-[#FFE8D9] text-[#D3590B]' : 'bg-[#FFFFFF] text-[#6B7280] border border-[#E5E7EB] hover:bg-gray-50'}`}
         >
           <Image src="/list.svg" alt="" aria-hidden="true" width={16} height={16} />
-          <span className="text-[14px] font-medium" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="text-[14px] font-medium font-inter">
             Liste
           </span>
         </div>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
           className={`w-[111px] h-[45px] rounded-[8px] flex items-center justify-center gap-[8px] cursor-pointer transition ${currentView === 'kanban' ? 'bg-[#FFE8D9] text-[#D3590B]' : 'bg-[#FFFFFF] text-[#6B7280] border border-[#E5E7EB] hover:bg-gray-50'}`}
         >
           <Image src="/logokanban.svg" alt="" aria-hidden="true" width={16} height={16} />
-          <span className="text-[14px] font-medium" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <span className="text-[14px] font-medium font-inter">
             Kanban
           </span>
         </div>
@@ -112,10 +112,10 @@ export default function DashboardPage() {
           <div className="flex flex-col lg:flex-row justify-between items-start w-full max-w-[1097px] mx-auto mb-6 lg:mb-[41px] gap-4 lg:gap-0">
 
             <div className="flex flex-col gap-[8px]">
-              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] leading-none" style={{ fontFamily: "'Manrope', sans-serif" }}>
+              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] leading-none font-manrope">
                 Mes tâches assignées
               </h2>
-              <p className="text-[12px] lg:text-[14px] text-[#6B7280] leading-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-[12px] lg:text-[14px] text-[#6B7280] leading-none font-inter">
                 Par ordre de priorité
               </p>
             </div>
@@ -149,15 +149,15 @@ export default function DashboardPage() {
 
                   {/* Côté Gauche : Infos de la tâche */}
                   <div className="flex flex-col w-full lg:w-auto">
-                    <h3 className="text-[16px] font-semibold text-[#1F1F1F] mb-2 lg:mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <h3 className="text-[16px] font-semibold text-[#1F1F1F] mb-2 lg:mb-[7px] font-inter">
                       {task.title}
                     </h3>
-                    <p className="text-[14px] text-[#6B7280] mb-4 lg:mb-[32px] line-clamp-2 lg:line-clamp-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-[14px] text-[#6B7280] mb-4 lg:mb-[32px] line-clamp-2 lg:line-clamp-none font-inter">
                       {task.description}
                     </p>
 
                     {/* données */}
-                    <div className="flex flex-wrap items-center text-[12px] text-[#6B7280] gap-y-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="flex flex-wrap items-center text-[12px] text-[#6B7280] gap-y-2 font-inter">
 
                       {/* Projet */}
                       <div className="flex items-center gap-[8px]">
@@ -221,7 +221,7 @@ export default function DashboardPage() {
                     <Link
                       href={`/projects/${task.projectId || task.project?.id}`}
                       aria-label={`Voir les détails du projet de la tâche ${task.title}`}
-                      className="w-auto px-6 lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      className="w-auto px-6 lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center font-inter">
                       Voir
                     </Link>
                   </div>
@@ -241,7 +241,7 @@ export default function DashboardPage() {
           {/* COLONNE 1 : À FAIRE */}
           <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
-              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>À faire</h2>
+              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] font-manrope">À faire</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]" aria-label={`${todoTasks.length} tâches à faire`}>{todoTasks.length}</div>
             </div>
             <div className="flex flex-col gap-[20px] lg:gap-[41px] items-center">
@@ -249,15 +249,15 @@ export default function DashboardPage() {
                 <div key={index} className="w-full lg:w-[371px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate" style={{ fontFamily: "'Manrope', sans-serif" }}>{task.title}</h3>
-                      <p className="text-[12px] lg:text-[14px] text-[#6B7280] line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>{task.description}</p>
+                      <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate font-manrope">{task.title}</h3>
+                      <p className="text-[12px] lg:text-[14px] text-[#6B7280] line-clamp-2 font-inter">{task.description}</p>
                     </div>
                     <div className="bg-[#FFE0E0] text-[#EF4444] px-2 lg:px-[16px] py-1 lg:py-[4px] rounded-[50px] text-[10px] lg:text-[14px] whitespace-nowrap shrink-0">
                       <span className="sr-only">Statut : </span>À faire
                     </div>
                   </div>
                   <div className="w-full">
-                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1 font-inter">
                       <div className="flex items-center gap-[4px] lg:gap-[8px]">
                         <Image src="/files2.svg" alt="" aria-hidden="true" width={18} height={14} />
                         <span className="truncate max-w-[70px]">
@@ -285,7 +285,7 @@ export default function DashboardPage() {
                     <Link
                       href={`/projects/${task.projectId || task.project?.id}`}
                       aria-label={`Voir les détails du projet de la tâche ${task.title}`}
-                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center font-inter">
                       Voir
                     </Link>
                   </div>
@@ -297,7 +297,7 @@ export default function DashboardPage() {
           {/* COLONNE 2 : EN COURS */}
           <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
-              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>En cours</h2>
+              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] font-manrope">En cours</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]" aria-label={`${inProgressTasks.length} tâches en cours`}>{inProgressTasks.length}</div>
             </div>
             <div className="flex flex-col gap-[20px] lg:gap-[41px] items-center">
@@ -305,15 +305,15 @@ export default function DashboardPage() {
                 <div key={index} className="w-full lg:w-[371px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate" style={{ fontFamily: "'Manrope', sans-serif" }}>{task.title}</h3>
-                      <p className="text-[12px] lg:text-[14px] text-[#6B7280] line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>{task.description}</p>
+                      <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate font-manrope">{task.title}</h3>
+                      <p className="text-[12px] lg:text-[14px] text-[#6B7280] line-clamp-2 font-inter">{task.description}</p>
                     </div>
                     <div className="bg-[#FFF0D7] text-[#E08D00] px-2 lg:px-[16px] py-1 lg:py-[4px] rounded-[50px] text-[10px] lg:text-[14px] whitespace-nowrap shrink-0">
                       <span className="sr-only">Statut : </span>En cours
                     </div>
                   </div>
                   <div className="w-full">
-                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1 font-inter">
                       <div className="flex items-center gap-[4px] lg:gap-[8px]">
                         <Image src="/files2.svg" alt="" aria-hidden="true" width={18} height={14} />
                         <span className="truncate max-w-[70px]">
@@ -341,7 +341,7 @@ export default function DashboardPage() {
                     <Link
                       href={`/projects/${task.projectId || task.project?.id}`}
                       aria-label={`Voir les détails du projet de la tâche ${task.title}`}
-                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center font-inter">
                       Voir
                     </Link>
                   </div>
@@ -353,7 +353,7 @@ export default function DashboardPage() {
           {/* COLONNE 3 : TERMINÉES */}
           <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
-              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>Terminées</h2>
+              <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] font-manrope">Terminées</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]" aria-label={`${doneTasks.length} tâches terminées`}>{doneTasks.length}</div>
             </div>
             <div className="flex flex-col gap-[20px] lg:gap-[41px] items-center">
@@ -361,15 +361,15 @@ export default function DashboardPage() {
                 <div key={index} className="w-full lg:w-[371px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate" style={{ fontFamily: "'Manrope', sans-serif" }}>{task.title}</h3>
-                      <p className="text-[12px] lg:text-[14px] text-[#6B7280] line-clamp-2" style={{ fontFamily: "'Inter', sans-serif" }}>{task.description}</p>
+                      <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate font-manrope">{task.title}</h3>
+                      <p className="text-[12px] lg:text-[14px] text-[#6B7280] line-clamp-2 font-inter">{task.description}</p>
                     </div>
                     <div className="bg-[#F1FFF7] text-[#27E600] px-2 lg:px-[16px] py-1 lg:py-[4px] rounded-[50px] text-[10px] lg:text-[14px] whitespace-nowrap shrink-0">
                       <span className="sr-only">Statut : </span>Terminée
                     </div>
                   </div>
                   <div className="w-full">
-                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="flex flex-wrap items-center text-[10px] lg:text-[12px] text-[#6B7280] mt-[20px] lg:mt-[32px] mb-[20px] lg:mb-[32px] gap-y-2 gap-x-1 font-inter">
                       <div className="flex items-center gap-[4px] lg:gap-[8px]">
                         <Image src="/files2.svg" alt="" aria-hidden="true" width={18} height={14} />
                         <span className="truncate max-w-[70px]">
@@ -397,7 +397,7 @@ export default function DashboardPage() {
                     <Link
                       href={`/projects/${task.projectId || task.project?.id}`}
                       aria-label={`Voir les détails du projet de la tâche ${task.title}`}
-                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      className="w-[100px] lg:w-[121px] h-[40px] lg:h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-medium transition hover:bg-black cursor-pointer flex items-center justify-center font-inter">
                       Voir
                     </Link>
                   </div>
