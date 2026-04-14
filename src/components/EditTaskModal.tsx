@@ -13,7 +13,6 @@ interface EditTaskModalProps {
 }
 
 export default function EditTaskModal({ isOpen, onClose, task, projectId, contributors = [] }: EditTaskModalProps) {
-  // États avec les valeurs Figma 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -21,7 +20,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
   const [status, setStatus] = useState('À faire'); // Pour gérer la sélection du badge
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // ⚡ DYNAMISATION 
+  // DYNAMISATION 
   useEffect(() => {
     if (task) {
       setTitle(task.title || '');
@@ -125,58 +124,59 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
   return (
     // 1. LE FOND : Flouté
-    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       
-      {/* 2. LA FENÊTRE : 598x799 px */}
-      <div className="bg-[#FFFFFF] rounded-[10px] w-[598px] h-[799px] relative pt-[79px] px-[73px] pb-[79px] shadow-xl font-sans flex flex-col">
+      {/* LA FENÊTRE */}
+      <div className="bg-[#FFFFFF] rounded-[10px] w-full max-w-[598px] h-auto max-h-[90vh] lg:h-[799px] overflow-y-auto relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col hide-scrollbar">
         
         {/* LA CROIX */}
         <button 
           onClick={onClose}
-          className="absolute top-[37px] right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
+          className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
         >
           <Image src="/cross.svg" alt="Fermer" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
         </button>
 
         {/* TITRE PRINCIPAL */}
         <h2 
-          className="text-[#1F1F1F] text-[24px] font-semibold mb-[40px] self-start"
+          className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start"
           style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
         >
           Modifier une tâche
         </h2>
 
-        {/* LE FORMULAIRE (Bloc de saisie) */}
+        {/* LE FORMULAIRE */}
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
           
           {/* CHAMP : Titre */}
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Titre</label>
+  
             <input 
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+              className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
               required
             />
           </div>
 
           {/* CHAMP : Description */}
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
             <input 
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+              className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
               required
             />
           </div>
 
           {/* CHAMP : Échéance */}
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance</label>
-            <div className="relative w-[452px]">
+            <div className="relative w-full lg:w-[452px]">
               <input 
                 type="date"
                 value={dueDate}
@@ -187,9 +187,9 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           </div>
 
          {/* CHAMP : Assigné à */}
-         <div className="flex flex-col gap-[7px] mb-[24px]">
+         <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
-            <div className="relative w-[452px]">
+            <div className="relative w-full lg:w-[452px]">
               
               <div 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -247,15 +247,15 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           </div>
 
 
-          {/* CHAMP : Statut (Les Badges) */}
+          {/* CHAMP : Statut (Badges) */}
           <div className="flex flex-col">
-            <label className="text-[14px] font-normal text-[#000000] mb-[16px]" style={{ fontFamily: "'Inter', sans-serif" }}>Statut :</label>
-            <div className="flex items-center gap-[8px]">
+            <label className="text-[14px] font-normal text-[#000000] mb-[8px] lg:mb-[16px]" style={{ fontFamily: "'Inter', sans-serif" }}>Statut :</label>
+            <div className="flex flex-wrap items-center gap-[8px]">
               {/* Badge : À faire */}
               <button 
                 type="button"
                 onClick={() => setStatus('À faire')}
-                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
+                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 À faire
@@ -265,7 +265,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               <button 
                 type="button"
                 onClick={() => setStatus('En cours')}
-                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
+                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 En cours
@@ -275,7 +275,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               <button 
                 type="button"
                 onClick={() => setStatus('Terminée')}
-                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
+                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Terminée
@@ -284,10 +284,10 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           </div>
 
                 {/* LES 2 BOUTONS  */}
-          <div className="mt-[56px] flex items-center gap-[24px]">
+          <div className="mt-[32px] lg:mt-[56px] flex flex-col-reverse lg:flex-row items-center gap-[16px] lg:gap-[24px]">
             <button 
               type="submit"
-              className="w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
+              className="w-full lg:w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Enregistrer
