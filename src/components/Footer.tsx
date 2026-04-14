@@ -17,10 +17,7 @@ export default function Footer() {
 
             {/* PARTIE DROITE : Texte  */}
             <div className="flex-shrink-0">
-                <span
-                    className="text-[#000000] text-[14px] lg:text-[16px] font-normal"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                >
+                <span className="text-[#000000] text-[14px] lg:text-[16px] font-normal font-inter">
                     Abricot 2025
                 </span>
             </div>
