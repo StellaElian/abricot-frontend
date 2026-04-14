@@ -98,10 +98,10 @@ export default function ProfilePage() {
             <div className="w-full max-w-[1215px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] px-6 lg:px-[59px] pt-[30px] lg:pt-[40px] pb-[40px] lg:pb-[59px] flex flex-col mx-auto">
 
                 <div className="mb-[30px] lg:mb-[41px]">
-                    <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] mb-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] mb-[8px] font-manrope">
                         Mon compte
                     </h1>
-                    <p className="text-[14px] lg:text-[16px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-[14px] lg:text-[16px] text-[#6B7280] font-inter">
                         {`${editFirstName} ${editLastName}`.trim() || 'Utilisateur'}
                     </p>
                 </div>
@@ -115,7 +115,7 @@ export default function ProfilePage() {
 
                     {/* BLOC NOM */}
                     <div className="mb-[20px] lg:mb-[24px]">
-                        <label htmlFor="lastName" className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nom</label>
+                        <label htmlFor="lastName" className="block text-[14px] text-[#000000] font-regular mb-[7px] font-inter">Nom</label>
                         <input 
                             id="lastName"
                             type="text" 
@@ -127,7 +127,7 @@ export default function ProfilePage() {
 
                     {/* BLOC PRÉNOM */}
                     <div className="mb-[20px] lg:mb-[24px]">
-                        <label htmlFor="firstName" className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Prénom</label>
+                        <label htmlFor="firstName" className="block text-[14px] text-[#000000] font-regular mb-[7px] font-inter">Prénom</label>
                         <input 
                             id="firstName"
                             type="text" 
@@ -139,7 +139,7 @@ export default function ProfilePage() {
 
                     {/* BLOC EMAIL */}
                     <div className="mb-[20px] lg:mb-[24px]">
-                        <label htmlFor="email" className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Email</label>
+                        <label htmlFor="email" className="block text-[14px] text-[#000000] font-regular mb-[7px] font-inter">Email</label>
                         <input 
                             id="email"
                             type="email" 
@@ -151,7 +151,7 @@ export default function ProfilePage() {
 
                     {/* BLOC MOT DE PASSE */}
                     <div className="mb-[30px] lg:mb-[41px]">
-                        <label htmlFor="newPassword" className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words" style={{ fontFamily: "'Inter', sans-serif" }}>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                        <label htmlFor="newPassword" className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words font-inter">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
                         <input 
                             id="newPassword"
                             type="password" 
@@ -169,7 +169,7 @@ export default function ProfilePage() {
                     onClick={handleUpdateProfile}
                     className="w-full lg:w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition self-start"
                 >
-                    <span className="text-[14px] lg:text-[16px] text-[#FFFFFF] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <span className="text-[14px] lg:text-[16px] text-[#FFFFFF] font-regular font-inter">
                         Modifier les informations
                     </span>
                 </button>
