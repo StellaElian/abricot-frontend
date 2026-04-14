@@ -116,10 +116,10 @@ export default function ProjectsPage() {
 
         {/* Partie gauche */}
         <div className="h-full flex flex-col justify-between gap-2 lg:gap-0">
-          <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] leading-none" style={{ fontFamily: "'Manrope', sans-serif" }}>
+          <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] leading-none font-manrope">
             Mes projets
           </h1>
-          <p className="text-[14px] lg:text-[16px] text-[#6B7280] leading-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <p className="text-[14px] lg:text-[16px] text-[#6B7280] leading-none font-inter">
             Gérez vos projets
           </p>
         </div>
@@ -161,7 +161,7 @@ export default function ProjectsPage() {
             return { id: user.id || m.id, initials: initials, isOwner: false };
           });
 
-          // On assemble le tout, en filtrant les potentiels doublons
+          // On assemble le tout, on filtre les potentiels doublons
           const fullTeam = teamOwner ? [
             teamOwner,
             ...teamMembers.filter((m: any) => m.id !== teamOwner.id)
@@ -199,8 +199,7 @@ export default function ProjectsPage() {
                 {/* PARTIE 1 : Titre et Description */}
                 <div className="mb-6 lg:mb-0">
                   <h3
-                    className="text-[16px] lg:text-[18px] text-[#1F1F1F] mb-[8px] truncate"
-                    style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 600 }}
+                    className="text-[16px] lg:text-[18px] text-[#1F1F1F] mb-[8px] truncate font-manrope font-semibold"
                   >
                     {/* On affiche le nom qui vient du Backend */}
                     {project.name}
@@ -208,8 +207,7 @@ export default function ProjectsPage() {
 
                   {/* Description*/}
                   <p
-                    className="text-[12px] lg:text-[14px] font-normal text-[#6B7280] w-full line-clamp-2 leading-[1.2]"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
+                    className="text-[12px] lg:text-[14px] font-normal text-[#6B7280] w-full line-clamp-2 leading-[1.2] font-inter"
                   >
                     {project.description}
                   </p>
@@ -219,7 +217,7 @@ export default function ProjectsPage() {
                 <div className="mt-[20px]">
 
                   {/* Textes au-dessus de la barre */}
-                  <div className="flex justify-between text-[12px] font-normal text-[#6B7280] mb-[15px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="flex justify-between text-[12px] font-normal text-[#6B7280] mb-[15px] font-inter">
                     <span>Progression</span>
                     {/* Le pourcentage calculé plus haut */}
                     <span>{progressPercent}%</span>
@@ -235,8 +233,8 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* Texte en dessous de la barre */}
-                  <p className="text-[12px] font-normal text-[#6B7280] mt-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    {/* Les nombres exacts de tâches */}
+                  <p className="text-[12px] font-normal text-[#6B7280] mt-[12px] font-inter">
+                    {/* Les nombres de tâches */}
                     {project.completedTasks}/{project.totalTasks} tâches terminées
                   </p>
                 </div>
@@ -250,7 +248,7 @@ export default function ProjectsPage() {
                       <Image src="/team.svg" alt="Icone Equipe" fill />
                     </div>
                     {/* On compte automatiquement le nombre total de personnes dans l'équipe */}
-                    <span className="text-[14px] font-medium text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <span className="text-[14px] font-medium text-[#6B7280] font-inter">
                       Équipe ({project.team.length})
                     </span>
                   </div>
@@ -270,8 +268,7 @@ export default function ProjectsPage() {
                         {/* pastille de texte */}
                         <div className="flex items-center bg-[#FFE8D9] rounded-[40px] h-[27px] px-[10px]">
                           <span
-                            className="text-[14px] font-normal text-[#D3590B]"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="text-[14px] font-normal text-[#D3590B] font-inter"
                           >
                             Propriétaire
                           </span>
@@ -290,8 +287,7 @@ export default function ProjectsPage() {
                           className="w-[27px] h-[27px] rounded-full bg-[#E5E7EB] border border-white flex items-center justify-center shrink-0"
                         >
                           <span
-                            className="text-[10px] font-normal text-[#0F0F0F]"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="text-[10px] font-normal text-[#0F0F0F] font-inter"
                           >
                             {member.initials}
                           </span>
