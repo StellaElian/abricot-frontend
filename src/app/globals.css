@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #£97316; /*couleur orange abricot*/
-  --color-secondary: #0£172a; /*bleu très foncé pour texte*/
-  --color-background: #£8£a£c; /* gris très clair */
+  --color-primary: #f97316; 
+  --color-secondary: #0f172a; 
+  --color-background: #f8fafc; 
+
+  /* CRÉATION DES CLASSES DE POLICES  */
+  --font-inter: 'Inter', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
 }
 
 body {
