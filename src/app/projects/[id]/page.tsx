@@ -165,8 +165,8 @@ export default function ProjectDetailsPage() {
                 <div className="flex flex-col lg:flex-row items-start gap-[16px] mb-6 lg:mb-[49px]">
 
                     {/* BOUTON RETOUR */}
-                    <Link href="/projects" className="w-[40px] h-[40px] lg:w-[57px] lg:h-[57px] bg-white border border-[#E5E7EB] rounded-[10px] flex items-center justify-center hover:bg-gray-50 transition shrink-0 cursor-pointer mb-4 lg:mb-0">
-                        <Image src="/line3.svg" alt="Flèche retour" width={15} height={1} className="w-[10px] lg:w-[15px]" />
+                    <Link href="/projects" aria-label="Retour à la liste des projets" className="w-[40px] h-[40px] lg:w-[57px] lg:h-[57px] bg-white border border-[#E5E7EB] rounded-[10px] flex items-center justify-center hover:bg-gray-50 transition shrink-0 cursor-pointer mb-4 lg:mb-0">
+                        <Image src="/line3.svg" alt="" aria-hidden="true" width={15} height={1} className="w-[10px] lg:w-[15px]" />
                     </Link>
 
                     {/* RESTE DE L'EN-TÊTE (Titre, Desc, Boutons) */}
@@ -174,7 +174,6 @@ export default function ProjectDetailsPage() {
 
                         <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-4 lg:gap-0">
                             {/* Titre et Modifier */}
-                            {/* RESPONSIVE : flex-wrap pour les titres longs */}
                             <div className="flex flex-wrap items-center gap-[14px] mb-[14px] lg:mb-0">
                                 <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F]" style={{ fontFamily: "'Manrope', sans-serif" }}>
                                     {project ? project.title || project.name : "Chargement..."}
@@ -201,7 +200,7 @@ export default function ProjectDetailsPage() {
                                 </button>
                                 <button 
                                     className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition" style={{ fontFamily: "'Inter', sans-serif" }}>
-                                    <Image src="/star.svg" alt="IA" width={16} height={16} className="w-[16px] lg:w-[21px]" />
+                                    <Image src="/star.svg" alt="" aria-hidden="true" width={16} height={16} className="w-[16px] lg:w-[21px]" />
                                     IA
                                 </button>
                             </div>
@@ -263,6 +262,7 @@ export default function ProjectDetailsPage() {
 
 
             {/* ================= CORPS DU PROJET ================= */}
+            
             < div className="w-full lg:w-[1255px] px-4 lg:px-0 pt-4 lg:pt-[41px] ml-0 lg:ml-[112px] pb-8" >
                 <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB] pb-6 lg:pb-[40px] overflow-hidden">
 
@@ -284,7 +284,7 @@ export default function ProjectDetailsPage() {
 
                             <button className="h-[40px] lg:h-[45px] px-2 lg:w-[94px] flex items-center bg-[#FFE8D9] rounded-[8px] cursor-pointer lg:mr-[10px] shrink-0">
                                 <div className="pl-2 lg:pl-[16px] pr-2 lg:pr-[14px] flex items-center justify-center">
-                                    <Image src="/list.svg" alt="Liste" width={14} height={14} className="w-[12px] lg:w-[16px]" />
+                                    <Image src="/list.svg" alt="" aria-hidden="true" width={14} height={14} className="w-[12px] lg:w-[16px]" />
                                 </div>
                                 <span className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular pr-2 lg:pr-0" style={{ fontFamily: "'Inter', sans-serif" }}>
                                     Liste
@@ -293,7 +293,7 @@ export default function ProjectDetailsPage() {
 
                             <button className="h-[40px] lg:h-[45px] px-2 lg:w-[130px] flex items-center bg-white rounded-[8px] cursor-pointer lg:mr-[16px] shrink-0">
                                 <div className="pl-2 lg:pl-[16px] pr-2 lg:pr-[14px] flex items-center justify-center">
-                                    <Image src="/logokanban.svg" alt="Calendrier" width={14} height={14} className="w-[12px] lg:w-[15px]" />
+                                    <Image src="/logokanban.svg" alt="" aria-hidden="true" width={14} height={14} className="w-[12px] lg:w-[15px]" />
                                 </div>
                                 <span className="text-[#D3590B] text-[12px] lg:text-[14px] font-medium pr-2 lg:pr-0" style={{ fontFamily: "'Inter', sans-serif" }}>
                                     Calendrier
@@ -305,18 +305,20 @@ export default function ProjectDetailsPage() {
                                     Statut
                                 </span>
                                 <div className="absolute right-[16px] lg:right-[31px]">
-                                    <Image src="/vector.svg" alt="Flèche bas" width={12} height={6} className="w-[10px] lg:w-[16px]" />
+                                    <Image src="/vector.svg" alt="" aria-hidden="true" width={12} height={6} className="w-[10px] lg:w-[16px]" />
                                 </div>
                             </button>
 
                             <div className="relative w-full lg:w-[283px] h-[40px] lg:h-[63px] mt-2 lg:mt-0">
+                                <label htmlFor="searchTask" className="sr-only">Rechercher une tâche</label>
                                 <input
+                                    id="searchTask"
                                     type="text"
                                     placeholder="Rechercher une tâche"
                                     className="w-full h-full border border-[#E5E7EB] rounded-[8px] bg-white pl-[16px] lg:pl-[32px] pr-[40px] lg:pr-[59px] text-[12px] lg:text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
                                 />
                                 <div className="absolute right-[16px] lg:right-[32px] top-[50%] -translate-y-1/2 pointer-events-none flex items-center justify-center">
-                                    <Image src="/search.svg" alt="Recherche" width={12} height={12} className="w-[12px] lg:w-[13.9px]"/>
+                                    <Image src="/search.svg" alt="" aria-hidden="true" width={12} height={12} className="w-[12px] lg:w-[13.9px]"/>
                                 </div>
                             </div>
 
@@ -324,7 +326,7 @@ export default function ProjectDetailsPage() {
 
                     </div>
 
-                    {/* 2. LA LISTE DES TÂCHES */}
+                    {/* LISTE DES TÂCHES */}
                     <div className="w-full h-auto bg-white flex flex-col gap-4 lg:gap-[17px] px-4 lg:pl-[59px] lg:pr-[59px]">
 
                         {projectTasks.map((task) => {
@@ -358,7 +360,7 @@ export default function ProjectDetailsPage() {
 
                                             <div className="flex items-center gap-2 lg:gap-[8px] mb-2 lg:mb-[24px] text-[10px] lg:text-[12px] text-[#6B7280] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
                                                 <span className="font-regular text-[#6B7280]">Échéance :</span>
-                                                <Image src="/union.svg" alt="Agenda" width={12} height={13} className="w-[12px] lg:w-[15px]"/>
+                                                <Image src="/union.svg" alt="" aria-hidden="true" width={12} height={13} className="w-[12px] lg:w-[15px]"/>
                                                 <span className="font-regular text-[#1F1F1F] text-[10px] lg:text-[12px]" style={{ fontFamily: "'Inter', sans-serif" }}>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
@@ -386,16 +388,17 @@ export default function ProjectDetailsPage() {
 
                                         {/* Bouton "..." */}
                                         <button
+                                            aria-label={`Options de la tâche ${task.title}`}
                                             onClick={() => { setSelectedTask(task); setIsEditTaskModalOpen(true) }}
                                             className="w-[40px] h-[40px] lg:w-[57px] lg:h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition self-end lg:self-auto lg:mt-[8px] lg:mr-[11px]"
                                         >
-                                            <Image src="/plus.svg" alt="Options" width={15} height={4} className="w-[10px] lg:w-[15px]"/>
+                                            <Image src="/plus.svg" alt="" aria-hidden="true" width={15} height={4} className="w-[10px] lg:w-[15px]"/>
                                         </button>
                                     </div>
 
                                     {/* SÉPARATEUR */}
-                                    <div className="pl-0 lg:pl-[18px] mt-2 lg:mt-[5px] w-full overflow-hidden">
-                                        <Image src="/line2.svg" alt="Séparateur" width={1000} height={2} className="w-full" />
+                                    <div className="pl-0 lg:pl-[18px] mt-2 lg:mt-[5px] w-full overflow-hidden" aria-hidden="true">
+                                        <Image src="/line2.svg" alt="" width={1000} height={2} className="w-full" />
                                     </div>
 
                                     {/* BAS DE LA CARTE (Commentaires) */}
@@ -406,11 +409,13 @@ export default function ProjectDetailsPage() {
                                                 Commentaires ({task.comments ? task.comments.length : 0})
                                             </span>
                                             <button
+                                                aria-label={expandedTaskId === task.id ? "Masquer les commentaires" : "Voir les commentaires"}
+                                                aria-expanded={expandedTaskId === task.id}
                                                 onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
                                                 className="flex items-center justify-center cursor-pointer hover:opacity-70 transition p-2"
                                             >
                                                 <div className={`transition-transform duration-200 ${expandedTaskId === task.id ? 'rotate-180' : ''}`}>
-                                                    <Image src="/more.svg" alt="Voir plus" width={12} height={6} className="w-[12px] lg:w-[16px]"/>
+                                                    <Image src="/more.svg" alt="" aria-hidden="true" width={12} height={6} className="w-[12px] lg:w-[16px]"/>
                                                 </div>
                                             </button>
                                         </div>
@@ -428,7 +433,6 @@ export default function ProjectDetailsPage() {
                                                     const isMe = currentUser && (comment.author?.id === currentUser.id || comment.user?.id === currentUser.id || authorName === currentUser.name);
 
                                                     return (
-                                                        // RESPONSIVE : min-w-[300px] pour éviter l'écrasement sur mobile
                                                         <div key={index} className="flex items-start w-full min-w-[300px]">
 
                                                             <div className={`w-[27px] h-[27px] shrink-0 rounded-full flex items-center justify-center mr-2 lg:mr-[14px] ${isMe ? 'bg-[#FFE8D9]' : 'bg-[#E5E7EB] border border-[#FFFFFF]'}`}>
@@ -462,7 +466,9 @@ export default function ProjectDetailsPage() {
 
                                                     <div className="flex-1 flex flex-col lg:flex-row items-center gap-2 lg:gap-0 mr-0 lg:mr-[16px]">
                                                         <div className="w-full h-[50px] lg:h-[83px] bg-[#F9FAFB] border border-[#E5E7EB] rounded-[10px] px-3 lg:px-[14px] flex items-center">
+                                                            <label htmlFor={`comment-input-${task.id}`} className="sr-only">Ajouter un commentaire</label>
                                                             <input
+                                                                id={`comment-input-${task.id}`}
                                                                 type="text"
                                                                 value={commentText}
                                                                 onChange={(e) => setCommentText(e.target.value)}
