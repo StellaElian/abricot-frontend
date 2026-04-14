@@ -67,19 +67,19 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       
-      <div className="bg-[#FFFFFF] rounded-[10px] w-[598px] h-[799px] relative pt-[79px] px-[73px] pb-[79px] shadow-xl font-sans flex flex-col">
+      <div className="bg-[#FFFFFF] rounded-[10px] w-full max-w-[598px] h-auto max-h-[90vh] lg:h-[799px] overflow-y-auto relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col hide-scrollbar">
         
         <button 
           onClick={onClose}
-          className="absolute top-[37px] right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
+          className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
         >
           <Image src="/cross.svg" alt="Fermer" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
         </button>
 
         <h2 
-          className="text-[#1F1F1F] text-[24px] font-semibold mb-[40px] self-start"
+          className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start"
           style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
         >
           Créer une tâche
@@ -87,33 +87,33 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
 
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
           
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Titre*</label>
             <input 
               type="text"
               placeholder="Ex: Authentification JWT"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+              className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
               required
             />
           </div>
 
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Description*</label>
             <input 
               type="text"
               placeholder="Description de la tâche..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+              className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
               required
             />
           </div>
 
-          <div className="flex flex-col gap-[7px] mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance*</label>
-            <div className="relative w-[452px]">
+            <div className="relative w-full lg:w-[452px]">
               <input 
                 type="date"
                 placeholder="Sélectionner une date"
@@ -124,9 +124,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
             </div>
           </div>
 
-         <div className="flex flex-col gap-[7px] mb-[24px]">
+         <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
-            <div className="relative w-[452px]">
+            <div className="relative w-full lg:w-[452px]">
               
               {/* Le bouton pour ouvrir le menu déroulant */}
               <div 
@@ -188,12 +188,12 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           </div>
 
           <div className="flex flex-col">
-            <label className="text-[14px] font-normal text-[#000000] mb-[16px]" style={{ fontFamily: "'Inter', sans-serif" }}>Statut :</label>
-            <div className="flex items-center gap-[8px]">
+            <label className="text-[14px] font-normal text-[#000000] mb-[8px] lg:mb-[16px]" style={{ fontFamily: "'Inter', sans-serif" }}>Statut :</label>
+            <div className="flex flex-wrap items-center gap-[8px]">
               <button 
                 type="button"
                 onClick={() => setStatus('À faire')}
-                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
+                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 À faire
@@ -202,7 +202,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
               <button 
                 type="button"
                 onClick={() => setStatus('En cours')}
-                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
+                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 En cours
@@ -211,7 +211,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
               <button 
                 type="button"
                 onClick={() => setStatus('Terminée')}
-                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
+                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Terminée
@@ -223,7 +223,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           <button 
             type="submit"
             disabled={!title.trim() || !description.trim()}
-            className="mt-[56px] w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#D1D5DB] self-start"
+            className="mt-[32px] lg:mt-[56px] w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#D1D5DB] self-start"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             + Ajouter une tâche
