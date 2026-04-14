@@ -140,8 +140,8 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
         {/* TITRE PRINCIPAL */}
         <h2 
-          className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start"
-          style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
+          className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start font-manrope"
+          style={{ lineHeight: "100%" }}
         >
           Modifier une tâche
         </h2>
@@ -151,7 +151,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           
           {/* CHAMP : Titre */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label htmlFor="title" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Titre</label>
+            <label htmlFor="title" className="text-[14px] font-normal text-[#000000] font-inter">Titre</label>
   
             <input 
               id="title"
@@ -165,7 +165,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
           {/* CHAMP : Description */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label htmlFor="description" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
+            <label htmlFor="description" className="text-[14px] font-normal text-[#000000] font-inter">Description</label>
             <input 
               id="description"
               type="text"
@@ -178,7 +178,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
           {/* CHAMP : Échéance */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label htmlFor="dueDate" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance</label>
+            <label htmlFor="dueDate" className="text-[14px] font-normal text-[#000000] font-inter">Échéance</label>
             <div className="relative w-full lg:w-[452px]">
               <input 
                 id="dueDate"
@@ -192,7 +192,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
          {/* CHAMP : Assigné à */}
          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label id="assignees-label" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
+            <label id="assignees-label" className="text-[14px] font-normal text-[#000000] font-inter">Assigné à :</label>
             <div className="relative w-full lg:w-[452px]">
               
               <div 
@@ -277,15 +277,14 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
           {/* CHAMP : Statut (Badges) */}
           <div className="flex flex-col">
-            <label className="text-[14px] font-normal text-[#000000] mb-[8px] lg:mb-[16px]" style={{ fontFamily: "'Inter', sans-serif" }}>Statut :</label>
+            <label className="text-[14px] font-normal text-[#000000] mb-[8px] lg:mb-[16px] font-inter">Statut :</label>
             <div className="flex flex-wrap items-center gap-[8px]">
               {/* Badge : À faire */}
               <button 
                 type="button"
                 aria-pressed={status === 'À faire'}
                 onClick={() => setStatus('À faire')}
-                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition font-inter ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
               >
                 À faire
               </button>
@@ -295,8 +294,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                 type="button"
                 aria-pressed={status === 'En cours'}
                 onClick={() => setStatus('En cours')}
-                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition font-inter ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
               >
                 En cours
               </button>
@@ -306,8 +304,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                 type="button"
                 aria-pressed={status === 'Terminée'}
                 onClick={() => setStatus('Terminée')}
-                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition font-inter ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
               >
                 Terminée
               </button>
@@ -318,8 +315,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           <div className="mt-[32px] lg:mt-[56px] flex flex-col-reverse lg:flex-row items-center gap-[16px] lg:gap-[24px]">
             <button 
               type="submit"
-              className="w-full lg:w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="w-full lg:w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB] font-inter"
             >
               Enregistrer
             </button>
@@ -327,8 +323,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
             <button 
               type="button"
               onClick={handleDelete}
-              className="text-[#EF4444] text-[14px] font-medium hover:underline transition px-[10px]"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="text-[#EF4444] text-[14px] font-medium hover:underline transition px-[10px] font-inter"
             >
               Supprimer la tâche
             </button>
