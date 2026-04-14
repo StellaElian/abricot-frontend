@@ -19,7 +19,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
     //dynamisation :
     useEffect(() => {
         if (project) {
-            setTitle(project.title || project.name || ''); //--------------------------------- 
+            setTitle(project.title || project.name || ''); 
             setDescription(project.description || '');
             //calcul nbr contributeurs 
             const contributorsList = [
@@ -67,15 +67,15 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
     return (
         // 1. LE FOND : Flouté (backdrop-blur-sm)
-        <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
             {/* 2. LA FENÊTRE */}
-            <div className="bg-[#FFFFFF] rounded-[10px] w-[598px] h-[616px] relative pt-[79px] px-[73px] pb-[79px] shadow-xl font-sans flex flex-col">
+            <div className="bg-[#FFFFFF] rounded-[10px] w-full max-w-[598px] min-h-[500px] lg:h-[616px] relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col">
 
                 {/* 3. LA CROIX */}
                 <button
                     onClick={onClose}
-                    className="absolute top-[37.5px] right-[39.17px] hover:opacity-70 transition flex items-center justify-center"
+                    className="absolute top-[20px] lg:top-[37.5px] right-[20px] lg:right-[39.17px] hover:opacity-70 transition flex items-center justify-center"
                 >
                     <Image
                         src="/cross.svg"
@@ -88,14 +88,14 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                 {/* TITRE PRINCIPAL */}
                 <h2
-                    className="text-[#1F1F1F] text-[24px] font-semibold mb-[40px] mt-[28.17px]"
+                    className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] mt-0 lg:mt-[28.17px]"
                     style={{ fontFamily: "'Manrope', sans-serif", lineHeight: "100%" }}
                 >
                     Modifier un projet
                 </h2>
 
                 {/* LE FORMULAIRE  */}
-                <form onSubmit={handleSubmit} className="flex flex-col gap-[24px] flex-grow">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] lg:gap-[24px] flex-grow">
 
                     {/* CHAMP : Titre */}
                     <div className="flex flex-col gap-[7px]">
@@ -106,7 +106,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+                            className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
                             required
                         />
                     </div>
@@ -116,11 +116,12 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                         <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
                             Description*
                         </label>
+                        {/* 📱 RESPONSIVE : w-full lg:w-[452px] */}
                         <input
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+                            className="w-full lg:w-[452px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
                             required
                         />
                     </div>
@@ -130,7 +131,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                         <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
                             Contributeurs
                         </label>
-                        <div className="relative w-[452px]">
+                        <div className="relative w-full lg:w-[452px]">
                             <input
                                 type="text"
                                 value={contributorsText}
@@ -151,10 +152,10 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                     </div>
 
                     {/* BOUTONS : Enregistrer et Supprimer */}
-                    <div className="mt-auto flex items-center justify-between w-full">
+                    <div className="mt-auto flex flex-col-reverse lg:flex-row items-center justify-between w-full gap-4 lg:gap-0">
                         <button
                             type="submit"
-                            className="mt-auto w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
+                            className="mt-auto w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB]"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
                             Enregistrer
@@ -189,7 +190,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                                     };
                                 }
                             }
-                            className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition"
+                            className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition mt-2 lg:mt-0"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
                             Supprimer le projet
