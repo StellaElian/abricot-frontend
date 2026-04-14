@@ -63,8 +63,7 @@ export default function RegisterPage() {
                 <div className="mt-[120px] lg:mt-[300px] w-full px-4 lg:px-0 lg:w-[282px] mx-auto flex flex-col items-center">
 
                     <h1
-                        className="text-[32px] lg:text-[40px] text-[#D3590B] leading-none text-center mb-[30px] mt-[20px] lg:mt-[102px]"
-                        style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700 }}
+                        className="text-[32px] lg:text-[40px] text-[#D3590B] leading-none text-center mb-[30px] mt-[20px] lg:mt-[102px] font-manrope font-bold"
                     >
                         Inscription
                     </h1>
@@ -82,8 +81,7 @@ export default function RegisterPage() {
                         <div className="w-full flex flex-col">
                             <label
                                 htmlFor="email"
-                                className="text-[#000000] text-[14px] font-normal mb-[7px] text-left"
-                                style={{ fontFamily: "'Inter', sans-serif" }}
+                                className="text-[#000000] text-[14px] font-normal mb-[7px] text-left font-inter"
                             >
                                 Email
                             </label>
@@ -101,8 +99,7 @@ export default function RegisterPage() {
                         <div className="w-full flex flex-col mt-[29px]">
                             <label
                                 htmlFor="password"
-                                className="text-[#000000] text-[14px] font-normal mb-[7px] text-left"
-                                style={{ fontFamily: "'Inter', sans-serif" }}
+                                className="text-[#000000] text-[14px] font-normal mb-[7px] text-left font-inter"
                             >
                                 Mot de passe
                             </label>
@@ -119,8 +116,7 @@ export default function RegisterPage() {
                         {/* Bouton */}
                         <button
                             type="submit"
-                            className="w-full lg:w-[249px] h-[50px] mt-[28px] bg-[#1F1F1F] text-[#FFFFFF] text-[16px] font-normal rounded-[10px] flex justify-center items-center"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="w-full lg:w-[249px] h-[50px] mt-[28px] bg-[#1F1F1F] text-[#FFFFFF] text-[16px] font-normal rounded-[10px] flex justify-center items-center font-inter"
                         >
                             S'inscrire
                         </button>
@@ -129,7 +125,7 @@ export default function RegisterPage() {
                 </div>
 
                 {/* Texte du bas */}
-                <div className="absolute bottom-[40px] lg:bottom-[92.92px] w-full flex justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <div className="absolute bottom-[40px] lg:bottom-[92.92px] w-full flex justify-center font-inter">
 
                     <div className="w-auto flex justify-start gap-[10px]">
                         <span className="text-[#000000] text-[14px] font-normal">
