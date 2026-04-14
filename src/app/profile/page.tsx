@@ -93,68 +93,68 @@ export default function ProfilePage() {
     if (loading) return <div className="p-10 text-center font-sans">Chargement de votre profil...</div>;
 
         return (
-        <div className="bg-[#F3F4F6] min-h-screen pt-[57px] pb-[181px] pl-[100px] pr-[125px] font-sans">
+        <div className="bg-[#F3F4F6] min-h-screen pt-[40px] lg:pt-[57px] pb-[80px] lg:pb-[181px] px-4 lg:pl-[100px] lg:pr-[125px] font-sans">
             
-            <div className="w-[1215px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] px-[59px] pt-[40px] pb-[59px] flex flex-col mx-auto">
+            <div className="w-full max-w-[1215px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] px-6 lg:px-[59px] pt-[30px] lg:pt-[40px] pb-[40px] lg:pb-[59px] flex flex-col mx-auto">
 
-                <div className="mb-[41px]">
-                    <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                <div className="mb-[30px] lg:mb-[41px]">
+                    <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] mb-[8px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
                         Mon compte
                     </h1>
-                    <p className="text-[16px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-[14px] lg:text-[16px] text-[#6B7280]" style={{ fontFamily: "'Inter', sans-serif" }}>
                         {`${editFirstName} ${editLastName}`.trim() || 'Utilisateur'}
                     </p>
                 </div>
 
                 {/* FORMULAIRE */}
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full">
                     
                     {/* Affichage messages réussite ou erreur */}
                     {successMessage && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-[4px] text-[14px]">{successMessage}</div>}
                     {errorMessage && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-[4px] text-[14px]">{errorMessage}</div>}
 
                     {/* BLOC NOM */}
-                    <div className="mb-[24px]">
+                    <div className="mb-[20px] lg:mb-[24px]">
                         <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nom</label>
                         <input 
                             type="text" 
                             value={editLastName} 
                             onChange={(e) => setEditLastName(e.target.value)}
-                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
                         />
                     </div>
 
                     {/* BLOC PRÉNOM */}
-                    <div className="mb-[24px]">
+                    <div className="mb-[20px] lg:mb-[24px]">
                         <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Prénom</label>
                         <input 
                             type="text" 
                             value={editFirstName} 
                             onChange={(e) => setEditFirstName(e.target.value)}
-                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
                         />
                     </div>
 
                     {/* BLOC EMAIL */}
-                    <div className="mb-[24px]">
+                    <div className="mb-[20px] lg:mb-[24px]">
                         <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Email</label>
                         <input 
                             type="email" 
                             value={editEmail} 
                             onChange={(e) => setEditEmail(e.target.value)}
-                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
                         />
                     </div>
 
                     {/* BLOC MOT DE PASSE */}
-                    <div className="mb-[41px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                    <div className="mb-[30px] lg:mb-[41px]">
+                        <label className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words" style={{ fontFamily: "'Inter', sans-serif" }}>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
                         <input 
                             type="password" 
                             value={newPassword} 
                             onChange={(e) => setNewPassword(e.target.value)}
                             placeholder="••••••••"
-                            className="w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
                         />
                     </div>
 
@@ -163,9 +163,9 @@ export default function ProfilePage() {
                 {/* BOUTON */}
                 <button 
                     onClick={handleUpdateProfile}
-                    className="w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition self-start"
+                    className="w-full lg:w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition self-start"
                 >
-                    <span className="text-[16px] text-[#FFFFFF] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <span className="text-[14px] lg:text-[16px] text-[#FFFFFF] font-regular" style={{ fontFamily: "'Inter', sans-serif" }}>
                         Modifier les informations
                     </span>
                 </button>
