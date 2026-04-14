@@ -51,20 +51,21 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
   return (
     // LE FOND : Flouté (backdrop-blur-sm) légèrement assombri
-    // RESPONSIVE : Ajout de p-4 pour éviter que la modale touche les bords sur mobile
     <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       
       {/* LA FENÊTRE */}
       <div className="bg-white rounded-[10px] w-full max-w-[598px] h-auto lg:h-[616px] relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] shadow-xl font-sans flex flex-col">
         
-        {/* LA CROIX : ( Positionnée à 37px du haut et 38.67px de la droite) */}
+        {/* LA CROIX */}
         <button 
           onClick={onClose}
+          aria-label="Fermer la fenêtre"
           className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
         >
           <Image 
             src="/cross.svg" 
-            alt="Fermer" 
+            alt="" 
+            aria-hidden="true"
             width={14} 
             height={14} 
             className="w-[14.33px] h-[14.33px]" 
@@ -84,10 +85,11 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
           
           {/* CHAMP : Titre */}
           <div className="flex flex-col gap-[7px]">
-            <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <label htmlFor="title" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
               Titre*
             </label>
             <input 
+              id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -98,10 +100,11 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
           {/* CHAMP : Description */}
           <div className="flex flex-col gap-[7px]">
-            <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <label htmlFor="description" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
               Description*
             </label>
             <input 
+              id="description"
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -112,11 +115,12 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
           {/* CHAMP : Contributeurs */}
           <div className="flex flex-col gap-[7px]">
-            <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <label htmlFor="contributors" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
               Contributeurs
             </label>
             <div className="relative w-full lg:w-[452px]">
               <input 
+                id="contributors"
                 type="text"
                 placeholder="Choisir un ou plusieurs collaborateurs"
                 value={contributors}
@@ -127,7 +131,8 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
                  <Image 
                    src="/vector.svg" 
-                   alt="Flèche" 
+                   alt="" 
+                   aria-hidden="true"
                    width={16} 
                    height={8} 
                    className="w-[16px] h-[8px]" 
