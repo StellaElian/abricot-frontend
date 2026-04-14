@@ -1,19 +1,19 @@
 'use client'; //dit à Next.js que c'est une page interactive (où l'utilisateur va taper des choses)
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Le GPS de Next.js
 import Link from 'next/link';
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'; // Notre portefeuille pour le Badge VIP
 import Image from 'next/image';
 
 export default function RegisterPage() {
-    // Ces "states" vont mémoriser ce que l'utilisateur tape dans les cases
+    // mémorise ce que l'utilisateur tape dans les cases
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter(); // On initialise le GPS
 
-    // s'activera que quand on clique sur "S'inscrire'"
+    // s'active que quand on clique sur "S'inscrire'"
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(''); // On efface les anciennes erreurs à chaque nouvel essai
@@ -81,12 +81,14 @@ export default function RegisterPage() {
                         {/* Email */}
                         <div className="w-full flex flex-col">
                             <label
+                                htmlFor="email"
                                 className="text-[#000000] text-[14px] font-normal mb-[7px] text-left"
                                 style={{ fontFamily: "'Inter', sans-serif" }}
                             >
                                 Email
                             </label>
                             <input
+                                id="email"
                                 type="email"
                                 className="w-full lg:w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
                                 value={email}
@@ -98,12 +100,14 @@ export default function RegisterPage() {
                         {/* Mot de passe */}
                         <div className="w-full flex flex-col mt-[29px]">
                             <label
+                                htmlFor="password"
                                 className="text-[#000000] text-[14px] font-normal mb-[7px] text-left"
                                 style={{ fontFamily: "'Inter', sans-serif" }}
                             >
                                 Mot de passe
                             </label>
                             <input
+                                id="password"
                                 type="password"
                                 className="w-full lg:w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
                                 value={password}
