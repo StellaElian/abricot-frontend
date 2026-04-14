@@ -30,6 +30,7 @@ export default function ForgotPasswordPage() {
                         </p>
                         
                         <input
+                            aria-label="Adresse email"
                             type="email"
                             placeholder="votre@email.com"
                             value={email}
@@ -49,7 +50,7 @@ export default function ForgotPasswordPage() {
                 ) : (
                     // message de succès
                     <div className="flex flex-col items-center text-center">
-                        <div className="w-[50px] h-[50px] bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-[15px] text-[24px]">
+                        <div aria-hidden="true" className="w-[50px] h-[50px] bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-[15px] text-[24px]">
                             ✓
                         </div>
                         <p className="text-[14px] text-[#6B7280] mb-[20px]" style={{ fontFamily: "'Inter', sans-serif" }}>
