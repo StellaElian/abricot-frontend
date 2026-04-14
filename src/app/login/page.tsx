@@ -1,19 +1,18 @@
 'use client'; //dit à Next.js que c'est une page interactive (où l'utilisateur va taper des choses)
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Le GPS de Next.js
+import { useRouter } from 'next/navigation'; // GPS de Next.js
 import Link from 'next/link';
-import Cookies from 'js-cookie'; // Notre portefeuille pour le Badge VIP
+import Cookies from 'js-cookie'; 
 import Image from 'next/image';
 
 export default function LoginPage() {
-    // Ces "states" vont mémoriser ce que l'utilisateur tape dans les cases
+    // "states" mémorisent ce que l'utilisateur tape dans les cases
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter(); // On initialise le GPS
 
-    // Cette fonction s'activera quand on cliquera sur "Se connecter"
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(''); // On efface les anciennes erreurs à chaque nouvel essai
@@ -29,7 +28,7 @@ export default function LoginPage() {
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await response.json(); // On lit la réponse de la cuisine
+            const data = await response.json(); 
 
             if (response.ok) {
                 Cookies.set('token', data.data.token, { expires: 1 });
@@ -44,34 +43,34 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#E5E7EB] font-sans overflow-hidden">
+        <div className="flex min-h-screen bg-[#E5E7EB] font-sans overflow-x-hidden lg:overflow-hidden">
 
-            {/* LA COLONNE DE GAUCHE (562px) */}
-            <div className="relative w-full lg:w-[562px] min-h-[1024px] shrink-0 bg-[#E5E7EB]">
+            {/* LA COLONNE DE GAUCHE  */}
+            <div className="relative w-full lg:w-[562px] min-h-screen lg:min-h-[1024px] shrink-0 bg-[#E5E7EB] flex flex-col lg:block">
 
-                {/* Le Logo en absolu */}
-                <div className="absolute top-[92.92px] left-[154.72px]">
-                    <Image src="/logoabricot.svg" alt="Logo Abricot" width={252.57} height={32.17} priority />
+                {/* Logo */}
+                <div className="absolute top-[40px] lg:top-[92.92px] left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-[154.72px]">
+                    <Image src="/logoabricot.svg" alt="Logo Abricot" width={252.57} height={32.17} priority className="w-[180px] lg:w-[252.57px] h-auto" />
                 </div>
 
-                {/* Le Bloc Central (Formulaire) de 282px */}
-                <div className="mt-[300px] w-[282px] mx-auto flex flex-col items-center">
+                {/* Le Bloc Central (Formulaire) */}
+                <div className="mt-[120px] lg:mt-[300px] w-full px-4 lg:px-0 lg:w-[282px] mx-auto flex flex-col items-center">
 
                     <h1
-                        className="text-[40px] text-[#D3590B] leading-none text-center mb-[30px] mt-[102px]"
+                        className="text-[32px] lg:text-[40px] text-[#D3590B] leading-none text-center mb-[30px] mt-[20px] lg:mt-[102px]"
                         style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700 }}
                     >
                         Connexion
                     </h1>
 
-                    {/* Affichage des erreurs (adapté à la taille du bloc) */}
+                    {/* Affichage des erreurs */}
                     {error && (
-                        <div className="w-full bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded mb-4 text-xs text-center">
+                        <div className="w-full max-w-[282px] bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded mb-4 text-xs text-center">
                             {error}
                         </div>
                     )}
 
-                    <form onSubmit={handleLogin} className="w-full flex flex-col items-center">
+                    <form onSubmit={handleLogin} className="w-full max-w-[282px] flex flex-col items-center">
 
                         {/* Email */}
                         <div className="w-full flex flex-col">
@@ -83,7 +82,7 @@ export default function LoginPage() {
                             </label>
                             <input
                                 type="email"
-                                className="w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
+                                className="w-full lg:w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -100,7 +99,7 @@ export default function LoginPage() {
                             </label>
                             <input
                                 type="password"
-                                className="w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
+                                className="w-full lg:w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
@@ -110,7 +109,7 @@ export default function LoginPage() {
                         {/* Bouton */}
                         <button
                             type="submit"
-                            className="w-[249px] h-[50px] mt-[28px] bg-[#1F1F1F] text-[#FFFFFF] text-[16px] font-normal rounded-[10px] flex justify-center items-center"
+                            className="w-full lg:w-[249px] h-[50px] mt-[28px] bg-[#1F1F1F] text-[#FFFFFF] text-[16px] font-normal rounded-[10px] flex justify-center items-center"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
                             Se connecter
@@ -126,8 +125,8 @@ export default function LoginPage() {
                     </form>
                 </div>
 
-                {/* Texte du bas en absolu */}
-                <div className="absolute bottom-[92.92px] w-full flex justify-center gap-[10px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                {/* Texte du bas */}
+                <div className="absolute bottom-[40px] lg:bottom-[92.92px] w-full flex justify-center gap-[10px]" style={{ fontFamily: "'Inter', sans-serif" }}>
                     <span className="text-[#000000] text-[14px] font-normal">
                         Pas encore de compte ?
                     </span>
