@@ -2,9 +2,9 @@ import Image from 'next/image';
 
 export default function Footer() {
     return (
-        <footer className="w-full h-[68px] bg-[#FFFFFF] flex items-center justify-between pl-[30px] pr-[54px] border-t border-gray-100">
+        <footer className="w-full h-[68px] bg-[#FFFFFF] flex items-center justify-between px-4 lg:pl-[30px] lg:pr-[54px] border-t border-gray-100">
 
-            {/* PARTIE GAUCHE : Le Logo */}
+            {/* PARTIE GAUCHE : Logo */}
             <div className="flex-shrink-0">
                 <Image
                     src="/logo2.svg"
@@ -15,10 +15,10 @@ export default function Footer() {
                 />
             </div>
 
-            {/* PARTIE DROITE : Le Texte  */}
+            {/* PARTIE DROITE : Texte  */}
             <div className="flex-shrink-0">
                 <span
-                    className="text-[#000000] text-[16px] font-normal"
+                    className="text-[#000000] text-[14px] lg:text-[16px] font-normal"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                     Abricot 2025
