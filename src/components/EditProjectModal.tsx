@@ -7,7 +7,7 @@ import Image from 'next/image';
 interface EditProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
-    project: any; // modale reçoit les données des projets
+    project: any; // reçoit les données des projets
 }
 
 export default function EditProjectModal({ isOpen, onClose, project }: EditProjectModalProps) {
@@ -16,10 +16,10 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
     const [description, setDescription] = useState('');
     const [contributorsText, setContributorsText] = useState('');
 
-    //dynamisation :
+    //dynamisation
     useEffect(() => {
         if (project) {
-            setTitle(project.title || project.name || ''); 
+            setTitle(project.title || project.name || '');
             setDescription(project.description || '');
             //calcul nbr contributeurs 
             const contributorsList = [
@@ -75,11 +75,13 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                 {/* LA CROIX */}
                 <button
                     onClick={onClose}
+                    aria-label="Fermer la fenêtre"
                     className="absolute top-[20px] lg:top-[37.5px] right-[20px] lg:right-[39.17px] hover:opacity-70 transition flex items-center justify-center"
                 >
                     <Image
                         src="/cross.svg"
-                        alt="Fermer"
+                        alt=""
+                        aria-hidden="true"
                         width={14}
                         height={14}
                         className="w-[13.33px] h-[13.33px]"
@@ -99,10 +101,11 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                     {/* CHAMP : Titre */}
                     <div className="flex flex-col gap-[7px]">
-                        <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <label htmlFor="title" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
                             Titre*
                         </label>
                         <input
+                            id="title"
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -113,11 +116,11 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                     {/* CHAMP : Description */}
                     <div className="flex flex-col gap-[7px]">
-                        <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <label htmlFor="description" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
                             Description*
                         </label>
-                        {/* 📱 RESPONSIVE : w-full lg:w-[452px] */}
                         <input
+                            id="description"
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -128,21 +131,23 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
                     {/* CHAMP : Contributeurs */}
                     <div className="flex flex-col gap-[7px]">
-                        <label className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <label htmlFor="contributors" className="text-[14px] font-normal text-[#1F1F1F]" style={{ fontFamily: "'Inter', sans-serif" }}>
                             Contributeurs
                         </label>
                         <div className="relative w-full lg:w-[452px]">
                             <input
+                                id="contributors"
                                 type="text"
                                 value={contributorsText}
                                 onChange={(e) => setContributorsText(e.target.value)}
                                 className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
                             />
-                            {/* LA FLÈCHE (vers le bas)) */}
+                            {/* LA FLÈCHE (vers le bas) */}
                             <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
                                 <Image
                                     src="/vector.svg"
-                                    alt="Flèche"
+                                    alt=""
+                                    aria-hidden="true"
                                     width={16}
                                     height={8}
                                     className="w-[16px] h-[8px]"
@@ -183,12 +188,12 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                                             } else {
                                                 alert("Erreur lors de la suppression du projet");
                                             }
-                                        } 
+                                        }
                                         catch (error) {
                                             alert("Impossible de joindre le serveur. ");
                                         }
-                                    };
-                                }
+                                };
+                            }
                             }
                             className="text-[#EF4444] text-[14px] font-medium underline cursor-pointer hover:opacity-70 transition mt-2 lg:mt-0"
                             style={{ fontFamily: "'Inter', sans-serif" }}
