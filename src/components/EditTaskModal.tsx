@@ -41,7 +41,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
         setSelectedAssignees([]);
       }
 
-      // Traduction du statut API vers le français pour sélectionner le bon badge
+      // Traduction
       if (task.status === 'TODO') setStatus('À faire');
       else if (task.status === 'IN_PROGRESS') setStatus('En cours');
       else if (task.status === 'DONE') setStatus('Terminée');
@@ -50,7 +50,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
   if (!isOpen) return null;
 
-    // LA REQUÊTE DELETE
+    // REQUÊTE DELETE
   const handleDelete = async () => {
     // Petite sécurité pour éviter les suppressions accidentelles
     if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) return;
@@ -90,7 +90,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
       if (status === "En cours") backendStatus = "IN_PROGRESS";
       if (status === "Terminée") backendStatus = "DONE";
 
-      // On cible l'URL exacte de LA tâche à modifier avec /tasks/${task.id}
+      // On cible l'URL exacte de la tâche à modifier avec /tasks/${task.id}
       const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${task.id}`, {
         method: 'PUT',
         headers: {
@@ -132,9 +132,10 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
         {/* LA CROIX */}
         <button 
           onClick={onClose}
+          aria-label="Fermer la fenêtre"
           className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
         >
-          <Image src="/cross.svg" alt="Fermer" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
+          <Image src="/cross.svg" alt="" aria-hidden="true" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
         </button>
 
         {/* TITRE PRINCIPAL */}
@@ -150,9 +151,10 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           
           {/* CHAMP : Titre */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Titre</label>
+            <label htmlFor="title" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Titre</label>
   
             <input 
+              id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -163,8 +165,9 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
           {/* CHAMP : Description */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
+            <label htmlFor="description" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Description</label>
             <input 
+              id="description"
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -175,9 +178,10 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
           {/* CHAMP : Échéance */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance</label>
+            <label htmlFor="dueDate" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Échéance</label>
             <div className="relative w-full lg:w-[452px]">
               <input 
+                id="dueDate"
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
@@ -188,11 +192,22 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
          {/* CHAMP : Assigné à */}
          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
+            <label id="assignees-label" className="text-[14px] font-normal text-[#000000]" style={{ fontFamily: "'Inter', sans-serif" }}>Assigné à :</label>
             <div className="relative w-full lg:w-[452px]">
               
               <div 
+                role="button"
+                tabIndex={0}
+                aria-haspopup="listbox"
+                aria-expanded={isDropdownOpen}
+                aria-labelledby="assignees-label"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onKeyDown={(e) => { 
+                  if (e.key === 'Enter' || e.key === ' ') { 
+                    e.preventDefault(); 
+                    setIsDropdownOpen(!isDropdownOpen); 
+                  } 
+                }}
                 className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px] bg-white"
               >
                 {selectedAssignees.length === 0 ? (
@@ -210,11 +225,11 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                 )}
               </div>
               <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                 <Image src="/vector.svg" alt="" aria-hidden="true" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {isDropdownOpen && (
-                <div className="absolute top-[58px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
+                <div role="listbox" className="absolute top-[58px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
                   {contributors && contributors.length > 0 ? (
                     contributors.map((contributor: any, index: number) => {
                       const targetId = contributor.userId || contributor.id;
@@ -224,6 +239,9 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                       return (
                         <div 
                           key={index}
+                          role="option"
+                          aria-selected={isSelected}
+                          tabIndex={0}
                           onClick={() => {
                             if (isSelected) {
                               setSelectedAssignees(selectedAssignees.filter(id => id !== targetId));
@@ -231,9 +249,19 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                               setSelectedAssignees([...selectedAssignees, targetId]);
                             }
                           }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              if (isSelected) {
+                                setSelectedAssignees(selectedAssignees.filter(id => id !== targetId));
+                              } else {
+                                setSelectedAssignees([...selectedAssignees, targetId]);
+                              }
+                            }
+                          }}
                           className="px-[17px] py-[10px] text-[12px] text-[#1F1F1F] hover:bg-[#F3F4F6] cursor-pointer flex items-center gap-[10px]"
                         >
-                          <input type="checkbox" checked={isSelected} readOnly className="cursor-pointer" />
+                          <input type="checkbox" checked={isSelected} readOnly tabIndex={-1} aria-label={`Assigner à ${fullName}`} className="cursor-pointer" />
                           {fullName}
                         </div>
                       );
@@ -254,6 +282,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               {/* Badge : À faire */}
               <button 
                 type="button"
+                aria-pressed={status === 'À faire'}
                 onClick={() => setStatus('À faire')}
                 className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
@@ -264,6 +293,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               {/* Badge : En cours */}
               <button 
                 type="button"
+                aria-pressed={status === 'En cours'}
                 onClick={() => setStatus('En cours')}
                 className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
@@ -274,6 +304,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               {/* Badge : Terminée */}
               <button 
                 type="button"
+                aria-pressed={status === 'Terminée'}
                 onClick={() => setStatus('Terminée')}
                 className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
