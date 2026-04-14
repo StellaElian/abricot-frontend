@@ -110,13 +110,14 @@ export default function ProfilePage() {
                 <div className="flex flex-col w-full">
                     
                     {/* Affichage messages réussite ou erreur */}
-                    {successMessage && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-[4px] text-[14px]">{successMessage}</div>}
-                    {errorMessage && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-[4px] text-[14px]">{errorMessage}</div>}
+                    {successMessage && <div role="alert" className="mb-4 p-3 bg-green-100 text-green-700 rounded-[4px] text-[14px]">{successMessage}</div>}
+                    {errorMessage && <div role="alert" className="mb-4 p-3 bg-red-100 text-red-700 rounded-[4px] text-[14px]">{errorMessage}</div>}
 
                     {/* BLOC NOM */}
                     <div className="mb-[20px] lg:mb-[24px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nom</label>
+                        <label htmlFor="lastName" className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Nom</label>
                         <input 
+                            id="lastName"
                             type="text" 
                             value={editLastName} 
                             onChange={(e) => setEditLastName(e.target.value)}
@@ -126,8 +127,9 @@ export default function ProfilePage() {
 
                     {/* BLOC PRÉNOM */}
                     <div className="mb-[20px] lg:mb-[24px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Prénom</label>
+                        <label htmlFor="firstName" className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Prénom</label>
                         <input 
+                            id="firstName"
                             type="text" 
                             value={editFirstName} 
                             onChange={(e) => setEditFirstName(e.target.value)}
@@ -137,8 +139,9 @@ export default function ProfilePage() {
 
                     {/* BLOC EMAIL */}
                     <div className="mb-[20px] lg:mb-[24px]">
-                        <label className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Email</label>
+                        <label htmlFor="email" className="block text-[14px] text-[#000000] font-regular mb-[7px]" style={{ fontFamily: "'Inter', sans-serif" }}>Email</label>
                         <input 
+                            id="email"
                             type="email" 
                             value={editEmail} 
                             onChange={(e) => setEditEmail(e.target.value)}
@@ -148,8 +151,9 @@ export default function ProfilePage() {
 
                     {/* BLOC MOT DE PASSE */}
                     <div className="mb-[30px] lg:mb-[41px]">
-                        <label className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words" style={{ fontFamily: "'Inter', sans-serif" }}>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                        <label htmlFor="newPassword" className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words" style={{ fontFamily: "'Inter', sans-serif" }}>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
                         <input 
+                            id="newPassword"
                             type="password" 
                             value={newPassword} 
                             onChange={(e) => setNewPassword(e.target.value)}
