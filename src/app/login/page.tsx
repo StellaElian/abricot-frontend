@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import Image from 'next/image';
 
 export default function LoginPage() {
-    // "states" mémorisent ce que l'utilisateur tape dans les cases
+    // mémorisent ce que l'utilisateur tape dans les cases
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -75,12 +75,14 @@ export default function LoginPage() {
                         {/* Email */}
                         <div className="w-full flex flex-col">
                             <label
+                                htmlFor="email"
                                 className="text-[#000000] text-[14px] font-normal mb-[7px] text-left"
                                 style={{ fontFamily: "'Inter', sans-serif" }}
                             >
                                 Email
                             </label>
                             <input
+                                id="email"
                                 type="email"
                                 className="w-full lg:w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
                                 value={email}
@@ -92,12 +94,14 @@ export default function LoginPage() {
                         {/* Mot de passe */}
                         <div className="w-full flex flex-col mt-[29px]">
                             <label
+                                htmlFor="password"
                                 className="text-[#000000] text-[14px] font-normal mb-[7px] text-left"
                                 style={{ fontFamily: "'Inter', sans-serif" }}
                             >
                                 Mot de passe
                             </label>
                             <input
+                                id="password"
                                 type="password"
                                 className="w-full lg:w-[282px] h-[53px] rounded-[4px] border border-[#E5E7EB] bg-[#FFFFFF] px-3 focus:outline-none [&:-webkit-autofill]:[box-shadow:0_0_0_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:black]"
                                 value={password}
