@@ -63,7 +63,7 @@ export default function AuthNavbar() {
         <nav className="w-full min-h-[94px] h-auto bg-[#FFFFFF] border-b border-gray-100 flex flex-wrap lg:flex-nowrap items-center justify-between px-4 py-4 lg:py-0 lg:px-[100px] relative font-sans">
             
             <div className="flex-shrink-0">
-                <Link href="/dashboard" aria-label="Retour au tableau de bord">
+                <Link href="/dashboard" aria-label="Redirection vers tableau de bord">
                     <Image src="/logoabricot.svg" alt="Logo Abricot" width={147} height={37} priority className="w-[100px] lg:w-[147px] h-auto" />
                 </Link>
             </div>
