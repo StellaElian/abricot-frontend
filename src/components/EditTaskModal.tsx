@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 interface EditTaskModalProps {
   isOpen: boolean;
@@ -25,22 +25,22 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
     if (task) {
       setTitle(task.title || '');
       setDescription(task.description || '');
-      
+
       if (task.dueDate) {
         const dateObj = new Date(task.dueDate);
         setDueDate(dateObj.toISOString().split('T')[0]);
-      }else {
+      } else {
         setDueDate('');
       }
-      
+
       if (task.assignees) {
         // Extraction de l'ID 
         const assigneeIds = task.assignees.map((a: any) => {
-            if (typeof a === 'string') return a;
-            return a.userId || a.user?.id || a.id;
+          if (typeof a === 'string') return a;
+          return a.userId || a.user?.id || a.id;
         });
         setSelectedAssignees(assigneeIds.filter(Boolean));
-      }else {
+      } else {
         setSelectedAssignees([]);
       }
 
@@ -53,7 +53,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
   if (!isOpen) return null;
 
-    // REQUÊTE DELETE
+  // REQUÊTE DELETE
   const handleDelete = async () => {
     // Petite sécurité pour éviter les suppressions accidentelles
     if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) return;
@@ -61,7 +61,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
     try {
       const token = Cookies.get('token');
-      
+
       const response = await fetch(`http://localhost:8000/projects/${projectId}/tasks/${task.id}`, {
         method: 'DELETE',
         headers: {
@@ -72,7 +72,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
       if (response.ok) {
         console.log("Tâche supprimée !");
         onClose();
-        window.location.reload(); 
+        window.location.reload();
       } else {
         console.error("Erreur backend lors de la suppression");
         alert("Erreur lors de la suppression de la tâche.");
@@ -86,7 +86,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
   // LA REQUÊTE AJOUTER
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!projectId || !task?.id) return; 
+    if (!projectId || !task?.id) return;
     try {
       const token = Cookies.get('token');
       let backendStatus = "TODO";
@@ -112,7 +112,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
       if (response.ok) {
         console.log("Tâche modifiée !");
         onClose();
-        window.location.reload(); 
+        window.location.reload();
       } else {
         const errorData = await response.json();
         console.error("Erreur backend:", errorData);
@@ -128,12 +128,12 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
   return (
     // 1. LE FOND : Flouté
     <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      
+
       {/* LA FENÊTRE */}
       <div className="bg-[#FFFFFF] rounded-[10px] w-full max-w-[598px] h-auto max-h-[90vh] lg:h-[799px] overflow-y-auto relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col hide-scrollbar">
-        
+
         {/* LA CROIX */}
-        <button 
+        <button
           onClick={onClose}
           aria-label="Fermer la fenêtre"
           className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
@@ -142,7 +142,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
         </button>
 
         {/* TITRE PRINCIPAL */}
-        <h2 
+        <h2
           className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start font-manrope"
           style={{ lineHeight: "100%" }}
         >
@@ -151,12 +151,12 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
         {/* LE FORMULAIRE */}
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
-          
+
           {/* CHAMP : Titre */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label htmlFor="title" className="text-[14px] font-normal text-[#000000] font-inter">Titre</label>
-  
-            <input 
+
+            <input
               id="title"
               type="text"
               value={title}
@@ -169,7 +169,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           {/* CHAMP : Description */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label htmlFor="description" className="text-[14px] font-normal text-[#000000] font-inter">Description</label>
-            <input 
+            <input
               id="description"
               type="text"
               value={description}
@@ -183,7 +183,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label htmlFor="dueDate" className="text-[14px] font-normal text-[#000000] font-inter">Échéance</label>
             <div className="relative w-full lg:w-[452px]">
-              <input 
+              <input
                 id="dueDate"
                 type="date"
                 value={dueDate}
@@ -193,23 +193,23 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
             </div>
           </div>
 
-         {/* CHAMP : Assigné à */}
-         <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
+          {/* CHAMP : Assigné à */}
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label id="assignees-label" className="text-[14px] font-normal text-[#000000] font-inter">Assigné à :</label>
             <div className="relative w-full lg:w-[452px]">
-              
-              <div 
+
+              <div
                 role="button"
                 tabIndex={0}
                 aria-haspopup="listbox"
                 aria-expanded={isDropdownOpen}
                 aria-labelledby="assignees-label"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                onKeyDown={(e) => { 
-                  if (e.key === 'Enter' || e.key === ' ') { 
-                    e.preventDefault(); 
-                    setIsDropdownOpen(!isDropdownOpen); 
-                  } 
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setIsDropdownOpen(!isDropdownOpen);
+                  }
                 }}
                 className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px] bg-white"
               >
@@ -219,11 +219,11 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                   selectedAssignees.map(id => {
                     // 1.On cherche dans la liste de tous les contributeurs
                     let person = contributors.find((c: any) => c.id === id || c.userId === id);
-                    
+
                     // 2.on fouille dans les données de la tâche 
                     if (!person && task?.assignees) {
-                        const originalAssignee = task.assignees.find((a: any) => a.userId === id || a.user?.id === id || a.id === id);
-                        person = originalAssignee?.user || originalAssignee;
+                      const originalAssignee = task.assignees.find((a: any) => a.userId === id || a.user?.id === id || a.id === id);
+                      person = originalAssignee?.user || originalAssignee;
                     }
 
                     // On extrait le nom
@@ -239,7 +239,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                 )}
               </div>
               <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/vector.svg" alt="" aria-hidden="true" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <Image src="/vector.svg" alt="" aria-hidden="true" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {isDropdownOpen && (
@@ -247,14 +247,14 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
                   {contributors && contributors.length > 0 ? (
                     contributors.map((contributor: any, index: number) => {
                       const targetId = contributor.userId || contributor.id;
-                      
+
                       const fullName = contributor.name || contributor.user?.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || `${contributor.user?.firstName || ''} ${contributor.user?.lastName || ''}`.trim();
                       const nameToDisplay = fullName ? fullName : "Inconnu";
-                      
+
                       const isSelected = selectedAssignees.includes(targetId);
 
                       return (
-                        <div 
+                        <div
                           key={index}
                           role="option"
                           aria-selected={isSelected}
@@ -297,7 +297,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
             <label className="text-[14px] font-normal text-[#000000] mb-[8px] lg:mb-[16px] font-inter">Statut :</label>
             <div className="flex flex-wrap items-center gap-[8px]">
               {/* Badge : À faire */}
-              <button 
+              <button
                 type="button"
                 aria-pressed={status === 'À faire'}
                 onClick={() => setStatus('À faire')}
@@ -307,7 +307,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               </button>
 
               {/* Badge : En cours */}
-              <button 
+              <button
                 type="button"
                 aria-pressed={status === 'En cours'}
                 onClick={() => setStatus('En cours')}
@@ -317,7 +317,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               </button>
 
               {/* Badge : Terminée */}
-              <button 
+              <button
                 type="button"
                 aria-pressed={status === 'Terminée'}
                 onClick={() => setStatus('Terminée')}
@@ -329,14 +329,14 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           </div>
 
           <div className="mt-[32px] lg:mt-[56px] flex flex-col-reverse lg:flex-row items-center gap-[16px] lg:gap-[24px]">
-            <button 
+            <button
               type="submit"
               className="w-full lg:w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB] font-inter"
             >
               Enregistrer
             </button>
 
-            <button 
+            <button
               type="button"
               onClick={handleDelete}
               className="text-[#EF4444] text-[14px] font-medium hover:underline transition px-[10px] font-inter"

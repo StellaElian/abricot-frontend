@@ -12,7 +12,7 @@ interface CreateProjectModalProps {
 export default function CreateProjectModal({ isOpen, onClose }: CreateProjectModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  
+
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [selectedContributors, setSelectedContributors] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
       const res = await fetch(`http://localhost:8000/users/search?query=${encodeURIComponent(query)}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      
+
       if (res.ok) {
         const json = await res.json();
         const usersArray = json.data?.users || json.data || [];
@@ -41,7 +41,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
   useEffect(() => {
     if (isOpen) {
       // Recherche par défaut
-      fetchUsers(searchTerm || 'a'); 
+      fetchUsers(searchTerm || 'a');
     } else {
       // Reset à la fermeture
       setTitle('');
@@ -67,7 +67,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
         body: JSON.stringify({
           name: title,
           description: description,
-          contributors: selectedContributors 
+          contributors: selectedContributors
         })
       });
 
@@ -85,7 +85,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
   return (
     <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-[10px] w-full max-w-[598px] h-auto lg:h-[616px] relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] shadow-xl font-sans flex flex-col">
-        
+
         <button onClick={onClose} className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center">
           <Image src="/cross.svg" alt="Fermer" width={14} height={14} />
         </button>
@@ -123,7 +123,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                 <div className="absolute top-[58px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-lg z-10 flex flex-col">
                   {/* BARRE DE RECHERCHE DANS LE MENU */}
                   <div className="p-2 border-b border-gray-100">
-                    <input 
+                    <input
                       type="text"
                       placeholder="Rechercher (ex: Alice)..."
                       className="w-full h-[35px] px-2 text-[12px] border border-gray-200 rounded outline-none focus:border-[#D3590B]"

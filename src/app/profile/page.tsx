@@ -41,7 +41,7 @@ export default function ProfilePage() {
                     setEditLastName(extractedLastName);
                     setEditEmail(userData?.email || '');
                 }
-            }catch (err) {
+            } catch (err) {
                 console.error("Erreur de récupération du profil:", err);
             } finally {
                 setLoading(false);
@@ -69,7 +69,7 @@ export default function ProfilePage() {
 
         try {
             // Requête PUT pour modifier les données
-            const response = await fetch('http://localhost:8000/auth/profile', { 
+            const response = await fetch('http://localhost:8000/auth/profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,9 +92,9 @@ export default function ProfilePage() {
     // Écran d'attente
     if (loading) return <div className="p-10 text-center font-sans">Chargement de votre profil...</div>;
 
-        return (
+    return (
         <div className="bg-[#F3F4F6] min-h-screen pt-[40px] lg:pt-[57px] pb-[80px] lg:pb-[181px] px-4 lg:pl-[100px] lg:pr-[125px] font-sans">
-            
+
             <div className="w-full max-w-[1215px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] px-6 lg:px-[59px] pt-[30px] lg:pt-[40px] pb-[40px] lg:pb-[59px] flex flex-col mx-auto">
 
                 <div className="mb-[30px] lg:mb-[41px]">
@@ -108,7 +108,7 @@ export default function ProfilePage() {
 
                 {/* FORMULAIRE */}
                 <div className="flex flex-col w-full">
-                    
+
                     {/* Affichage messages réussite ou erreur */}
                     {successMessage && <div role="alert" className="mb-4 p-3 bg-green-100 text-green-700 rounded-[4px] text-[14px]">{successMessage}</div>}
                     {errorMessage && <div role="alert" className="mb-4 p-3 bg-red-100 text-red-700 rounded-[4px] text-[14px]">{errorMessage}</div>}
@@ -116,56 +116,56 @@ export default function ProfilePage() {
                     {/* BLOC NOM */}
                     <div className="mb-[20px] lg:mb-[24px]">
                         <label htmlFor="lastName" className="block text-[14px] text-[#000000] font-regular mb-[7px] font-inter">Nom</label>
-                        <input 
+                        <input
                             id="lastName"
-                            type="text" 
-                            value={editLastName} 
+                            type="text"
+                            value={editLastName}
                             onChange={(e) => setEditLastName(e.target.value)}
-                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition"
                         />
                     </div>
 
                     {/* BLOC PRÉNOM */}
                     <div className="mb-[20px] lg:mb-[24px]">
                         <label htmlFor="firstName" className="block text-[14px] text-[#000000] font-regular mb-[7px] font-inter">Prénom</label>
-                        <input 
+                        <input
                             id="firstName"
-                            type="text" 
-                            value={editFirstName} 
+                            type="text"
+                            value={editFirstName}
                             onChange={(e) => setEditFirstName(e.target.value)}
-                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition"
                         />
                     </div>
 
                     {/* BLOC EMAIL */}
                     <div className="mb-[20px] lg:mb-[24px]">
                         <label htmlFor="email" className="block text-[14px] text-[#000000] font-regular mb-[7px] font-inter">Email</label>
-                        <input 
+                        <input
                             id="email"
-                            type="email" 
-                            value={editEmail} 
+                            type="email"
+                            value={editEmail}
                             onChange={(e) => setEditEmail(e.target.value)}
-                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition"
                         />
                     </div>
 
                     {/* BLOC MOT DE PASSE */}
                     <div className="mb-[30px] lg:mb-[41px]">
                         <label htmlFor="newPassword" className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words font-inter">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
-                        <input 
+                        <input
                             id="newPassword"
-                            type="password" 
-                            value={newPassword} 
+                            type="password"
+                            value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             placeholder="••••••••"
-                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition" 
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition"
                         />
                     </div>
 
                 </div>
 
                 {/* BOUTON */}
-                <button 
+                <button
                     onClick={handleUpdateProfile}
                     className="w-full lg:w-[242px] h-[50px] bg-[#1F1F1F] rounded-[10px] flex items-center justify-center cursor-pointer hover:bg-black transition self-start"
                 >

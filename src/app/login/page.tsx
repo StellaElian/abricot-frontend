@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; // GPS de Next.js
 import Link from 'next/link';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 
 export default function LoginPage() {
@@ -28,7 +28,7 @@ export default function LoginPage() {
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await response.json(); 
+            const data = await response.json();
 
             if (response.ok) {
                 Cookies.set('token', data.data.token, { expires: 1 });
@@ -140,8 +140,8 @@ export default function LoginPage() {
                 <Image
                     src="/hero-login.jpg"
                     alt="Bureau avec outils"
-                    fill  
-                    style={{ objectFit: 'cover', objectPosition: 'center', overflow: 'hidden'}}
+                    fill
+                    style={{ objectFit: 'cover', objectPosition: 'center', overflow: 'hidden' }}
                     priority
                 />
             </div>

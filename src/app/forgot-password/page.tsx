@@ -15,9 +15,9 @@ export default function ForgotPasswordPage() {
 
     return (
         <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center font-sans px-4">
-            
+
             <div className="w-full max-w-[400px] bg-white p-6 md:p-8 rounded-[10px] shadow-sm border border-[#E5E7EB] flex flex-col items-center">
-                
+
                 <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[10px] font-manrope">
                     Mot de passe oublié
                 </h1>
@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
                         <p className="text-[14px] text-[#6B7280] mb-[20px] text-center font-inter">
                             Entrez votre adresse email ci-dessous. Nous vous enverrons un lien pour réinitialiser votre mot de passe.
                         </p>
-                        
+
                         <input
                             aria-label="Adresse email"
                             type="email"
@@ -38,8 +38,8 @@ export default function ForgotPasswordPage() {
                             className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] outline-none focus:border-[#D3590B] mb-[20px]"
                             required
                         />
-                        
-                        <button 
+
+                        <button
                             type="submit"
                             className="w-full h-[50px] bg-[#1F1F1F] text-white rounded-[10px] hover:bg-black transition font-inter"
                         >

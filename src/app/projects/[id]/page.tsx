@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
@@ -63,7 +63,7 @@ export default function ProjectDetailsPage() {
                     } else if (Array.isArray(tasksJson.data)) {
                         setProjectTasks(tasksJson.data);
                     } else {
-                        setProjectTasks([]); 
+                        setProjectTasks([]);
                     }
                 }
 
@@ -75,9 +75,9 @@ export default function ProjectDetailsPage() {
                     const projectJson = await projectResponse.json();
                     let allProjects = [];
                     if (Array.isArray(projectJson.data)) {
-                        allProjects = projectJson.data; 
+                        allProjects = projectJson.data;
                     } else if (projectJson.data && Array.isArray(projectJson.data.projects)) {
-                        allProjects = projectJson.data.projects; 
+                        allProjects = projectJson.data.projects;
                     } else if (Array.isArray(projectJson)) {
                         allProjects = projectJson;
                     }
@@ -95,7 +95,7 @@ export default function ProjectDetailsPage() {
                 console.error("ERREUR FATALE LORS DE LA REQUÊTE :", error);
             }
         };
-        fetchAllData(); 
+        fetchAllData();
     }, [projectId]);
 
     const formatStatus = (status: string) => {
@@ -131,7 +131,7 @@ export default function ProjectDetailsPage() {
     }
 
     const handleAddComment = async (taskId: string) => {
-        if (!commentText.trim()) return; 
+        if (!commentText.trim()) return;
         const token = Cookies.get('token');
 
         try {
@@ -141,11 +141,11 @@ export default function ProjectDetailsPage() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ content: commentText }) 
+                body: JSON.stringify({ content: commentText })
             });
 
             if (response.ok) {
-                setCommentText(''); 
+                setCommentText('');
                 window.location.reload();
             } else {
                 alert("Erreur lors de l'ajout du commentaire.");
@@ -197,7 +197,7 @@ export default function ProjectDetailsPage() {
                                     className="flex-1 lg:w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center cursor-pointer hover:bg-black transition">
                                     Créer une tâche
                                 </button>
-                                <button 
+                                <button
                                     className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition font-inter"
                                 >
                                     <Image src="/star.svg" alt="" aria-hidden="true" width={16} height={16} className="w-[16px] lg:w-[21px]" />
@@ -215,7 +215,7 @@ export default function ProjectDetailsPage() {
                 </div>
                 {/* BARRE DES CONTRIBUTEURS */}
                 <div className="w-full lg:w-[1255px] h-auto lg:h-[67px] py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center ml-0 lg:ml-[60px] pl-4 lg:pl-[50px] gap-2 lg:gap-0 overflow-x-auto hide-scrollbar">
-                    
+
                     <div className="flex items-center lg:mb-0 shrink-0">
                         <span className="text-[16px] lg:text-[18px] text-[#1F1F1F] font-[600] mr-[8px] font-manrope">Contributeurs</span>
                         <span className="text-[14px] lg:text-[16px] text-[#6B7280] lg:pr-[300px] font-inter">
@@ -262,7 +262,7 @@ export default function ProjectDetailsPage() {
 
 
             {/* ================= CORPS DU PROJET ================= */}
-            
+
             < div className="w-full lg:w-[1255px] px-4 lg:px-0 pt-4 lg:pt-[41px] ml-0 lg:ml-[112px] pb-8" >
                 <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB] pb-6 lg:pb-[40px] overflow-hidden">
 
@@ -318,7 +318,7 @@ export default function ProjectDetailsPage() {
                                     className="w-full h-full border border-[#E5E7EB] rounded-[8px] bg-white pl-[16px] lg:pl-[32px] pr-[40px] lg:pr-[59px] text-[12px] lg:text-[14px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
                                 />
                                 <div className="absolute right-[16px] lg:right-[32px] top-[50%] -translate-y-1/2 pointer-events-none flex items-center justify-center">
-                                    <Image src="/search.svg" alt="" aria-hidden="true" width={12} height={12} className="w-[12px] lg:w-[13.9px]"/>
+                                    <Image src="/search.svg" alt="" aria-hidden="true" width={12} height={12} className="w-[12px] lg:w-[13.9px]" />
                                 </div>
                             </div>
 
@@ -360,7 +360,7 @@ export default function ProjectDetailsPage() {
 
                                             <div className="flex items-center gap-2 lg:gap-[8px] mb-2 lg:mb-[24px] text-[10px] lg:text-[12px] text-[#6B7280] font-regular font-inter">
                                                 <span className="font-regular text-[#6B7280]">Échéance :</span>
-                                                <Image src="/union.svg" alt="" aria-hidden="true" width={12} height={13} className="w-[12px] lg:w-[15px]"/>
+                                                <Image src="/union.svg" alt="" aria-hidden="true" width={12} height={13} className="w-[12px] lg:w-[15px]" />
                                                 <span className="font-regular text-[#1F1F1F] text-[10px] lg:text-[12px] font-inter">{task.dueDate ? new Date(task.dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : "Date inconnue"}</span>
                                             </div>
 
@@ -392,7 +392,7 @@ export default function ProjectDetailsPage() {
                                             onClick={() => { setSelectedTask(task); setIsEditTaskModalOpen(true) }}
                                             className="w-[40px] h-[40px] lg:w-[57px] lg:h-[57px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex items-center justify-center shrink-0 cursor-pointer hover:bg-gray-50 transition self-end lg:self-auto lg:mt-[8px] lg:mr-[11px]"
                                         >
-                                            <Image src="/plus.svg" alt="" aria-hidden="true" width={15} height={4} className="w-[10px] lg:w-[15px]"/>
+                                            <Image src="/plus.svg" alt="" aria-hidden="true" width={15} height={4} className="w-[10px] lg:w-[15px]" />
                                         </button>
                                     </div>
 
@@ -415,14 +415,14 @@ export default function ProjectDetailsPage() {
                                                 className="flex items-center justify-center cursor-pointer hover:opacity-70 transition p-2"
                                             >
                                                 <div className={`transition-transform duration-200 ${expandedTaskId === task.id ? 'rotate-180' : ''}`}>
-                                                    <Image src="/more.svg" alt="" aria-hidden="true" width={12} height={6} className="w-[12px] lg:w-[16px]"/>
+                                                    <Image src="/more.svg" alt="" aria-hidden="true" width={12} height={6} className="w-[12px] lg:w-[16px]" />
                                                 </div>
                                             </button>
                                         </div>
 
                                         {/* ZONE CACHÉE */}
                                         {expandedTaskId === task.id && (
-                                            <div className="flex flex-col gap-4 lg:gap-[20px] w-full lg:w-[980px] overflow-x-auto hide-scrollbar pb-2"> 
+                                            <div className="flex flex-col gap-4 lg:gap-[20px] w-full lg:w-[980px] overflow-x-auto hide-scrollbar pb-2">
 
                                                 {task.comments && task.comments.map((comment: any, index: number) => {
                                                     const authorName = comment.author?.name || comment.user?.name || 'Inconnu';

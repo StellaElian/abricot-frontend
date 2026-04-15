@@ -78,8 +78,8 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
         <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-[10px] w-full max-w-[598px] min-h-[500px] lg:h-[616px] relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col hide-scrollbar overflow-y-auto">
 
-                <button 
-                    onClick={onClose} 
+                <button
+                    onClick={onClose}
                     aria-label="Fermer la modale"
                     className="absolute top-[20px] lg:top-[37.5px] right-[20px] lg:right-[39.17px] hover:opacity-70 transition"
                 >
@@ -95,26 +95,26 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                     {/* Titre avec Label lié */}
                     <div className="flex flex-col gap-[7px]">
                         <label htmlFor="edit-project-title" className="font-normal text-[#1F1F1F]">Titre*</label>
-                        <input 
+                        <input
                             id="edit-project-title"
-                            type="text" 
-                            value={title} 
-                            onChange={(e) => setTitle(e.target.value)} 
-                            className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[#6B7280] outline-none focus:border-[#D3590B] transition" 
-                            required 
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+                            required
                         />
                     </div>
 
                     {/* Description avec Label lié */}
                     <div className="flex flex-col gap-[7px]">
                         <label htmlFor="edit-project-desc" className="font-normal text-[#1F1F1F]">Description*</label>
-                        <input 
+                        <input
                             id="edit-project-desc"
-                            type="text" 
-                            value={description} 
-                            onChange={(e) => setDescription(e.target.value)} 
-                            className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[#6B7280] outline-none focus:border-[#D3590B] transition" 
-                            required 
+                            type="text"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[#6B7280] outline-none focus:border-[#D3590B] transition"
+                            required
                         />
                     </div>
 
@@ -155,12 +155,12 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                                                 }}
                                                 className="px-[17px] py-[10px] text-[12px] text-[#1F1F1F] hover:bg-[#F3F4F6] cursor-pointer flex items-center gap-[10px] border-b border-gray-50 last:border-none"
                                             >
-                                                <input 
+                                                <input
                                                     id={inputId}
-                                                    type="checkbox" 
-                                                    checked={isSelected} 
-                                                    readOnly 
-                                                    className="cursor-pointer accent-[#D3590B]" 
+                                                    type="checkbox"
+                                                    checked={isSelected}
+                                                    readOnly
+                                                    className="cursor-pointer accent-[#D3590B]"
                                                     aria-label={`Sélectionner ${userName}`}
                                                 />
                                                 <label htmlFor={inputId} className="cursor-pointer">{userName}</label>

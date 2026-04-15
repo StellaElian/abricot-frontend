@@ -18,16 +18,16 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
   const [selectedAssignees, setSelectedAssignees] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [status, setStatus] = useState('À faire');
-  
+
 
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!projectId) return; 
+    if (!projectId) return;
     try {
-      const token = Cookies.get('token'); 
+      const token = Cookies.get('token');
 
       // Traduction du statut en anglais pour le backend 
       let backendStatus = "TODO";
@@ -47,7 +47,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           // Conversion date 
           dueDate: dueDate ? new Date(dueDate).toISOString() : null,
           //tableau de vrais ID
-          assignees: selectedAssignees 
+          assignees: selectedAssignees
         })
       });
 
@@ -68,17 +68,17 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
 
   return (
     <div className="fixed inset-0 bg-gray-500/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      
+
       <div className="bg-[#FFFFFF] rounded-[10px] w-full max-w-[598px] h-auto max-h-[90vh] lg:h-[799px] overflow-y-auto relative pt-[60px] lg:pt-[79px] px-6 lg:px-[73px] pb-[40px] lg:pb-[79px] shadow-xl font-sans flex flex-col hide-scrollbar">
-        
-        <button 
+
+        <button
           onClick={onClose}
           className="absolute top-[20px] lg:top-[37px] right-[20px] lg:right-[38.67px] hover:opacity-70 transition flex items-center justify-center"
         >
           <Image src="/cross.svg" alt="Fermer" width={14} height={14} className="w-[14.33px] h-[14.33px]" />
         </button>
 
-        <h2 
+        <h2
           className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start font-manrope"
           style={{ lineHeight: "100%" }}
         >
@@ -89,7 +89,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
 
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000] font-inter">Titre*</label>
-            <input 
+            <input
               type="text"
               placeholder="Ex: Authentification JWT"
               value={title}
@@ -101,7 +101,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
 
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000] font-inter">Description*</label>
-            <input 
+            <input
               type="text"
               placeholder="Description de la tâche..."
               value={description}
@@ -114,7 +114,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000] font-inter">Échéance*</label>
             <div className="relative w-full lg:w-[452px]">
-              <input 
+              <input
                 type="date"
                 placeholder="Sélectionner une date"
                 value={dueDate}
@@ -124,13 +124,13 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
             </div>
           </div>
 
-         <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
+          <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
             <label className="text-[14px] font-normal text-[#000000] font-inter">Assigné à :</label>
-         
+
             <div className="relative w-full lg:w-[452px]">
-              
+
               {/* Le bouton pour ouvrir le menu déroulant */}
-              <div 
+              <div
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px]"
               >
@@ -150,7 +150,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
                 )}
               </div>
               <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
-                 <Image src="/vector.svg" alt="Flèche" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <Image src="/vector.svg" alt="Flèche" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </div>
 
               {/* LE MENU DÉROULANT CACHÉ */}
@@ -163,7 +163,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
                       const isSelected = selectedAssignees.includes(targetId);
 
                       return (
-                        <div 
+                        <div
                           key={index}
                           onClick={() => {
                             // Clic : Si déjà coché, on l'enlève. Sinon, on l'ajoute.
@@ -191,7 +191,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           <div className="flex flex-col">
             <label className="text-[14px] font-normal text-[#000000] mb-[8px] lg:mb-[16px] font-inter">Statut :</label>
             <div className="flex flex-wrap items-center gap-[8px]">
-              <button 
+              <button
                 type="button"
                 onClick={() => setStatus('À faire')}
                 className={`w-[75px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition font-inter ${status === 'À faire' ? 'bg-[#FFE0E0] text-[#EF4444] ring-2 ring-red-300' : 'bg-[#FFE0E0] text-[#EF4444] opacity-70 hover:opacity-100'}`}
@@ -199,7 +199,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
                 À faire
               </button>
 
-              <button 
+              <button
                 type="button"
                 onClick={() => setStatus('En cours')}
                 className={`w-[90px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition font-inter ${status === 'En cours' ? 'bg-[#FFF0D7] text-[#E08D00] ring-2 ring-orange-300' : 'bg-[#FFF0D7] text-[#E08D00] opacity-70 hover:opacity-100'}`}
@@ -207,7 +207,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
                 En cours
               </button>
 
-              <button 
+              <button
                 type="button"
                 onClick={() => setStatus('Terminée')}
                 className={`w-[94px] h-[25px] rounded-[50px] flex items-center justify-center text-[12px] lg:text-[14px] font-normal transition font-inter ${status === 'Terminée' ? 'bg-[#F1FFF7] text-[#27AE60] ring-2 ring-green-300' : 'bg-[#F1FFF7] text-[#27AE60] opacity-70 hover:opacity-100'}`}
@@ -218,7 +218,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           </div>
 
           {/* Bouton "Ajouter une tâche" */}
-          <button 
+          <button
             type="submit"
             disabled={!title.trim() || !description.trim()}
             className="mt-[32px] lg:mt-[56px] w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#D1D5DB] self-start font-inter"

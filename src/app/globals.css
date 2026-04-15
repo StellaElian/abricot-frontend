@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #f97316; 
-  --color-secondary: #0f172a; 
-  --color-background: #f8fafc; 
+  --color-primary: #f97316;
+  --color-secondary: #0f172a;
+  --color-background: #f8fafc;
 
   /* CRÉATION DES CLASSES DE POLICES  */
   --font-inter: 'Inter', sans-serif;

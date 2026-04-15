@@ -29,7 +29,7 @@ export default function RegisterPage() {
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await response.json(); 
+            const data = await response.json();
 
             if (response.ok) {
                 // Si le backend nous donne un token direct, on connecte l'utilisateur

@@ -10,7 +10,7 @@ import CreateProjectModal from '@/src/components/CreateProjectModal';
 interface TeamMember {
   id: string;
   initials: string;
-  isOwner: boolean; 
+  isOwner: boolean;
 }
 
 interface Project {
@@ -36,7 +36,7 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     const fetchAllData = async () => {
-      const token = Cookies.get('token'); 
+      const token = Cookies.get('token');
       if (!token) {
         setLoading(false);
         return;
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
 
       // RÉCUPÉRATION DES PROJETS
       try {
-        setError(''); 
+        setError('');
         const response = await fetch('http://localhost:8000/projects', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -78,7 +78,7 @@ export default function ProjectsPage() {
       } catch (err) {
         setError('Impossible de joindre le serveur.');
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -88,15 +88,15 @@ export default function ProjectsPage() {
 
   // ---FILTRE DES PROJETS ---
   const visibleProjects = projects.filter((project: any) => {
-    if (!currentUser) return false; 
+    if (!currentUser) return false;
 
     // 1. Est-il le propriétaire ?
     const isOwner = project.owner?.id === currentUser.id;
-    
+
     // 2. Est-il dans les membres ?
     const isMember = project.members?.some((m: any) => {
-        const memberId = m.user?.id || m.id;
-        return memberId === currentUser.id;
+      const memberId = m.user?.id || m.id;
+      return memberId === currentUser.id;
     });
 
     return isOwner || isMember;

@@ -98,8 +98,8 @@ export default function AuthNavbar() {
                     href="/profile"
                     aria-label="Voir mon profil"
                     className={`flex items-center justify-center w-[45px] h-[45px] lg:w-[65px] lg:h-[65px] rounded-full transition-all cursor-pointer ${isProfilePage
-                            ? 'bg-[#D3590B] text-[#FFFFFF]'
-                            : 'bg-[#FFE8D9] text-[#0F0F0F] hover:ring-2 ring-orange-300'
+                        ? 'bg-[#D3590B] text-[#FFFFFF]'
+                        : 'bg-[#FFE8D9] text-[#0F0F0F] hover:ring-2 ring-orange-300'
                         }`}
                 >
                     {/* On affiche les initiales seulement si on les a trouvées */}
