@@ -18,14 +18,14 @@ export default function ForgotPasswordPage() {
             
             <div className="w-full max-w-[400px] bg-white p-6 md:p-8 rounded-[10px] shadow-sm border border-[#E5E7EB] flex flex-col items-center">
                 
-                <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[10px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                <h1 className="text-[24px] font-semibold text-[#1F1F1F] mb-[10px] font-manrope">
                     Mot de passe oublié
                 </h1>
 
                 {!isSent ? (
                     //formulaire pour demander l'email
                     <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
-                        <p className="text-[14px] text-[#6B7280] mb-[20px] text-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <p className="text-[14px] text-[#6B7280] mb-[20px] text-center font-inter">
                             Entrez votre adresse email ci-dessous. Nous vous enverrons un lien pour réinitialiser votre mot de passe.
                         </p>
                         
@@ -41,8 +41,7 @@ export default function ForgotPasswordPage() {
                         
                         <button 
                             type="submit"
-                            className="w-full h-[50px] bg-[#1F1F1F] text-white rounded-[10px] hover:bg-black transition"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="w-full h-[50px] bg-[#1F1F1F] text-white rounded-[10px] hover:bg-black transition font-inter"
                         >
                             Envoyer le lien
                         </button>
@@ -53,14 +52,14 @@ export default function ForgotPasswordPage() {
                         <div aria-hidden="true" className="w-[50px] h-[50px] bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-[15px] text-[24px]">
                             ✓
                         </div>
-                        <p className="text-[14px] text-[#6B7280] mb-[20px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                        <p className="text-[14px] text-[#6B7280] mb-[20px] font-inter">
                             Si l'adresse <span className="font-semibold text-[#1F1F1F]">{email}</span> existe dans notre base de données, vous recevrez un email contenant les instructions de réinitialisation d'ici quelques minutes. N'hésitez pas à consulter les spams .
                         </p>
                     </div>
                 )}
 
                 {/* retour à la connexion */}
-                <Link href="/login" className="mt-[20px] text-[14px] text-[#D3590B] hover:underline" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <Link href="/login" className="mt-[20px] text-[14px] text-[#D3590B] hover:underline font-inter">
                     Retour à la page de connexion
                 </Link>
 
