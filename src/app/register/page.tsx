@@ -49,10 +49,10 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#E5E7EB] font-sans overflow-x-hidden lg:overflow-hidden">
+        <div className="flex min-h-screen bg-[#F9FAFB] font-sans overflow-x-hidden lg:overflow-hidden">
 
             {/* COLONNE DE GAUCHE */}
-            <div className="relative w-full lg:w-[562px] min-h-screen lg:min-h-[1024px] shrink-0 bg-[#E5E7EB] flex flex-col lg:block">
+            <div className="relative w-full lg:w-[562px] min-h-screen lg:min-h-[1024px] shrink-0 bg-[#F9FAFB] flex flex-col lg:block">
 
                 {/* Logo */}
                 <div className="absolute top-[40px] lg:top-[92.92px] left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-[154.72px]">
