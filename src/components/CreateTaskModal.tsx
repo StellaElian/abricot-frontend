@@ -116,7 +116,6 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
             <div className="relative w-full lg:w-[452px]">
               <input
                 type="date"
-                placeholder="Sélectionner une date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
                 className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[45px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
