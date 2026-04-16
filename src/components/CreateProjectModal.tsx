@@ -149,7 +149,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
             </div>
           </div>
 
-          <button type="submit" disabled={!title.trim() || !description.trim()} className="mt-4 lg:mt-auto mb-6 lg:mb-[60px] w-full lg:w-[181px] h-[50px] bg-[#1F1F1F] text-white rounded-[10px] text-[16px] transition disabled:opacity-50 hover:bg-black font-inter">
+          <button type="submit" disabled={!title.trim() || !description.trim()} className="mt-4 lg:mt-auto mb-6 lg:mb-[60px] w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] transition disabled:opacity-50 hover:bg-black font-inter">
             Ajouter un projet
           </button>
         </form>
