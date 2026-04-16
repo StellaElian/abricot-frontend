@@ -176,9 +176,6 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                         <button type="submit" className="w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] hover:bg-black transition">
                             Enregistrer
                         </button>
-                        <button type="button" className="text-[#EF4444] font-medium underline hover:opacity-70 transition">
-                            Supprimer le projet
-                        </button>
                     </div>
                 </form>
             </div>
