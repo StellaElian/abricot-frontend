@@ -146,7 +146,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start font-manrope"
           style={{ lineHeight: "100%" }}
         >
-          Modifier une tâche
+          Modifier 
         </h2>
 
         {/* LE FORMULAIRE */}
