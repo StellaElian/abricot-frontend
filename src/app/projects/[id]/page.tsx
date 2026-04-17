@@ -191,7 +191,7 @@ export default function ProjectDetailsPage() {
                         </div>
 
                         {/* DROITE : Boutons Créer et IA */}
-                        <div className="flex gap-[12px] h-[50px]  mr-15 w-full lg:w-auto mt-4 lg:mt-0">
+                        <div className="flex gap-[12px] h-[50px]  mr-18 w-full lg:w-auto mt-4 lg:mt-0">
                             <button onClick={() => setIsCreateTaskModalOpen(true)} className="flex-1 lg:w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center hover:bg-black transition">
                                 Créer une tâche
                             </button>
@@ -204,7 +204,7 @@ export default function ProjectDetailsPage() {
                 </div>
 
                 {/*BARRE DES CONTRIBUTEURS */}
-                <div className="w-full min-h-[67px] mr-20 ml-18 py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 lg:px-[40px] mt-4 lg:mt-0 gap-4 lg:gap-0">
+                <div className="w-auto min-h-[67px] mr-16 ml-18 py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 lg:px-[40px] mt-4 lg:mt-0 gap-4 lg:gap-0">
 
                     {/* GAUCHE : Texte Contributeurs */}
                     <div className="flex items-center shrink-0">
@@ -215,7 +215,7 @@ export default function ProjectDetailsPage() {
                     </div>
 
                     {/* DROITE : Les pastilles (initiales) repoussées à droite */}
-                    <div className="flex items-center gap-[8px] mr-20 shrink-0 overflow-x-auto hide-scrollbar max-w-full">
+                    <div className="flex items-center gap-[8px] ml-50 shrink-0 overflow-x-auto hide-scrollbar max-w-full">
                         
                         {contributors && contributors.length > 0 ? (
                             contributors.map((contributor: any, index: number) => {
@@ -257,7 +257,7 @@ export default function ProjectDetailsPage() {
 
             {/* ================= CORPS DU PROJET ================= */}
 
-            <div className="w-full px-4 lg:px-[100px] pt-4 lg:pt-[41px] pb-8">
+            <div className="w-full px-25 pr-20 pt-4 lg:pt-[41px] pb-8">
                 <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB] pb-6 lg:pb-[40px] overflow-hidden">
 
 
@@ -322,7 +322,7 @@ export default function ProjectDetailsPage() {
                     </div>
 
                     {/* LISTE DES TÂCHES */}
-                    <div className="w-full h-auto bg-white flex flex-col gap-4 lg:gap-[17px] px-4 lg:pl-[59px] lg:pr-[59px]">
+                    <div className="h-auto bg-white flex flex-col gap-4 lg:gap-[17px] px-4 lg:pl-[59px] lg:pr-[59px]">
 
                         {projectTasks.map((task) => {
                             const frenchStatus = formatStatus(task.status);
