@@ -191,7 +191,7 @@ export default function ProjectDetailsPage() {
                         </div>
 
                         {/* DROITE : Boutons Créer et IA */}
-                        <div className="flex gap-[12px] h-[50px]  mr-20 w-full lg:w-auto mt-4 lg:mt-0">
+                        <div className="flex gap-[12px] h-[50px]  mr-15 w-full lg:w-auto mt-4 lg:mt-0">
                             <button onClick={() => setIsCreateTaskModalOpen(true)} className="flex-1 lg:w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center hover:bg-black transition">
                                 Créer une tâche
                             </button>
@@ -203,19 +203,23 @@ export default function ProjectDetailsPage() {
                     </div>
                 </div>
 
-                {/* BARRE DES CONTRIBUTEURS */}
-                <div className="w-auto mx-4 lg:mx-[100px] h-auto lg:h-[67px] py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center pl-4 lg:pl-[30px] pr-4 gap-2 lg:gap-0 overflow-x-auto hide-scrollbar">
+                {/*BARRE DES CONTRIBUTEURS */}
+                <div className="w-full min-h-[67px] mr-20 ml-18 py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 lg:px-[40px] mt-4 lg:mt-0 gap-4 lg:gap-0">
 
-                    <div className="flex items-center lg:mb-0 shrink-0">
-                        <span className="text-[16px] lg:text-[18px] text-[#1F1F1F] font-[600] mr-[8px] font-manrope">Contributeurs</span>
-                        <span className="text-[14px] lg:text-[16px] text-[#6B7280] lg:pr-[300px] font-inter">
+                    {/* GAUCHE : Texte Contributeurs */}
+                    <div className="flex items-center shrink-0">
+                        <span className="text-[16px] lg:text-[18px] text-[#1F1F1F] font-semibold mr-[8px] font-manrope">Contributeurs</span>
+                        <span className="text-[14px] lg:text-[16px] text-[#6B7280] font-inter">
                             {contributors ? contributors.length : 0} personnes
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-[8px] min-w-max">
+                    {/* DROITE : Les pastilles (initiales) repoussées à droite */}
+                    <div className="flex items-center gap-[8px] mr-20 shrink-0 overflow-x-auto hide-scrollbar max-w-full">
+                        
                         {contributors && contributors.length > 0 ? (
                             contributors.map((contributor: any, index: number) => {
+
                                 const fullName = contributor.name || `${contributor.firstName || ''} ${contributor.lastName || ''}`.trim() || 'Inconnu';
                                 const initials = fullName !== 'Inconnu' ? fullName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
 
