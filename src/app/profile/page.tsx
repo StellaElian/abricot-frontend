@@ -150,7 +150,7 @@ export default function ProfilePage() {
                     </div>
 
                     {/* BLOC MOT DE PASSE */}
-                    <div className="mb-[30px] lg:mb-[41px]">
+                    <div className="mb-[30px] lg:mb-[41px] bg-[#FFFFFF]">
                         <label htmlFor="newPassword" className="block text-[12px] lg:text-[14px] text-[#000000] font-regular mb-[7px] break-words font-inter">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
                         <input
                             id="newPassword"
@@ -158,7 +158,7 @@ export default function ProfilePage() {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             placeholder="••••••••"
-                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest bg-[#FFFFFF] outline-none focus:border-[#D3590B] transition"
+                            className="w-full lg:max-w-[1097px] h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[14px] text-[#1F1F1F] tracking-widest outline-none focus:border-[#D3590B] transition"
                         />
                     </div>
 

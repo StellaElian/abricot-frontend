@@ -157,64 +157,54 @@ export default function ProjectDetailsPage() {
 
     return (
         <div className="min-h-screen bg-[#F9FAFB] font-sans overflow-x-hidden">
-            {/* ================= EN-TÊTE DU PROJET ================= */}
 
-            <div className="w-full lg:w-[1320px] mx-auto px-4 lg:px-0 lg:ml-[44px] pt-8 lg:pt-[78px] flex flex-col mb-[14px]">
+            {/* ================= EN-TÊTE DU PROJET ================= */
+            }
+            <div className="w-full px-4 lg:px-[30px] pt-8 lg:pt-[78px] flex flex-col mb-[14px]">
 
-                {/* LIGNE DU HAUT */}
+                {/* LIGNE DU HAUT : Retour + (Titre, Desc, Boutons) */}
                 <div className="flex flex-col lg:flex-row items-start gap-[16px] mb-6 lg:mb-[49px]">
 
                     {/* BOUTON RETOUR */}
-                    <Link href="/projects" aria-label="Retour à la liste des projets" className="w-[40px] h-[40px] lg:w-[57px] lg:h-[57px] bg-white border border-[#E5E7EB] rounded-[10px] flex items-center justify-center hover:bg-gray-50 transition shrink-0 cursor-pointer mb-4 lg:mb-0">
+                    <Link href="/projects" aria-label="Retour" className="w-[40px] h-[40px] lg:w-[57px] lg:h-[57px] bg-white border border-[#E5E7EB] rounded-[10px] flex items-center justify-center hover:bg-gray-50 transition shrink-0 cursor-pointer mb-4 lg:mb-0">
                         <Image src="/line3.svg" alt="" aria-hidden="true" width={15} height={1} className="w-[10px] lg:w-[15px]" />
                     </Link>
 
-                    {/* RESTE DE L'EN-TÊTE (Titre, Desc, Boutons) */}
-                    <div className="flex flex-col w-full">
+                    {/* RESTE EN-TÊTE : Titre/Desc à gauche, Boutons */}
+                    <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-4 lg:gap-0">
 
-                        <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-4 lg:gap-0">
-                            {/* Titre et Modifier */}
-                            <div className="flex flex-wrap items-center gap-[14px] mb-[14px] lg:mb-0">
+                        {/* GAUCHE : Titre, Modifier et Description */}
+                        <div className="flex flex-col w-full lg:w-auto">
+                            <div className="flex flex-wrap items-center gap-[14px] mb-[8px]">
                                 <h1 className="text-[20px] lg:text-[24px] font-semibold text-[#1F1F1F] font-manrope">
                                     {project ? project.title || project.name : "Chargement..."}
                                 </h1>
-
                                 {isOwner && (
-                                    <button
-                                        onClick={() => setIsEditModalOpen(true)}
-                                        className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular underline cursor-pointer hover:opacity-80 transition font-inter"
-                                    >
+                                    <button onClick={() => setIsEditModalOpen(true)} className="text-[#D3590B] text-[12px] lg:text-[14px] font-regular underline hover:opacity-80 transition font-inter">
                                         Modifier
                                     </button>
                                 )}
-
                             </div>
-
-                            {/* Boutons (Créer une tâche + IA) */}
-                            <div className="flex gap-[12px] h-[50px] shrink-0 w-full lg:w-auto">
-                                <button
-                                    onClick={() => setIsCreateTaskModalOpen(true)}
-                                    className="flex-1 lg:w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center cursor-pointer hover:bg-black transition">
-                                    Créer une tâche
-                                </button>
-                                <button
-                                    className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center gap-[10px] cursor-pointer hover:opacity-90 transition font-inter"
-                                >
-                                    <Image src="/star.svg" alt="" aria-hidden="true" width={16} height={16} className="w-[16px] lg:w-[21px]" />
-                                    IA
-                                </button>
-                            </div>
+                            <p className="text-[14px] lg:text-[18px] text-[#6B7280] font-regular font-inter">
+                                {project ? project.description : "Aucune description pour ce projet."}
+                            </p>
                         </div>
 
-                        {/* Dynamisation Description */}
-                        <p className="text-[14px] lg:text-[18px] text-[#6B7280] font-regular mt-4 lg:mt-0 font-inter">
-                            {project ? project.description : "Aucune description pour ce projet."}
-                        </p>
-
+                        {/* DROITE : Boutons Créer et IA */}
+                        <div className="flex gap-[12px] h-[50px]  mr-20 w-full lg:w-auto mt-4 lg:mt-0">
+                            <button onClick={() => setIsCreateTaskModalOpen(true)} className="flex-1 lg:w-[141px] h-[50px] bg-[#1F1F1F] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center hover:bg-black transition">
+                                Créer une tâche
+                            </button>
+                            <button className="w-[94px] h-[50px] bg-[#D3590B] text-[#FFFFFF] rounded-[10px] text-[14px] lg:text-[16px] font-regular flex items-center justify-center gap-[10px] hover:opacity-90 transition font-inter">
+                                <Image src="/star.svg" alt="" aria-hidden="true" width={16} height={16} className="w-[16px] lg:w-[21px]" />
+                                IA
+                            </button>
+                        </div>
                     </div>
                 </div>
+
                 {/* BARRE DES CONTRIBUTEURS */}
-                <div className="w-full lg:w-[1255px] h-auto lg:h-[67px] py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center ml-0 lg:ml-[60px] pl-4 lg:pl-[50px] gap-2 lg:gap-0 overflow-x-auto hide-scrollbar">
+                <div className="w-auto mx-4 lg:mx-[100px] h-auto lg:h-[67px] py-4 lg:py-0 bg-[#F3F4F6] rounded-[10px] flex flex-col lg:flex-row items-start lg:items-center pl-4 lg:pl-[30px] pr-4 gap-2 lg:gap-0 overflow-x-auto hide-scrollbar">
 
                     <div className="flex items-center lg:mb-0 shrink-0">
                         <span className="text-[16px] lg:text-[18px] text-[#1F1F1F] font-[600] mr-[8px] font-manrope">Contributeurs</span>
@@ -263,11 +253,12 @@ export default function ProjectDetailsPage() {
 
             {/* ================= CORPS DU PROJET ================= */}
 
-            < div className="w-full lg:w-[1255px] px-4 lg:px-0 pt-4 lg:pt-[41px] ml-0 lg:ml-[112px] pb-8" >
+            <div className="w-full px-4 lg:px-[100px] pt-4 lg:pt-[41px] pb-8">
                 <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB] pb-6 lg:pb-[40px] overflow-hidden">
 
 
                     {/* EN-TÊTE DES TÂCHES ET FILTRES */}
+
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center w-full mb-6 lg:mb-[41px] px-4 lg:pl-[59px] pt-6 lg:pt-[40px] gap-4 lg:gap-0">
 
                         <div className="flex flex-col">
