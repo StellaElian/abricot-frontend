@@ -418,7 +418,7 @@ export default function ProjectDetailsPage() {
 
                                         {/* ZONE CACHÉE */}
                                         {expandedTaskId === task.id && (
-                                            <div className="flex flex-col gap-4 lg:gap-[20px] w-full lg:w-[980px] overflow-x-auto hide-scrollbar pb-2">
+                                            <div className="flex flex-col gap-4 lg:gap-[20px] w-full overflow-x-auto hide-scrollbar pb-2">
 
                                                 {task.comments && task.comments.map((comment: any, index: number) => {
                                                     const authorName = comment.author?.name || comment.user?.name || 'Inconnu';
