@@ -202,7 +202,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
               <div className="absolute right-[17px] top-[50%] -translate-y-1/2 pointer-events-none">
                 <Image src="/date.svg" alt="" aria-hidden="true" width={15} height={15} />
               </div>
-              
+
               <input
                 id="edit-task-date"
                 type="date"
@@ -219,49 +219,23 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
             <label id="assignees-label" className="text-[14px] font-normal text-[#000000] font-inter">Assigné à :</label>
             <div className="relative w-full lg:w-[452px]">
 
+              {/* nombre de membres */}
               <div
-                role="button"
-                tabIndex={0}
-                aria-haspopup="listbox"
+                role="combobox"
                 aria-expanded={isDropdownOpen}
-                aria-labelledby="assignees-label"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setIsDropdownOpen(!isDropdownOpen);
-                  }
-                }}
-                className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px] bg-white"
+                className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[12px] text-[#6B7280] transition cursor-pointer flex items-center bg-white"
               >
-                {selectedAssignees.length === 0 ? (
-                  "Choisir un ou plusieurs collaborateurs"
-                ) : (
-                  selectedAssignees.map(id => {
-                    // 1.On cherche dans la liste de tous les contributeurs
-                    let person = contributors.find((c: any) => c.id === id || c.userId === id);
-
-                    // 2.on fouille dans les données de la tâche 
-                    if (!person && task?.assignees) {
-                      const originalAssignee = task.assignees.find((a: any) => a.userId === id || a.user?.id === id || a.id === id);
-                      person = originalAssignee?.user || originalAssignee;
-                    }
-
-                    // On extrait le nom
-                    const fullName = person?.name || `${person?.firstName || ''} ${person?.lastName || ''}`.trim();
-                    const nameToDisplay = fullName ? fullName : "Inconnu";
-
-                    return (
-                      <span key={id} className="bg-[#E5E7EB] text-[#1F1F1F] px-[8px] py-[2px] rounded-[4px]">
-                        {nameToDisplay}
-                      </span>
-                    );
-                  })
-                )}
+                {selectedAssignees.length === 0
+                  ? "Choisir un ou plusieurs collaborateurs"
+                  : `${selectedAssignees.length} collaborateur(s)`}
               </div>
-              <div className="absolute top-[22.5px] right-[17px] pointer-events-none flex items-center justify-center">
+
+              {/* Icône flèche */}
+              <div className="absolute right-[17px] top-[50%] -translate-y-1/2 pointer-events-none flex items-center justify-center">
                 <Image src="/vector.svg" alt="" aria-hidden="true" width={16} height={8} className={`w-[16px] h-[8px] transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </div>
+
 
               {isDropdownOpen && (
                 <div role="listbox" className="absolute top-[70px] left-0 w-full bg-white border border-[#E5E7EB] rounded-[4px] shadow-md z-10 max-h-[150px] overflow-y-auto">
