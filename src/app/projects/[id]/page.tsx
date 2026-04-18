@@ -452,16 +452,20 @@ export default function ProjectDetailsPage() {
                                                 })}
 
                                                 {/* BLOC "AJOUTER UN COMMENTAIRE" */}
-                                                <div className="flex items-start w-full mt-2 lg:mt-[10px] min-w-[300px]">
+                                                <div className="flex items-start w-full mt-4 lg:mt-[20px] min-w-[300px]">
 
-                                                    <div className="w-[27px] h-[27px] shrink-0 rounded-full bg-[#FFE8D9] flex items-center justify-center mr-2 lg:mr-[14px] mt-2 lg:mt-[16px]">
+                                                    {/* INITIALES UTILISATEUR */}
+                                                    <div className="w-[27px] h-[27px] shrink-0 rounded-full bg-[#FFE8D9] flex items-center justify-center mr-2 lg:mr-[14px]">
                                                         <span className="text-[#0F0F0F] text-[10px] font-normal font-inter">
                                                             {currentUser ? (currentUser.name ? currentUser.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() : 'U') : 'U'}
                                                         </span>
                                                     </div>
 
-                                                    <div className="flex-1 flex flex-col lg:flex-row items-center gap-2 lg:gap-0 mr-0 lg:mr-[16px]">
-                                                        <div className="w-full h-[50px] lg:h-[83px] bg-[#F9FAFB] border border-[#E5E7EB] rounded-[10px] px-3 lg:px-[14px] flex items-center">
+                                                    {/* CHAMP DE TEXTE + BOUTON ENVOYER */}
+                                                    <div className="flex-1 flex flex-col items-end mr-0 lg:mr-[16px]">
+
+                                                        {/* CHAMP DE TEXTE (901x83 ) */}
+                                                        <div className="w-full h-[60px] lg:h-[83px] bg-[#F9FAFB] border border-[#E5E7EB] rounded-[10px] flex items-start pt-3 lg:pt-[16px] px-3 lg:px-[14px]">
                                                             <label htmlFor={`comment-input-${task.id}`} className="sr-only">Ajouter un commentaire</label>
                                                             <input
                                                                 id={`comment-input-${task.id}`}
@@ -470,13 +474,14 @@ export default function ProjectDetailsPage() {
                                                                 onChange={(e) => setCommentText(e.target.value)}
                                                                 onKeyDown={(e) => { if (e.key === 'Enter') handleAddComment(task.id); }}
                                                                 placeholder="Ajouter un commentaire..."
-                                                                className="w-full bg-transparent border-none outline-none text-[#000000] text-[10px] lg:text-[12px] font-normal placeholder-[#6B7280] font-inter"
+                                                                className="w-full bg-transparent border-none outline-none text-[#000000] text-[10px] font-normal placeholder-[#6B7280] font-inter"
                                                             />
                                                         </div>
-                                                        {/* BOUTON ENVOYER */}
+
+                                                        {/* BOUTON ENVOYER  */}
                                                         <button
                                                             onClick={() => handleAddComment(task.id)}
-                                                            className="w-full lg:w-[209px] h-[40px] lg:h-[50px] shrink-0 bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[12px] lg:text-[14px] font-medium flex items-center justify-center transition hover:bg-gray-300 mt-2 lg:mt-[16px] lg:ml-4 font-inter"
+                                                            className="w-full lg:w-[209px] h-[40px] lg:h-[50px] shrink-0 bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[12px] lg:text-[14px] font-medium flex items-center justify-center transition hover:bg-[#D1D5DB] mt-3 lg:mt-[16px] font-inter"
                                                         >
                                                             Envoyer
                                                         </button>
