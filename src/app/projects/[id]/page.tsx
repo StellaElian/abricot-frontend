@@ -216,7 +216,7 @@ export default function ProjectDetailsPage() {
 
                     {/* DROITE : Les pastilles (initiales) repoussées à droite */}
                     <div className="flex items-center gap-[8px] ml-50 shrink-0 overflow-x-auto hide-scrollbar max-w-full">
-                        
+
                         {contributors && contributors.length > 0 ? (
                             contributors.map((contributor: any, index: number) => {
 
@@ -257,7 +257,8 @@ export default function ProjectDetailsPage() {
 
             {/* ================= CORPS DU PROJET ================= */}
 
-            <div className="w-full px-25 pr-20 pt-4 lg:pt-[41px] pb-8">
+            <div className="w-full px-4 lg:px-[100px] pt-4 lg:pt-[41px] pb-8">
+
                 <div className="flex flex-col bg-[#FFFFFF] rounded-[10px] border border-[#E5E7EB] pb-6 lg:pb-[40px] overflow-hidden">
 
 
@@ -328,7 +329,7 @@ export default function ProjectDetailsPage() {
                             const frenchStatus = formatStatus(task.status);
 
                             return (
-                                <div key={task.id} className="w-full lg:w-[1090px] min-h-[263.54px] h-auto px-4 lg:pl-[40px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex flex-col hover:shadow-sm transition-shadow overflow-hidden">
+                                <div key={task.id} className="w-full min-h-[263.54px] h-auto px-4 lg:px-[40px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] flex flex-col hover:shadow-sm transition-shadow overflow-hidden">
 
                                     {/* HAUT DE LA CARTE */}
                                     <div className="py-4 lg:p-[25px] flex flex-col lg:flex-row justify-between items-start">
