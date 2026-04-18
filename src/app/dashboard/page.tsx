@@ -12,6 +12,7 @@ export default function DashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentView, setCurrentView] = useState('liste');
   const [searchQuery, setSearchQuery] = useState('');
+  const [username, setUserName] = useState<string>('');
 
   const filteredTasks = tasks.filter(task =>
     task.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -19,11 +20,31 @@ export default function DashboardPage() {
   );
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchData = async () => {
       const token = Cookies.get('token');
       if (!token) return;
 
+      // Récupération du profil useur
       try {
+        const userRes = await fetch('http://localhost:8000/auth/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (userRes.ok) {
+          const userJson = await userRes.json();
+          const userData = userJson.data?.user || userJson.data || userJson.user || userJson;
+          if (userData && userData.name) {
+            setUserName(userData.name);
+          } else if (userData && userData.firstName) {
+            setUserName(`${userData.firstName} ${userData.lastName || ''}`);
+          }
+        }
+      } catch (error) {
+        console.error("Erreur de récupération du profil :", error);
+      }
+
+      // Récupération tâches assignées
+      try {
+
         const response = await fetch('http://localhost:8000/dashboard/assigned-tasks', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -39,7 +60,7 @@ export default function DashboardPage() {
       }
     };
 
-    fetchTasks();
+    fetchData();
   }, []);
 
   const formatStatus = (status: string) => {
@@ -63,7 +84,7 @@ export default function DashboardPage() {
             Tableau de bord
           </h1>
           <p className="text-[14px] lg:text-[16px] text-[#6B7280] leading-none font-inter">
-            Bonjour Alice Dupont, voici un aperçu de vos projets et tâches
+            Bonjour {username || "chargement..."}, voici un aperçu de vos projets et tâches
           </p>
         </div>
         <button
