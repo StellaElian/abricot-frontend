@@ -88,8 +88,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
 
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000] font-inter">Titre*</label>
+            <label htmlFor="task-title" className="text-[14px] font-normal text-[#000000] font-inter">Titre*</label>
             <input
+              id="task-title"
               type="text"
               placeholder="Ex: Authentification JWT"
               value={title}
@@ -100,8 +101,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           </div>
 
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000] font-inter">Description*</label>
+            <label htmlFor="task-desc" className="text-[14px] font-normal text-[#000000] font-inter">Description*</label>
             <input
+              id="task-desc"
               type="text"
               placeholder="Description de la tâche..."
               value={description}
@@ -112,7 +114,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
           </div>
 
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label className="text-[14px] font-normal text-[#000000] font-inter">Échéance*</label>
+            <label htmlFor="task-date" className="text-[14px] font-normal text-[#000000] font-inter">Échéance*</label>
             <div className="relative w-full lg:w-[452px] h-[53px]">
 
               {/* faux champ cliquable via l'input caché */}
@@ -135,6 +137,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, contributo
               </div>
 
               <input
+                id="task-date"
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
