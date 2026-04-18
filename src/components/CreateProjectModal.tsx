@@ -109,7 +109,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
             <label className="text-[14px] font-normal text-[#1F1F1F] font-inter">Contributeurs</label>
             <div className="relative w-full lg:w-[452px]">
               <div onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="w-full min-h-[53px] border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[40px] py-[15px] text-[14px] text-[#6B7280] transition cursor-pointer flex flex-wrap gap-[5px] bg-white font-inter">
-                {selectedContributors.length === 0 ? "Choisir des collaborateurs" : selectedContributors.map(email => (
+                {selectedContributors.length === 0 ? "Choisir un ou plusieurs collaborateurs" : selectedContributors.map(email => (
                   <span key={email} className="bg-[#E5E7EB] text-[#1F1F1F] px-[8px] py-[2px] rounded-[4px] text-[12px]">
                     {allUsers.find(u => u.email === email)?.name || email}
                   </span>
