@@ -257,17 +257,18 @@ export default function DashboardPage() {
 
       {/* ======================= VUE KANBAN ======================= */}
       {currentView === 'kanban' && (
-        <div className="w-full max-w-[1301px] flex flex-col lg:flex-row gap-6 lg:gap-[22px] mx-auto pb-4" role="tabpanel">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-[22px] w-full pb-4" role="tabpanel">
 
-          {/* COLONNE 1 : À FAIRE */}
-          <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
+          {/* COLONNE: À FAIRE */}
+          <div className="flex flex-col h-max border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] bg-[#FFFFFF]">
+
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
               <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] font-manrope">À faire</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]" aria-label={`${todoTasks.length} tâches à faire`}>{todoTasks.length}</div>
             </div>
             <div className="flex flex-col gap-[20px] lg:gap-[41px] items-center">
               {todoTasks.map((task, index) => (
-                <div key={index} className="w-full lg:w-[371px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
+                <div key={index} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate font-manrope">{task.title}</h3>
@@ -315,15 +316,16 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* COLONNE 2 : EN COURS */}
-          <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
+          {/* COLONNE : EN COURS */}
+          <div className="flex flex-col h-max border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] bg-[#FFFFFF]">
+
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
               <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] font-manrope">En cours</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]" aria-label={`${inProgressTasks.length} tâches en cours`}>{inProgressTasks.length}</div>
             </div>
             <div className="flex flex-col gap-[20px] lg:gap-[41px] items-center">
               {inProgressTasks.map((task, index) => (
-                <div key={index} className="w-full lg:w-[371px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
+                <div key={index} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate font-manrope">{task.title}</h3>
@@ -372,14 +374,15 @@ export default function DashboardPage() {
           </div>
 
           {/* COLONNE 3 : TERMINÉES */}
-          <div className="w-full lg:min-w-[419px] lg:w-[419px] shrink-0 border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] flex flex-col bg-[#FFFFFF]">
+          <div className="flex flex-col h-max border border-[#FFE0E0] rounded-[10px] pt-[20px] lg:pt-[40px] px-4 lg:px-[24px] pb-[41px] bg-[#FFFFFF]">
+
             <div className="flex items-center gap-[8px] mb-[20px] lg:mb-[40px]">
               <h2 className="text-[16px] lg:text-[18px] font-semibold text-[#1F1F1F] font-manrope">Terminées</h2>
               <div className="w-[41px] h-[25px] bg-[#E5E7EB] rounded-[50px] flex items-center justify-center text-[12px] text-[#6B7280]" aria-label={`${doneTasks.length} tâches terminées`}>{doneTasks.length}</div>
             </div>
             <div className="flex flex-col gap-[20px] lg:gap-[41px] items-center">
               {doneTasks.map((task, index) => (
-                <div key={index} className="w-full lg:w-[371px] bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
+                <div key={index} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-[10px] pt-[20px] lg:pt-[25px] pb-[20px] lg:pb-[32px] px-4 lg:px-[40px] flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#000000] mb-[7px] truncate font-manrope">{task.title}</h3>
