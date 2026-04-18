@@ -146,7 +146,7 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           className="text-[#1F1F1F] text-[20px] lg:text-[24px] font-semibold mb-[24px] lg:mb-[40px] self-start font-manrope"
           style={{ lineHeight: "100%" }}
         >
-          Modifier 
+          Modifier
         </h2>
 
         {/* LE FORMULAIRE */}
@@ -181,17 +181,38 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
 
           {/* CHAMP : Échéance */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
-            <label htmlFor="dueDate" className="text-[14px] font-normal text-[#000000] font-inter">Échéance</label>
-            <div className="relative w-full lg:w-[452px]">
+            <label htmlFor="edit-task-date" className="text-[14px] font-normal text-[#000000] font-inter">Échéance</label>
+            <div className="relative w-full lg:w-[452px] h-[53px]">
+
+              {/* input cliquable */}
+              <style dangerouslySetInnerHTML={{
+                __html: `
+                .hide-native-date::-webkit-calendar-picker-indicator {
+                  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                  width: 100%; height: 100%; opacity: 0; cursor: pointer;
+                }
+              `}} />
+
+              {/* Affichage visuel formaté : "9 mars" */}
+              <div className={`w-full h-full border border-[#E5E7EB] rounded-[4px] pl-[17px] pr-[45px] flex items-center text-[12px] bg-white ${dueDate ? 'text-[#1F1F1F]' : 'text-[#6B7280]'}`}>
+                {dueDate ? new Date(dueDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : ""}
+              </div>
+
+              {/* icône calendrier */}
+              <div className="absolute right-[17px] top-[50%] -translate-y-1/2 pointer-events-none">
+                <Image src="/date.svg" alt="" aria-hidden="true" width={15} height={15} />
+              </div>
+              
               <input
-                id="dueDate"
+                id="edit-task-date"
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full h-[53px] border border-[#E5E7EB] rounded-[4px] px-[17px] text-[12px] text-[#6B7280] outline-none focus:border-[#D3590B] transition cursor-pointer"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer hide-native-date"
               />
             </div>
           </div>
+
 
           {/* CHAMP : Assigné à */}
           <div className="flex flex-col gap-[7px] mb-[16px] lg:mb-[24px]">
