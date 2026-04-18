@@ -326,18 +326,11 @@ export default function EditTaskModal({ isOpen, onClose, task, projectId, contri
           <div className="mt-[32px] lg:mt-[56px] flex flex-col-reverse lg:flex-row items-center gap-[16px] lg:gap-[24px]">
             <button
               type="submit"
-              className="w-full lg:w-[244px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB] font-inter"
+              className="w-full lg:w-[181px] h-[50px] bg-[#E5E7EB] text-[#9CA3AF] rounded-[10px] text-[16px] font-normal flex items-center justify-center transition hover:bg-[#D1D5DB] font-inter"
             >
               Enregistrer
             </button>
 
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="text-[#EF4444] text-[14px] font-medium hover:underline transition px-[10px] font-inter"
-            >
-              Supprimer la tâche
-            </button>
           </div>
         </form>
       </div>
